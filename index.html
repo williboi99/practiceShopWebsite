@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neff Enterprises - Cabinet Restoration & Design</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb; /* Light background for contrast */
+        }
+    </style>
+</head>
+<body class="min-h-screen antialiased">
+
+    <!-- Header and Navigation -->
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Company Name / Logo -->
+            <h1 class="text-3xl font-extrabold tracking-tight">
+                Neff Enterprises
+            </h1>
+
+            <!-- Menu Button (Mobile/Tablet) -->
+            <button id="menu-toggle" class="lg:hidden p-2 rounded-lg hover:bg-slate-700 transition duration-150 ease-in-out" aria-label="Toggle menu">
+                <!-- Hamburger Icon (inline SVG for aesthetics and reliability) -->
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+
+            <!-- Desktop Menu (Hidden on mobile) -->
+            <nav class="hidden lg:flex space-x-6 text-lg font-medium">
+                <a href="resources.html" class="hover:text-amber-400 transition duration-150 ease-in-out py-2 px-3 rounded-md">Resources</a>
+                <a href="newCabinets.html" class="hover:text-amber-400 transition duration-150 ease-in-out py-2 px-3 rounded-md">New Cabinets</a>
+                <a href="cabinetCostTool.html" class="bg-amber-500 text-slate-900 font-semibold py-2 px-4 rounded-xl shadow-md hover:bg-amber-400 transition duration-150 ease-in-out">
+                    Rebuild Price Calculator
+                </a>
+            </nav>
+        </div>
+
+        <!-- Mobile/Collapsible Menu Content -->
+        <div id="menu-content" class="hidden lg:hidden bg-slate-800 border-t border-slate-700">
+            <nav class="flex flex-col p-4 space-y-2">
+                <a href="resources.html" class="block text-white hover:bg-slate-700 rounded-lg p-3 transition duration-150 ease-in-out">Resources</a>
+                <a href="newCabinets.html" class="block text-white hover:bg-slate-700 rounded-lg p-3 transition duration-150 ease-in-out">New Cabinets</a>
+                <a href="cabinetCostTool.html" class="block bg-amber-500 text-slate-900 font-semibold rounded-lg p-3 text-center shadow-md hover:bg-amber-400 transition duration-150 ease-in-out">
+                    Rebuild Price Calculator
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area: Hero and Summary -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+        
+        <!-- Hero Section -->
+        <section class="text-center mb-16 p-8 bg-white rounded-3xl shadow-2xl">
+            <div class="inline-block p-3 bg-amber-500 rounded-full mb-6">
+                <!-- Custom Cabinet Icon: Two side-by-side drawers over two side-by-side doors -->
+                <svg class="w-10 h-10 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Cabinet outline (M3 3h18v18H3z) -->
+                    <!-- Vertical Divider (M12 3v18) -->
+                    <!-- Horizontal Divider for Drawers/Doors (M3 8h18) -->
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18v18H3z M12 3v18 M3 8h18"></path>
+                </svg>
+            </div>
+            <!-- Updated H2 Title -->
+            <h2 class="text-5xl font-extrabold text-slate-900 mb-4 leading-tight">
+                Neff Enterprises<br>
+                <span class="text-4xl font-semibold text-amber-600">Restoration and Redesign.</span>
+            </h2>
+            <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                Neff Enterprises is your trusted partner for bringing damaged cabinetry back to life and designing beautiful, custom installations for any space.
+            </p>
+        </section>
+
+        <!-- Services Summary Section -->
+        <section class="bg-white p-6 sm:p-10 lg:p-16 rounded-3xl shadow-xl">
+            <h3 class="text-3xl font-bold text-slate-900 mb-8 border-b-2 border-amber-500 pb-3">Our Specialized Cabinet Services</h3>
+            
+            <div class="grid md:grid-cols-2 gap-10">
+                
+                <!-- Restoration and Rebuilding Focus -->
+                <div>
+                    <h4 class="text-2xl font-semibold text-slate-700 mb-4 flex items-center">
+                        <span class="text-amber-500 mr-3 text-3xl">&#x2713;</span> Disaster Restoration & Reconstruction
+                    </h4>
+                    <p class="text-slate-600 leading-relaxed">
+                        When a disaster restoration company brings us <strong>damaged kitchen or bathroom cabinet boxes</strong>, faceframes, or related hardware, we take over the meticulous rebuild process. We are experts in <strong>building new boxes and shelves</strong>, and precisely <strong>installing all drawers, doors, and hardware</strong>. This ensures a seamless transition from damaged structure to fully functional unit.
+                    </p>
+                    <ul class="list-disc list-inside mt-4 space-y-2 text-slate-600 ml-4">
+                        <li>
+                            <strong>Finish Matching:</strong> We stain, paint, or lacquer match existing finishes to create new <strong>skins, fillers, toekick, and trim</strong>.
+                        </li>
+                        <li>
+                            <strong>Installation:</strong> We offer professional, start-to-finish cabinet installation services.
+                        </li>
+                        <li>
+                            <strong>Specialty Styles:</strong> Our team is skilled in handling <strong>European/faceless/commercial style cabinets</strong> and custom requirements.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- New Cabinets and Design Focus -->
+                <div>
+                    <h4 class="text-2xl font-semibold text-slate-700 mb-4 flex items-center">
+                        <span class="text-amber-500 mr-3 text-3xl">&#x2713;</span> Custom Cabinet Ordering & Design
+                    </h4>
+                    <p class="text-slate-600 leading-relaxed">
+                        Beyond restoration, we are authorized to <strong>order new cabinets and accessories</strong> from multiple different, high-quality cabinet manufacturers. This gives homeowners unparalleled choice for new construction or remodels.
+                    </p>
+                    <ul class="list-disc list-inside mt-4 space-y-2 text-slate-600 ml-4">
+                        <li>
+                            <strong>In-Home Consultation:</strong> We go out to <strong>measure up the house ourselves</strong> for maximum accuracy.
+                        </li>
+                        <li>
+                            <strong>Custom Floorplans:</strong> We draft <strong>custom floorplans</strong> tailored to the specific dimensions and flow of the home.
+                        </li>
+                        <li>
+                            <strong>Client Choice:</strong> Homeowners select their preferred cabinet style, wood species, and paint or stain color, ensuring their vision is perfectly realized.
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Call to Action -->
+        <section class="mt-16 text-center p-8 bg-slate-900 text-white rounded-2xl shadow-xl">
+            <h4 class="text-2xl font-semibold mb-4">Ready to Calculate Your Rebuild Costs?</h4>
+            <p class="mb-6 text-slate-300">Use our dedicated tool for quick and accurate pricing estimates on cabinet reconstruction projects.</p>
+            <a href="cabinetCostTool.html" class="inline-block bg-amber-500 text-slate-900 font-bold py-3 px-8 rounded-full text-lg shadow-2xl hover:bg-amber-400 transform hover:scale-105 transition duration-300 ease-in-out">
+                Go to Rebuild Price Calculator &rarr;
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-slate-400 text-sm">
+            &copy; 2024 Neff Enterprises. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- JavaScript for Menu Toggle -->
+    <script>
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const menuContent = document.getElementById('menu-content');
+            const isExpanded = menuContent.classList.contains('hidden');
+            
+            if (isExpanded) {
+                menuContent.classList.remove('hidden');
+            } else {
+                menuContent.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
