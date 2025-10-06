@@ -1,1617 +1,721 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Cabinetry Cost Tool - Pro</title>
-
+    <title>Cabinetry Quote Calculator - Print Ready</title>
     <!-- Load Tailwind CSS -->
-
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script>
-
         tailwind.config = {
-
             theme: {
-
                 extend: {
-
                     fontFamily: {
-
                         sans: ['Inter', 'sans-serif'],
-
                     },
-
                     colors: {
-
-                        'primary-dark': '#262626',
-
-                        'primary-light': '#f5f5f5',
-
-                        'accent': '#0d9488', // Teal-600 for a professional look
-
+                        'primary-dark': '#1f2937', // Gray-800
+                        'accent': '#059669', // Vibrant Emerald Green
+                        'nav-dark': '#171725', // Deep Charcoal/Navy (NavBar background)
+                        'nav-text': '#f3f4f6', // Light gray/White for navbar text
+                        'active-yellow': '#f59e0b', // UPDATED: Specific yellow/gold color from screenshot (f59e0b)
                     }
-
                 }
-
             }
-
         }
-
     </script>
-
     <style>
-
-        /* Custom styles for better mobile experience */
-
+        /* Custom styles for better mobile experience and printing */
         body {
-
-            background-color: #f5f5f5;
-
+            background-color: #f3f4f6;
+            /* Ensure padding at the top to clear the fixed navigation bar */
+            padding-top: 64px; 
         }
-
         .card {
-
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 40, 0, 0.05);
-
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
-
         input[type="number"]::-webkit-inner-spin-button,
-
         input[type="number"]::-webkit-outer-spin-button {
-
             -webkit-appearance: none;
-
             margin: 0;
-
         }
-
         input[type="number"] {
-
             -moz-appearance: textfield;
-
         }
-
         
-
         /* Hide the receipt view on screen by default */
-
         #print-receipt {
-
             display: none;
-
             min-height: 100vh;
-
         }
-
+        
         /* --- PRINT STYLES for PDF Receipt --- */
-
         @media print {
-
-            /* 1. Hide the interactive input section */
-
-            #app-input {
-
+            /* Hide the input form and print controls when printing */
+            #app-input, #print-controls, #top-nav {
                 display: none !important;
-
             }
-
-            
-
-            /* 2. Show the dedicated receipt section and make it full page */
-
+            body { 
+                padding-top: 0; /* Remove top padding when printing */
+                background-color: white; 
+            }
+            /* Make the receipt fill the page */
             #print-receipt {
-
                 display: block !important;
-
                 width: 100% !important;
-
                 max-width: none !important;
-
                 padding: 0;
-
                 margin: 0;
-
                 box-shadow: none !important;
-
                 background-color: white !important;
-
-                font-family: 'Inter', sans-serif; /* Ensure font is consistent for print */
-
+                font-family: 'Inter', sans-serif;
+                font-size: 10pt; /* Smaller font for better fit on paper */
             }
-
-            /* General print adjustments */
-
-            body {
-
-                background-color: white !important;
-
-                margin: 0;
-
-                padding: 0;
-
-            }
-
-            
-
-            /* Specific receipt styling */
-
             .receipt-section-header {
-
-                border-bottom: 2px solid #0d9488; /* Teal line for headers */
-
+                border-bottom: 2px solid #059669;
                 padding-bottom: 5px;
-
                 margin-bottom: 15px;
-
             }
-
-            
-
+            /* Force colors to print */
             .receipt-total-bar {
-
-                background-color: #f0fdfa !important; /* Light teal background for total */
-
-                border: 1px solid #ccfbf1;
-
-                -webkit-print-color-adjust: exact; /* Force background color printing */
-
+                background-color: #ecfdf5 !important; /* light green */
+                border: 1px solid #a7f3d0;
+                -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
-
             }
-
             .receipt-info-box {
-
-                 background-color: #fafafa !important; /* Lighter background for job details */
-
+                 background-color: #fafafa !important;
                 -webkit-print-color-adjust: exact;
-
                 print-color-adjust: exact;
-
             }
-
-            
-
             .receipt-disclaimer-box {
-
-                background-color: #fef2f2 !important; /* Very light red background for warning */
-
-                border-color: #fecaca !important; /* Light red border */
-
+                background-color: #fef2f2 !important;
+                border-color: #fecaca !important;
                 -webkit-print-color-adjust: exact;
-
                 print-color-adjust: exact;
-
             }
-
+            h1, h2, h3 { color: #1f2937 !important; }
         }
-
     </style>
-
 </head>
-
-<body class="font-sans min-h-screen p-4 flex justify-center items-start pt-8">
-
-    <!-- 
-
-        ================================================================================
-
-        1. INPUT / INTERACTIVE VIEW (Visible on screen, Hidden when printing)
-
-        ================================================================================
-
-    -->
-
-    <div id="app-input" class="w-full max-w-md bg-white rounded-xl p-6 card">
-
-        <!-- TITLE CHANGE APPLIED HERE -->
-
-        <h1 class="text-3xl font-bold text-primary-dark mb-2 text-center">Cabinetry Cost Tool</h1>
-
-        <p class="text-center text-gray-500 mb-8">Enter quantities and custom costs below.</p>
-
-        
-
-        <!-- Job Details Container -->
-
-        <div id="job-details" class="space-y-4 mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
-
-            <h2 class="text-xl font-semibold text-primary-dark border-b pb-2">Client / Job Information</h2>
-
-            
-
-            <div class="job-input">
-
-                <label for="job-name" class="block text-sm font-medium text-gray-700">Job Name / Job Number</label>
-
-                <input type="text" id="job-name" placeholder="E.g., Smith Kitchen / #12345" 
-
-                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
-
-            </div>
-
-            <div class="job-input">
-
-                <label for="company-name" class="block text-sm font-medium text-gray-700">Company</label>
-
-                <input type="text" id="company-name" placeholder="E.g., ABC Cabinetry" 
-
-                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
-
-            </div>
-
-            
-
-            <!-- Project Manager Input -->
-
-            <div class="job-input">
-
-                <label for="project-manager" class="block text-sm font-medium text-gray-700">Project Manager</label>
-
-                <input type="text" id="project-manager" placeholder="E.g., John Doe" 
-
-                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
-
-            </div>
-
-            <div class="job-input grid grid-cols-2 gap-4">
-
-                <div>
-
-                    <label for="phone-number" class="block text-sm font-medium text-gray-700">Phone Number</label>
-
-                    <input type="tel" id="phone-number" placeholder="(555) 555-5555" 
-
-                           class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
-
-                </div>
-
-                <div>
-
-                    <label for="job-date" class="block text-sm font-medium text-gray-700">Date</label>
-
-                    <input type="date" id="job-date" 
-
-                           class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
-
-                </div>
-
-            </div>
-
-            <div class="job-input">
-
-                <label for="job-address" class="block text-sm font-medium text-gray-700">Address</label>
-
-                <input type="text" id="job-address" placeholder="123 Main St, Anytown, USA" 
-
-                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
-
-            </div>
-
-            
-
-            <!-- JOB NOTES INPUT -->
-
-            <div class="job-input pt-4 border-t border-gray-200">
-
-                <label for="job-notes" class="block text-sm font-medium text-gray-700">Job Notes (Appears on Receipt)</label>
-
-                <textarea id="job-notes" rows="3" placeholder="E.g., Client requested custom paint color: 'Deep Ocean Blue'. Start date confirmed for 10/15." 
-
-                          class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"></textarea>
-
-            </div>
-
-        </div>
-
-        <!-- Price Constants (Hidden Inputs) -->
-
-        <input type="hidden" id="price-base" value="90">
-
-        <input type="hidden" id="price-half-shelf" value="18">
-
-        <input type="hidden" id="price-base-install" value="155">
-
-        <input type="hidden" id="price-full-height" value="180">
-
-        <input type="hidden" id="price-full-shelf" value="36">
-
-        <input type="hidden" id="price-full-height-install" value="310">
-
-        <input type="hidden" id="price-base-european" value="195">
-
-        <input type="hidden" id="price-base-european-install" value="280">
-
-        <input type="hidden" id="price-full-height-european" value="285">
-
-        <input type="hidden" id="price-full-height-european-install" value="435">
-
-        <input type="hidden" id="price-base-skins" value="85">
-
-        <input type="hidden" id="price-full-skins" value="170">
-
-        <input type="hidden" id="price-toekick" value="30">
-
-        <input type="hidden" id="price-scribe" value="35">
-
-        <input type="hidden" id="price-fillers" value="50">
-
-        <input type="hidden" id="price-match-fee" value="150">
-
-        <!-- Input Fields Container -->
-
-        <div class="space-y-6 mb-8">
-
-            
-
-            <!-- UPDATED HEADER -->
-
-            <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Standard Faceframe Rebuilds (ft)</h2>
-
-            <!-- Base $90/ft -->
-
-            <div class="input-group">
-
-                <label for="input-base" class="block text-lg font-medium text-gray-700 mb-1">Base</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-base" data-unit="ft" placeholder="0" min="0" step="0.5"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $90 / ft
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- Half-Depth Shelving $18/ft -->
-
-            <div class="input-group">
-
-                <label for="input-half-shelf" class="block text-lg font-medium text-gray-700 mb-1">Half-Depth Shelving</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-half-shelf" data-unit="ft" placeholder="0" min="0" step="0.5"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $18 / ft
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- Base with Install $155/ft -->
-
-            <div class="input-group">
-
-                <label for="input-base-install" class="block text-lg font-medium text-gray-700 mb-1">Base with Install</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-base-install" data-unit="ft" placeholder="0" min="0" step="0.5"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $155 / ft
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- Full Height $180/ft -->
-
-            <div class="input-group">
-
-                <label for="input-full-height" class="block text-lg font-medium text-gray-700 mb-1">Full Height</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-full-height" data-unit="ft" placeholder="0" min="0" step="0.5"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $180 / ft
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- Full-Depth Shelving $36/ft -->
-
-            <div class="input-group">
-
-                <label for="input-full-shelf" class="block text-lg font-medium text-gray-700 mb-1">Full-Depth Shelving</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-full-shelf" data-unit="ft" placeholder="0" min="0" step="0.5"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $36 / ft
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- Full Height with Install $310/ft -->
-
-            <div class="input-group">
-
-                <label for="input-full-height-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height with Install</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-full-height-install" data-unit="ft" placeholder="0" min="0" step="0.5"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $310 / ft
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- UPDATED HEADER -->
-
-            <div class="border-t border-gray-200 pt-4">
-
-                <h3 class="text-xl font-bold text-accent mb-3">European Style (Faceless)</h3>
-
-            </div>
-
-            <!-- Base European $195/ft -->
-
-            <div class="input-group">
-
-                <label for="input-base-european" class="block text-lg font-medium text-gray-700 mb-1">Base European</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-base-european" data-unit="ft" placeholder="0" min="0" step="0.5"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $195 / ft
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- Base European with Install $280/ft -->
-
-            <div class="input-group">
-
-                <label for="input-base-european-install" class="block text-lg font-medium text-gray-700 mb-1">Base European with Install</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-base-european-install" data-unit="ft" placeholder="0" min="0" step="0.5"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $280 / ft
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- Full Height European $285/ft -->
-
-            <div class="input-group">
-
-                <label for="input-full-height-european" class="block text-lg font-medium text-gray-700 mb-1">Full Height European</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-full-height-european" data-unit="ft" placeholder="0" min="0" step="0.5"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $285 / ft
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- Full Height European with Install $435/ft -->
-
-            <div class="input-group">
-
-                <label for="input-full-height-european-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height European with Install</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-full-height-european-install" data-unit="ft" placeholder="0" min="0" step="0.5"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $435 / ft
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            
-
-            <!-- UPDATED HEADER -->
-
-            <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Stain/Paint/Lacquer Matching</h2>
-
-            <!-- Species/Matched Material Dropdown (Documentation Only) -->
-
-            <div class="input-group">
-
-                <label for="select-material" class="block text-lg font-semibold text-gray-700 mb-1">Species / Matched Material</label>
-
-                <select id="select-material" class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base">
-
-                    <option value="">-- Select Material --</option>
-
-                    <option value="Maple">Maple</option>
-
-                    <option value="Oak">Oak</option>
-
-                    <option value="Cherry">Cherry</option>
-
-                    <option value="Clear Alder">Clear Alder</option>
-
-                    <option value="Knotty Alder">Knotty Alder</option>
-
-                    <option value="Hickory">Hickory</option>
-
-                    <option value="Unfinished">Unfinished</option>
-
-                    <option value="Painted">Painted</option>
-
-                    <option value="Lacquered">Lacquered</option>
-
-                    <option value="Custom">Custom</option>
-
-                </select>
-
-            </div>
-
-            
-
-            <!-- MATCH CHECKBOXES -->
-
-            <div class="input-group p-3 bg-yellow-50 rounded-lg border border-yellow-200 space-y-2">
-
-                <!-- UPDATED TEXT HERE -->
-
-                <p class="text-sm font-semibold text-gray-800">Select required matching services (<span class="font-bold">$150 per service</span>):</p>
-
-                <div class="grid grid-cols-3 gap-2">
-
-                    <div class="flex items-center">
-
-                        <input type="checkbox" id="checkbox-stain-match" class="h-5 w-5 text-accent border-gray-300 rounded focus:ring-accent/70">
-
-                        <label for="checkbox-stain-match" class="ml-2 text-sm font-medium text-gray-700">Stain Match</label>
-
-                    </div>
-
-                    <div class="flex items-center">
-
-                        <input type="checkbox" id="checkbox-paint-match" class="h-5 w-5 text-accent border-gray-300 rounded focus:ring-accent/70">
-
-                        <label for="checkbox-paint-match" class="ml-2 text-sm font-medium text-gray-700">Paint Match</label>
-
-                    </div>
-
-                    <div class="flex items-center">
-
-                        <input type="checkbox" id="checkbox-lacquer-match" class="h-5 w-5 text-accent border-gray-300 rounded focus:ring-accent/70">
-
-                        <label for="checkbox-lacquer-match" class="ml-2 text-sm font-medium text-gray-700">Lacquer Match</label>
-
-                    </div>
-
-                </div>
-
-                <p id="match-fee-status" class="text-center font-bold text-red-600 text-sm pt-2 border-t border-yellow-300 hidden">
-
-                    <!-- Status text will be dynamically updated by JS with the total amount -->
-
-                </p>
-
-            </div>
-
-            <!-- Base/Wall Skins $85/pc -->
-
-            <div class="input-group">
-
-                <label for="input-base-skins" class="block text-lg font-medium text-gray-700 mb-1">Base/Wall Skins</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-base-skins" data-unit="PC" placeholder="0" min="0" step="1"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $85 / PC
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- Full Height Skin / Back Panel $170/pc -->
-
-            <div class="input-group">
-
-                <label for="input-full-skins" class="block text-lg font-medium text-gray-700 mb-1">Full Height Skin / Back Panel</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-full-skins" data-unit="PC" placeholder="0" min="0" step="1"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $170 / PC
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- Toekick (8ft) $30/pc -->
-
-            <div class="input-group">
-
-                <label for="input-toekick" class="block text-lg font-medium text-gray-700 mb-1">Toekick (8ft)</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-toekick" data-unit="PC" placeholder="0" min="0" step="1"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $30 / PC
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- Scribe (8ft) $35/pc -->
-
-            <div class="input-group">
-
-                <label for="input-scribe" class="block text-lg font-medium text-gray-700 mb-1">Scribe (8ft)</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-scribe" data-unit="PC" placeholder="0" min="0" step="1"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $35 / PC
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            
-
-            <!-- Fillers $50/pc -->
-
-            <div class="input-group">
-
-                <label for="input-fillers" class="block text-lg font-medium text-gray-700 mb-1">Fillers</label>
-
-                <div class="flex items-center">
-
-                    <input type="number" id="input-fillers" data-unit="PC" placeholder="0" min="0" step="1"
-
-                           class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-
-                        $50 / PC
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            
-
-            <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Custom Flat Rate Items</h2>
-
-            <!-- Custom Input: Faceframe Repair - NOTE ADDED HERE -->
-
-            <div class="input-group">
-
-                <label for="input-faceframe-repair" class="block text-lg font-semibold text-red-600 mb-1">Faceframe Repair (Custom Price)</label>
-
-                <p class="text-xs text-gray-500 italic mb-2">Depending on the type and size of the repair, there may be variations in: grain, color, sheen, and grunge when compared the original material.</p>
-
-                <div class="flex items-center">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-r-0 rounded-l-lg">$</span>
-
-                    <input type="number" id="input-faceframe-repair" placeholder="0.00" min="0" step="10"
-
-                           class="flex-1 p-3 border border-red-300 focus:ring-red-400 focus:border-red-400 text-xl transition duration-150 font-bold">
-
-                    <span class="p-3 bg-red-600 text-white text-base font-semibold border border-red-600 border-l-0 rounded-r-lg">
-
-                        FLAT
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            
-
-            <!-- Custom Input: Miscellaneous/Customization PRICE -->
-
-            <div class="input-group mt-6">
-
-                <label for="input-misc-custom" class="block text-lg font-semibold text-red-600 mb-1">Miscellaneous / Customization (Custom Price)</label>
-
-                <div class="flex items-center">
-
-                    <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-r-0 rounded-l-lg">$</span>
-
-                    <input type="number" id="input-misc-custom" placeholder="0.00" min="0" step="10"
-
-                           class="flex-1 p-3 border border-red-300 focus:ring-red-400 focus:border-red-400 text-xl transition duration-150 font-bold">
-
-                    <span class="p-3 bg-red-600 text-white text-base font-semibold border border-red-600 border-l-0 rounded-r-lg">
-
-                        FLAT
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- Miscellaneous Description Input - RED TEXT REMOVED HERE -->
-
-            <div class="input-group mt-2 p-3 border border-gray-300 rounded-lg">
-
-                <label for="input-misc-description" class="block text-sm font-medium text-gray-700 mb-1">Description for Custom Price</label>
-
-                <textarea id="input-misc-description" rows="2" placeholder="E.g., Install client-supplied antique handles, custom floating shelf labor, special lighting." 
-
-                          class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"></textarea>
-
-            </div>
-
-        </div>
-
-        <!-- Total Display & Print Button (Screen View) -->
-
-        <div class="mt-8 pt-6 border-t border-gray-200">
-
-            <div id="quote-total" class="flex justify-between items-center bg-accent/10 p-4 rounded-xl">
-
-                <span class="text-xl font-semibold text-primary-dark">TOTAL JOB COST:</span>
-
-                <span id="total-cost" class="text-4xl font-extrabold text-accent">$0.00</span>
-
-            </div>
-
-            
-
-            <button id="print-quote-btn" class="w-full mt-4 p-3 text-lg font-bold text-white bg-green-600 rounded-lg hover:bg-green-700 transition duration-150 shadow-md">
-
-                Confirm & Print Quote
-
-            </button>
-
-        </div>
-
-        
-
-        <!-- Inline Summary Section (for quick reference on screen) -->
-
-        <div class="mt-4 text-sm text-gray-500">
-
-            <h3 class="font-bold mb-1">Pricing Summary (Current):</h3>
-
-            <ul id="summary-list" class="space-y-1">
-
-                <!-- Breakdown will be inserted here by JavaScript -->
-
-            </ul>
-
-        </div>
-
-    </div>
-
+<body class="font-sans min-h-screen">
     
+    <!-- 
+        ================================================================================
+        0. TOP NAVIGATION BAR (Matching Screenshot Colors)
+        ================================================================================
+    -->
+    <header id="top-nav" class="fixed top-0 left-0 right-0 z-50 bg-nav-dark shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo/Brand Link (Uses light text color to match screenshot contrast) -->
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-2xl font-bold text-nav-text hover:text-accent transition duration-150">
+                        Neff Enterprises
+                    </a>
+                </div>
+
+                <!-- Navigation Links (Hidden on small screens, shown as menu button) -->
+                <nav class="hidden md:flex space-x-6 items-center">
+                    <a href="resources.html" class="text-nav-text hover:text-accent font-medium transition duration-150 p-2 rounded-lg">
+                        Resources
+                    </a>
+                    <a href="newCabinets.html" class="text-nav-text hover:text-accent font-medium transition duration-150 p-2 rounded-lg">
+                        New Cabinets
+                    </a>
+                    <!-- Active Link Styling (Now uses the specific #f59e0b color) -->
+                    <a href="cabinetCostTool.html" class="bg-active-yellow text-nav-dark font-bold px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition duration-150">
+                        Rebuild Price Calculator
+                    </a>
+                </nav>
+
+                <!-- Mobile Menu Button (Optional, not implemented for simplicity) -->
+                <div class="md:hidden">
+                    <button class="text-nav-text p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent">
+                        <!-- Menu Icon (e.g., Lucide icon if available, using simple text here) -->
+                        MENU
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <!-- 
-
         ================================================================================
-
-        2. PRINT RECEIPT VIEW (Hidden on screen, Visible only when printing)
-
+        1. INPUT / INTERACTIVE VIEW 
         ================================================================================
-
     -->
+    <div class="p-4 flex justify-center items-start pt-8">
+        <div id="app-input" class="w-full max-w-lg bg-white rounded-xl p-6 card">
+            <h1 class="text-3xl font-bold text-primary-dark mb-2 text-center">Cabinet Rebuild Quote</h1>
+            <p class="text-center text-gray-500 mb-8">Enter details and quantities below to generate your printable quote.</p>
+            
+            <!-- Job Details Container -->
+            <div id="job-details" class="space-y-4 mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <h2 class="text-xl font-semibold text-primary-dark border-b pb-2 text-accent">Client / Job Information</h2>
+                
+                <div class="job-input">
+                    <label for="job-name" class="block text-sm font-medium text-gray-700">Client Name / Job Identifier</label>
+                    <input type="text" id="job-name" placeholder="E.g., Smith Kitchen / Jane Smith" 
+                           class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
+                </div>
+                
+                <div class="job-input">
+                    <label for="job-address" class="block text-sm font-medium text-gray-700">Project Location (Address for Quote)</label>
+                    <input type="text" id="job-address" placeholder="123 Main St, Anytown, USA" 
+                           class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
+                </div>
 
-    <div id="print-receipt" class="w-full max-w-2xl mx-auto">
+                <div class="job-input grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="client-phone" class="block text-sm font-medium text-gray-700">Client Phone Number (Optional)</label>
+                        <input type="tel" id="client-phone" placeholder="(555) 555-5555" 
+                               class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
+                    </div>
+                    <div>
+                        <label for="job-date" class="block text-sm font-medium text-gray-700">Quote Date</label>
+                        <input type="date" id="job-date" 
+                               class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
+                    </div>
+                </div>
+                
+                <div class="job-input pt-4 border-t border-gray-200">
+                    <label for="job-notes" class="block text-sm font-medium text-gray-700">Job Notes (Appears on Quote)</label>
+                    <textarea id="job-notes" rows="3" placeholder="E.g., Client wants a smooth finish. Job requires lead time of 6 weeks." 
+                              class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"></textarea>
+                </div>
+            </div>
 
-        <!-- Content will be dynamically populated by JavaScript before printing -->
+            <!-- Hidden Price Constants -->
+            <input type="hidden" id="price-base" value="90">
+            <input type="hidden" id="price-half-shelf" value="18">
+            <input type="hidden" id="price-base-install" value="155">
+            <input type="hidden" id="price-full-height" value="180">
+            <input type="hidden" id="price-full-shelf" value="36">
+            <input type="hidden" id="price-full-height-install" value="310">
+            <input type="hidden" id="price-base-european" value="195">
+            <input type="hidden" id="price-base-european-install" value="280">
+            <input type="hidden" id="price-full-height-european" value="285">
+            <input type="hidden" id="price-full-height-european-install" value="435">
+            <input type="hidden" id="price-base-skins" value="85">
+            <input type="hidden" id="price-full-skins" value="170">
+            <input type="hidden" id="price-toekick" value="30">
+            <input type="hidden" id="price-scribe" value="35">
+            <input type="hidden" id="price-fillers" value="50">
+            <input type="hidden" id="price-match-fee" value="150">
 
+
+            <!-- Input Fields Container -->
+            <div class="space-y-6 mb-8">
+                
+                <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Standard Faceframe Rebuilds (ft)</h2>
+
+                <!-- Base $90/ft -->
+                <div class="input-group">
+                    <label for="input-base" class="block text-lg font-medium text-gray-700 mb-1">Base Lineal Feet</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-base" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $90 / ft
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Base with Install $155/ft -->
+                <div class="input-group">
+                    <label for="input-base-install" class="block text-lg font-medium text-gray-700 mb-1">Base with Installation (Lineal Feet)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-base-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $155 / ft
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Full Height $180/ft -->
+                <div class="input-group">
+                    <label for="input-full-height" class="block text-lg font-medium text-gray-700 mb-1">Full Height Lineal Feet</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-full-height" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $180 / ft
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Full Height with Install $310/ft -->
+                <div class="input-group">
+                    <label for="input-full-height-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height with Installation (Lineal Feet)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-full-height-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $310 / ft
+                        </span>
+                    </div>
+                </div>
+
+                <!-- European Style (Faceless) -->
+                <div class="border-t border-gray-200 pt-4">
+                    <h3 class="text-xl font-bold text-accent mb-3">European Style (Faceless)</h3>
+                </div>
+
+                <!-- Base European $195/ft -->
+                <div class="input-group">
+                    <label for="input-base-european" class="block text-lg font-medium text-gray-700 mb-1">Base European Lineal Feet</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-base-european" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $195 / ft
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Full Height European with Install $435/ft -->
+                <div class="input-group">
+                    <label for="input-full-height-european-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height European w/ Install (Lineal Feet)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-full-height-european-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $435 / ft
+                        </span>
+                    </div>
+                </div>
+                
+                <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Material Pieces & Accessories</h2>
+                
+                <!-- Half-Depth Shelving $18/ft -->
+                <div class="input-group">
+                    <label for="input-half-shelf" class="block text-lg font-medium text-gray-700 mb-1">Half-Depth Shelving (Lineal Feet)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-half-shelf" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $18 / ft
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Full-Depth Shelving $36/ft -->
+                <div class="input-group">
+                    <label for="input-full-shelf" class="block text-lg font-medium text-gray-700 mb-1">Full-Depth Shelving (Lineal Feet)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-full-shelf" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $36 / ft
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Base/Wall Skins $85/pc -->
+                <div class="input-group">
+                    <label for="input-base-skins" class="block text-lg font-medium text-gray-700 mb-1">Base/Wall Skins (Pieces)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-base-skins" data-unit="PC" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $85 / PC
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Full Height Skin / Back Panel $170/pc -->
+                <div class="input-group">
+                    <label for="input-full-skins" class="block text-lg font-medium text-gray-700 mb-1">Full Height Skin / Back Panel (Pieces)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-full-skins" data-unit="PC" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $170 / PC
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Toekick (8ft) $30/pc -->
+                <div class="input-group">
+                    <label for="input-toekick" class="block text-lg font-medium text-gray-700 mb-1">Toekick (8ft Pieces)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-toekick" data-unit="PC" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $30 / PC
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Fillers $50/pc -->
+                <div class="input-group">
+                    <label for="input-fillers" class="block text-lg font-medium text-gray-700 mb-1">Fillers (Pieces)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-fillers" data-unit="PC" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $50 / PC
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- MATCH CHECKBOXES -->
+                <div class="input-group p-3 bg-emerald-50 rounded-lg border border-emerald-200 space-y-2">
+                    <p class="text-sm font-semibold text-gray-800">Select required matching services (<span class="font-bold">$150 per service</span>):</p>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="checkbox-stain-match" class="h-5 w-5 text-accent border-gray-300 rounded focus:ring-accent/70">
+                            <label for="checkbox-stain-match" class="ml-2 text-sm font-medium text-gray-700">Stain</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="checkbox-paint-match" class="h-5 w-5 text-accent border-gray-300 rounded focus:ring-accent/70">
+                            <label for="checkbox-paint-match" class="ml-2 text-sm font-medium text-gray-700">Paint</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="checkbox-lacquer-match" class="h-5 w-5 text-accent border-gray-300 rounded focus:ring-accent/70">
+                            <label for="checkbox-lacquer-match" class="ml-2 text-sm font-medium text-gray-700">Lacquer</label>
+                        </div>
+                    </div>
+                    <p id="match-fee-status" class="text-center font-bold text-red-600 text-sm pt-2 border-t border-emerald-300 hidden"></p>
+                </div>
+
+
+                <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Custom Flat Rate Items</h2>
+
+                <!-- Custom Input: Faceframe Repair - NOTE ADDED HERE -->
+                <div class="input-group">
+                    <label for="input-faceframe-repair" class="block text-lg font-semibold text-red-600 mb-1">Faceframe Repair (Custom Price)</label>
+                    <p class="text-xs text-gray-500 italic mb-2">Note: Grain, color, sheen, and grunge may vary when matching original material.</p>
+                    <div class="flex items-center">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-r-0 rounded-l-lg">$</span>
+                        <input type="number" id="input-faceframe-repair" placeholder="0.00" min="0" step="10"
+                               class="flex-1 p-3 border border-red-300 focus:ring-red-400 focus:border-red-400 text-xl transition duration-150 font-bold">
+                        <span class="p-3 bg-red-600 text-white text-base font-semibold border border-red-600 border-l-0 rounded-r-lg">
+                            FLAT
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Custom Input: Miscellaneous/Customization PRICE -->
+                <div class="input-group mt-6">
+                    <label for="input-misc-custom" class="block text-lg font-semibold text-red-600 mb-1">Miscellaneous / Customization (Custom Price)</label>
+                    <div class="flex items-center">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-r-0 rounded-l-lg">$</span>
+                        <input type="number" id="input-misc-custom" placeholder="0.00" min="0" step="10"
+                               class="flex-1 p-3 border border-red-300 focus:ring-red-400 focus:border-red-400 text-xl transition duration-150 font-bold">
+                        <span class="p-3 bg-red-600 text-white text-base font-semibold border border-red-600 border-l-0 rounded-r-lg">
+                            FLAT
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Miscellaneous Description Input -->
+                <div class="input-group mt-2 p-3 border border-gray-300 rounded-lg">
+                    <label for="input-misc-description" class="block text-sm font-medium text-gray-700 mb-1">Description for Custom Price</label>
+                    <textarea id="input-misc-description" rows="2" placeholder="E.g., Install client-supplied hardware, custom floating shelf labor, special lighting." 
+                              class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"></textarea>
+                </div>
+
+            </div>
+
+            <!-- Total Display & Print Button (Screen View) -->
+            <div class="mt-8 pt-6 border-t border-gray-200" id="print-controls">
+                <div id="quote-total" class="flex justify-between items-center bg-accent/10 p-4 rounded-xl">
+                    <span class="text-xl font-semibold text-primary-dark">TOTAL ESTIMATED COST:</span>
+                    <span id="total-cost" class="text-4xl font-extrabold text-accent">$0.00</span>
+                </div>
+                
+                <div class="mt-4">
+                    <button id="print-quote-btn" class="w-full p-3 text-lg font-bold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition duration-150 shadow-md">
+                        Print Quote (Save PDF)
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
+    
+    <!-- 
+        ================================================================================
+        2. PRINT RECEIPT VIEW (Hidden on screen, Visible only when printing)
+        ================================================================================
+    -->
+    <div id="print-receipt" class="w-full max-w-2xl mx-auto">
+        <!-- Content will be dynamically populated by JavaScript before printing -->
+    </div>
+
 
     <script>
+        // --- DOM Elements ---
+        const inputElements = document.querySelectorAll('#app-input input, #app-input select, #app-input textarea');
+        const totalCostEl = document.getElementById('total-cost');
+        const printBtn = document.getElementById('print-quote-btn');
+        const jobDateInput = document.getElementById('job-date');
+        const receiptContainer = document.getElementById('print-receipt');
+        const matchFeeStatusEl = document.getElementById('match-fee-status');
+
+        // --- Price Constants (Same as hidden inputs) ---
+        const PRICES = {
+            base: 90, halfShelf: 18, baseInstall: 155, fullHeight: 180, fullShelf: 36, fullHeightInstall: 310,
+            baseEuropean: 195, baseEuropeanInstall: 280, fullHeightEuropean: 285, fullHeightEuropeanInstall: 435,
+            baseSkins: 85, fullSkins: 170, toekick: 30, scribe: 35, fillers: 50, matchFee: 150
+        };
+
+        // --- Utility Functions ---
+
+        /** Safely retrieves and converts an input value to a number or a string. */
+        const getValue = (id, isNumber = true) => {
+            const el = document.getElementById(id);
+            if (!el) return isNumber ? 0 : '';
+
+            if (el.type === 'checkbox') {
+                return el.checked;
+            }
+            if (isNumber) {
+                const value = +el.value;
+                return isNaN(value) ? 0 : value;
+            }
+            return el.value || '';
+        };
+        
+        // --- Calculation & Receipt Generation Logic ---
+
+        const calculateTotal = () => {
+            let total = 0;
+            let breakdown = [];
+            // Helper function for adding itemized costs
+            const addItem = (id, name, rateId, unit) => {
+                const qty = getValue(id);
+                if (qty > 0) {
+                    const rate = PRICES[rateId];
+                    const cost = parseFloat((qty * rate).toFixed(2));
+                    total += cost;
+                    breakdown.push({ name: name, cost: cost, qty: qty, unit: unit, rate: rate });
+                }
+            };
+
+            // 1. Lineal Foot Items (ft)
+            addItem('input-base', 'Base (Rebuild)', 'base', 'ft');
+            addItem('input-base-install', 'Base w/ Installation', 'baseInstall', 'ft');
+            addItem('input-full-height', 'Full Height (Rebuild)', 'fullHeight', 'ft');
+            addItem('input-full-height-install', 'Full Height w/ Installation', 'fullHeightInstall', 'ft');
+            addItem('input-base-european', 'Base European (Faceless)', 'baseEuropean', 'ft');
+            addItem('input-full-height-european-install', 'Full Height European w/ Install', 'fullHeightEuropeanInstall', 'ft');
+            
+            // 2. Accessories/Piece Items
+            addItem('input-half-shelf', 'Half-Depth Shelving', 'halfShelf', 'ft');
+            addItem('input-full-shelf', 'Full-Depth Shelving', 'fullShelf', 'ft');
+            addItem('input-base-skins', 'Base/Wall Skins', 'baseSkins', 'PC');
+            addItem('input-full-skins', 'Full Height Skin / Back Panel', 'fullSkins', 'PC');
+            addItem('input-toekick', 'Toekick (8ft)', 'toekick', 'PC');
+            addItem('input-fillers', 'Fillers', 'fillers', 'PC');
+            
+            // 3. Match Fee (Checkbox)
+            const isStainChecked = getValue('checkbox-stain-match', false);
+            const isPaintChecked = getValue('checkbox-paint-match', false);
+            const isLacquerChecked = getValue('checkbox-lacquer-match', false);
+            let matchCount = (isStainChecked ? 1 : 0) + (isPaintChecked ? 1 : 0) + (isLacquerChecked ? 1 : 0);
+
+            matchFeeStatusEl.classList.add('hidden');
+            if (matchCount > 0) {
+                const ratePerService = PRICES.matchFee;
+                const matchCost = matchCount * ratePerService;
+                total += matchCost;
+                
+                let matchType = [];
+                if (isStainChecked) matchType.push('Stain');
+                if (isPaintChecked) matchType.push('Paint');
+                if (isLacquerChecked) matchType.push('Lacquer');
+                const matchName = `Color/Finish Match Fee (${matchType.join(' & ')})`;
+
+                breakdown.push({ name: matchName, cost: matchCost, qty: matchCount, unit: 'service(s)', rate: ratePerService });
+                matchFeeStatusEl.textContent = `$${matchCost.toFixed(2)} Match Fee Applied`;
+                matchFeeStatusEl.classList.remove('hidden');
+            }
+
+            // 4. Custom Flat Rate Items
+            const faceframeCost = getValue('input-faceframe-repair');
+            if (faceframeCost > 0) {
+                total += faceframeCost;
+                breakdown.push({ name: 'Faceframe Repair (Custom)', cost: faceframeCost, qty: 1, unit: null, rate: faceframeCost });
+            }
+
+            const miscCost = getValue('input-misc-custom');
+            const miscDescription = getValue('input-misc-description', false); 
+            
+            if (miscCost > 0) {
+                total += miscCost;
+                breakdown.push({ 
+                    name: 'Miscellaneous/Customization (Custom)', 
+                    cost: miscCost, 
+                    qty: 1, 
+                    unit: null, 
+                    rate: miscCost,
+                    description: miscDescription
+                });
+            }
+
+            // Final Total Formatting
+            const formattedTotal = total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            totalCostEl.textContent = `$${formattedTotal}`;
+
+            // Enable/disable print button and generate receipt
+            const totalIsPositive = total > 0;
+            if (totalIsPositive) {
+                printBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                printBtn.disabled = false;
+                generatePrintReceipt(formattedTotal, breakdown.filter(item => item.cost > 0));
+            } else {
+                printBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                printBtn.disabled = true;
+                receiptContainer.innerHTML = ''; 
+            }
+        };
+
+        const generatePrintReceipt = (formattedTotal, breakdownData) => {
+            // Get job details for the receipt
+            const jobName = getValue('job-name', false) || 'N/A';
+            const clientPhone = getValue('client-phone', false) || 'N/A';
+            const jobAddress = getValue('job-address', false) || 'N/A';
+            const jobDate = jobDateInput.value;
+            const jobNotes = getValue('job-notes', false) || 'None.';
+            
+            const isStainChecked = getValue('checkbox-stain-match', false);
+            const isPaintChecked = getValue('checkbox-paint-match', false);
+            const isLacquerChecked = getValue('checkbox-lacquer-match', false);
+            
+            let matchTypeDisplay = 'None Requested';
+            let matchTypeList = [];
+            if (isStainChecked) matchTypeList.push('Stain');
+            if (isPaintChecked) matchTypeList.push('Paint');
+            if (isLacquerChecked) matchTypeList.push('Lacquer');
+
+            if (matchTypeList.length > 0) {
+                matchTypeDisplay = matchTypeList.join(' & ');
+            }
+
+            const disclaimerText = `In order to complete your cabinet order, it is necessary to have a written authorization from you. Please note, material finishes may vary once installed from finish samples used to make the material selections. Cabinetry may appear distinct from finish samples due to; but not limited to lighting surrounding contrasting furnishings and natural flaws in the wood grain. Also note: Depending on the type and size of the faceframe repair, there may be variations in: grain, color, sheen, and grunge when compared the original material. Once materials selection is made by you and the order is placed, it cannot be changed: Also completion of work is subject to current lead-times of materials, which may include, but not limited to; back order and/or transportation.`;
+
+            const companyHeaderHTML = `
+                <div class="text-center mb-8 border-b pb-4 border-gray-300">
+                    <h1 class="text-3xl font-bold text-primary-dark">Neff Enterprises Inc.</h1>
+                    <p class="text-lg text-gray-700">P.O. Box 2522</p>
+                    <p class="text-lg text-gray-700">Gilbert, AZ 85299-2522</p>
+                    <p class="text-lg text-gray-700 mt-2">ROC 120032</p>
+                    <p class="text-lg text-gray-700">480-688-7978</p>
+                </div>
+            `;
+            
+            const notesSectionHTML = jobNotes !== 'None.' ? `
+                <div class="mt-8 mb-8 p-4 rounded-lg border border-gray-300 bg-gray-50 receipt-info-box">
+                    <h2 class="text-xl font-semibold text-primary-dark mb-2">Job Notes</h2>
+                    <p class="whitespace-pre-wrap text-base text-gray-800">${jobNotes}</p>
+                </div>
+            ` : '';
+
+
+            let receiptHTML = `
+                <div class="p-8 bg-white max-w-3xl mx-auto">
+                    ${companyHeaderHTML}
+                    <h1 class="text-4xl font-extrabold text-primary-dark mb-4 text-center receipt-section-header">QUOTE</h1>
+                    <div class="mb-8 p-4 rounded-lg border receipt-info-box">
+                        <h2 class="text-2xl font-semibold text-accent mb-3">Client / Job Details</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-base">
+                            <div><strong class="text-gray-700">Client Name / Job ID:</strong> ${jobName}</div>
+                            <div><strong class="text-gray-700">Quote Date:</strong> ${jobDate}</div>
+                            <div><strong class="text-gray-700">Client Phone:</strong> ${clientPhone}</div>
+                            <div><strong class="text-gray-700">Finish Match:</strong> ${matchTypeDisplay}</div>
+                            <div class="sm:col-span-2"><strong class="text-gray-700">Project Address:</strong> ${jobAddress}</div>
+                        </div>
+                    </div>
+
+                    <!-- Cost Breakdown for Receipt -->
+                    <h2 class="text-2xl font-semibold text-primary-dark mb-4 receipt-section-header">Itemized Cost Breakdown</h2>
+                    <ul class="space-y-3 text-lg mb-12">
+                        ${breakdownData.map(item => {
+                            const descriptionHtml = item.description ? `<p class="text-sm text-gray-500 italic mt-1 ml-4 whitespace-pre-wrap">${item.description}</p>` : '';
+                            
+                            return `
+                                <li class="border-b border-gray-200 pb-2 mb-2">
+                                    <div class="flex">
+                                        <span class="flex-1 text-gray-600">${item.name}</span>
+                                        ${item.unit 
+                                            ? `<span class="w-40 text-primary-dark font-medium text-right">${item.qty} ${item.unit} @ $${item.rate.toFixed(2)}</span>` 
+                                            : (item.qty > 1 
+                                                ? `<span class="w-40 text-primary-dark font-medium text-right">${item.qty} PCs</span>` 
+                                                : `<span class="w-40 text-primary-dark font-medium italic text-right">Flat Rate</span>`)
+                                        }
+                                        <span class="w-24 font-bold text-gray-900 text-right ml-4">$${item.cost.toFixed(2)}</span>
+                                    </div>
+                                    ${descriptionHtml} 
+                                </li>
+                            `;
+                        }).join('')}
+                    </ul>
+
+                    <!-- Total for Receipt -->
+                    <div class="flex justify-between items-center bg-accent/20 p-6 rounded-xl border-2 border-accent receipt-total-bar mb-12">
+                        <span class="text-2xl font-bold text-primary-dark">GRAND TOTAL:</span>
+                        <span class="text-5xl font-extrabold text-accent">$${formattedTotal}</span>
+                    </div>
+                    
+                    ${notesSectionHTML}
+
+                    <!-- Authorization Section -->
+                    <div class="mt-8 pt-6 border-t border-gray-200">
+                        <h3 class="text-xl font-bold text-primary-dark mb-4">Client Authorization & Terms</h3>
+                        <div class="p-4 mb-10 text-sm text-gray-700 rounded-lg receipt-disclaimer-box border">
+                            ${disclaimerText}
+                        </div>
+                        <div class="space-y-8 text-base">
+                            <div class="grid grid-cols-3 gap-x-12">
+                                <div class="col-span-2 pb-1">
+                                    <div class="border-b border-gray-500 mb-1 h-8"></div>
+                                    <span class="text-gray-600">Signature</span>
+                                </div>
+                                <div class="pb-1">
+                                    <div class="border-b border-gray-500 mb-1 h-8"></div>
+                                    <span class="text-gray-600">Date</span>
+                                </div>
+                            </div>
+                            <div class="pb-1 mt-[-10px]">
+                                <div class="border-b border-gray-300 mb-1 h-5"></div>
+                                <span class="text-gray-600 text-sm italic">Printed Name</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="mt-10 text-center text-sm text-gray-600 border-t pt-4">This quote is subject to the terms and conditions outlined above.</p>
+                </div>
+            `;
+            receiptContainer.innerHTML = receiptHTML;
+        };
+
+
+        // --- Initialization and Event Listeners ---
 
         document.addEventListener('DOMContentLoaded', () => {
-
-            // Select all necessary inputs (both number inputs, checkboxes, select, and details)
-
-            const inputElements = document.querySelectorAll('#app-input input[type="number"], #app-input input[type="checkbox"], #app-input select, #job-details input, #job-details textarea, #input-misc-description'); 
-
-            
-
-            // Output elements
-
-            const totalCostEl = document.getElementById('total-cost');
-
-            const summaryList = document.getElementById('summary-list');
-
-            const printBtn = document.getElementById('print-quote-btn');
-
-            const jobDateInput = document.getElementById('job-date'); 
-
-            const receiptContainer = document.getElementById('print-receipt');
-
-            const matchFeeStatusEl = document.getElementById('match-fee-status');
-
-            // --- Price Constants ---
-
-            const PRICES = {
-
-                // Linear Foot Items
-
-                base: parseFloat(document.getElementById('price-base').value),
-
-                halfShelf: parseFloat(document.getElementById('price-half-shelf').value),
-
-                baseInstall: parseFloat(document.getElementById('price-base-install').value),
-
-                fullHeight: parseFloat(document.getElementById('price-full-height').value),
-
-                fullShelf: parseFloat(document.getElementById('price-full-shelf').value),
-
-                fullHeightInstall: parseFloat(document.getElementById('price-full-height-install').value),
-
-                baseEuropean: parseFloat(document.getElementById('price-base-european').value),
-
-                baseEuropeanInstall: parseFloat(document.getElementById('price-base-european-install').value),
-
-                fullHeightEuropean: parseFloat(document.getElementById('price-full-height-european').value),
-
-                fullHeightEuropeanInstall: parseFloat(document.getElementById('price-full-height-european-install').value),
-
-                
-
-                // Piece Items
-
-                baseSkins: parseFloat(document.getElementById('price-base-skins').value),
-
-                fullSkins: parseFloat(document.getElementById('price-full-skins').value),
-
-                toekick: parseFloat(document.getElementById('price-toekick').value),
-
-                scribe: parseFloat(document.getElementById('price-scribe').value),
-
-                fillers: parseFloat(document.getElementById('price-fillers').value),
-
-                
-
-                // Flat Fee
-
-                matchFee: parseFloat(document.getElementById('price-match-fee').value), // $150 per service
-
-            };
-
-            // --- Initialization ---
-
-            // Set today's date automatically if not already set
-
+            // Set today's date automatically
             const today = new Date();
-
             const yyyy = today.getFullYear();
-
             const mm = String(today.getMonth() + 1).padStart(2, '0');
-
             const dd = String(today.getDate()).padStart(2, '0');
-
-            if (!jobDateInput.value) {
-
-                jobDateInput.value = `${yyyy}-${mm}-${dd}`;
-
-            }
-
-            // Set initial state for summary and button
-
-            summaryList.innerHTML = '<li class="text-center italic text-gray-400">Enter quantities to see the breakdown.</li>';
-
-            printBtn.classList.add('opacity-50', 'cursor-not-allowed');
-
-            printBtn.disabled = true;
-
-            // --- Calculation & Receipt Generation Logic ---
-
-            /**
-
-             * Safely retrieves and converts an input value to a number.
-
-             * Defaults to 0 if the input is empty or non-numeric.
-
-             */
-
-            const getValue = (id) => {
-
-                const el = document.getElementById(id);
-
-                if (el.type === 'checkbox') {
-
-                    return el.checked ? 1 : 0; // Return 1 if checked, 0 if not
-
-                }
-
-                const value = +el.value; // Unary plus converts string to number
-
-                return isNaN(value) ? 0 : value;
-
-            };
-
-            const generatePrintReceipt = (formattedTotal, breakdownData) => {
-
-                // Get job details for the receipt
-
-                const jobName = document.getElementById('job-name').value || 'N/A';
-
-                const companyName = document.getElementById('company-name').value || 'N/A';
-
-                const projectManager = document.getElementById('project-manager').value || 'N/A';
-
-                const phoneNumber = document.getElementById('phone-number').value || 'N/A';
-
-                const jobAddress = document.getElementById('job-address').value || 'N/A';
-
-                const jobDate = jobDateInput.value;
-
-                const jobNotes = document.getElementById('job-notes').value || 'None.';
-
-                
-
-                const selectedMaterial = document.getElementById('select-material').value || 'Not Specified';
-
-                
-
-                const isStainChecked = document.getElementById('checkbox-stain-match').checked;
-
-                const isPaintChecked = document.getElementById('checkbox-paint-match').checked;
-
-                const isLacquerChecked = document.getElementById('checkbox-lacquer-match').checked;
-
-                
-
-                let matchTypeDisplay = 'None Requested';
-
-                let matchTypeList = [];
-
-                if (isStainChecked) matchTypeList.push('Stain');
-
-                if (isPaintChecked) matchTypeList.push('Paint');
-
-                if (isLacquerChecked) matchTypeList.push('Lacquer');
-
-                if (matchTypeList.length > 0) {
-
-                    matchTypeDisplay = matchTypeList.join(' & ');
-
-                }
-
-                // Authorization and Terms text provided by user
-
-                const disclaimerText = `In order to complete your cabinet order, it is necessary to have a written authorization from you. Please note, material finishes may vary once installed from finish samples used to make the material selections. Cabinetry may appear distinct from finish samples due to; but not limited to lighting surrounding contrasting furnishings and natural flaws in the wood grain. Also note: Depending on the type and size of the faceframe repair, there may be variations in: grain, color, sheen, and grunge when compared the original material. Once materials selection is made by you and the order is placed, it cannot be changed: Also completion of work is subject to current lead-times of materials, which may include, but not limited to; back order and/or transportation.`;
-
-                // Company Header Information 
-
-                const companyHeaderHTML = `
-
-                    <div class="text-center mb-8 border-b pb-4 border-gray-300">
-
-                        <h1 class="text-3xl font-bold text-primary-dark">Neff Enterprises Inc.</h1>
-
-                        <p class="text-lg text-gray-700">P.O. Box 2522</p>
-
-                        <p class="text-lg text-gray-700">Gilbert, AZ 85299-2522</p>
-
-                        <p class="text-lg text-gray-700 mt-2">ROC 120032</p>
-
-                        <p class="text-lg text-gray-700">480-688-7978</p>
-
-                    </div>
-
-                `;
-
-                
-
-                // Job Notes Section
-
-                const notesSectionHTML = jobNotes !== 'None.' ? `
-
-                    <!-- Job Notes Section -->
-
-                    <div class="mt-8 mb-8 p-4 rounded-lg border border-gray-300 bg-gray-50 receipt-info-box">
-
-                        <h2 class="text-xl font-semibold text-primary-dark mb-2">Job Notes</h2>
-
-                        <p class="whitespace-pre-wrap text-base text-gray-800">${jobNotes}</p>
-
-                    </div>
-
-                ` : '';
-
-                let receiptHTML = `
-
-                    <div class="p-8 bg-white max-w-3xl mx-auto">
-
-                        
-
-                        ${companyHeaderHTML}
-
-                        <!-- UPDATED TITLE -->
-
-                        <h1 class="text-4xl font-extrabold text-primary-dark mb-4 text-center receipt-section-header">QUOTE</h1>
-
-                        
-
-                        <!-- Job Info for Receipt (Material Selection Moved Here) -->
-
-                        <div class="mb-8 p-4 rounded-lg border receipt-info-box">
-
-                            <h2 class="text-2xl font-semibold text-accent mb-3">Client / Job Details</h2>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-base">
-
-                                <div><strong class="text-gray-700">Job Name / Job Number:</strong> ${jobName}</div>
-
-                                <div><strong class="text-gray-700">Company:</strong> ${companyName}</div>
-
-                                <div><strong class="text-gray-700">Project Manager:</strong> ${projectManager}</div>
-
-                                <div><strong class="text-gray-700">Phone:</strong> ${phoneNumber}</div>
-
-                                <div><strong class="text-gray-700">Date:</strong> ${jobDate}</div>
-
-                                <div><strong class="text-gray-700">Material Species:</strong> ${selectedMaterial}</div>
-
-                                <div><strong class="text-gray-700">Finish Match:</strong> ${matchTypeDisplay}</div>
-
-                                <div class="sm:col-span-2"><strong class="text-gray-700">Address:</strong> ${jobAddress}</div>
-
-                            </div>
-
-                        </div>
-
-                        <!-- Cost Breakdown for Receipt - Formatting Updated -->
-
-                        <h2 class="text-2xl font-semibold text-primary-dark mb-4 receipt-section-header">Itemized Cost Breakdown</h2>
-
-                        <ul class="space-y-3 text-lg mb-12">
-
-                            ${breakdownData.map(item => {
-
-                                // Add description text for custom items if present
-
-                                const descriptionHtml = item.description ? `<p class="text-sm text-gray-500 italic mt-1 ml-4 whitespace-pre-wrap">${item.description}</p>` : '';
-
-                                
-
-                                return `
-
-                                    <li class="border-b border-gray-200 pb-2 mb-2">
-
-                                        <div class="flex">
-
-                                            <span class="flex-1 text-gray-600">${item.name}</span>
-
-                                            <!-- Middle Column: Fixed width and right-aligned for better spacing -->
-
-                                            ${item.unit 
-
-                                                ? `<span class="w-40 text-primary-dark font-medium text-right">${item.qty} ${item.unit} @ $${item.rate.toFixed(2)}</span>` 
-
-                                                : (item.qty > 1 
-
-                                                    ? `<span class="w-40 text-primary-dark font-medium text-right">${item.qty} PCs</span>` 
-
-                                                    : `<span class="w-40 text-primary-dark font-medium italic text-right">Flat Rate</span>`)
-
-                                            }
-
-                                            <!-- Last Column: Fixed width and right-aligned -->
-
-                                            <span class="w-24 font-bold text-gray-900 text-right ml-4">$${item.cost.toFixed(2)}</span>
-
-                                        </div>
-
-                                        ${descriptionHtml} 
-
-                                    </li>
-
-                                `;
-
-                            }).join('')}
-
-                        </ul>
-
-                        <!-- Total for Receipt -->
-
-                        <div class="flex justify-between items-center bg-accent/20 p-6 rounded-xl border-2 border-accent receipt-total-bar mb-12">
-
-                            <span class="text-2xl font-bold text-primary-dark">GRAND TOTAL:</span>
-
-                            <span class="text-5xl font-extrabold text-accent">$${formattedTotal}</span>
-
-                        </div>
-
-                        
-
-                        ${notesSectionHTML}
-
-                        <!-- Authorization Section (Simplified) -->
-
-                        <div class="mt-8 pt-6 border-t border-gray-200">
-
-                            <h3 class="text-xl font-bold text-primary-dark mb-4">Client Authorization & Terms</h3>
-
-                            
-
-                            <!-- Disclaimer Text Box -->
-
-                            <div class="p-4 mb-10 text-sm text-gray-700 rounded-lg receipt-disclaimer-box border">
-
-                                ${disclaimerText}
-
-                            </div>
-
-                            
-
-                            <!-- Signature Lines -->
-
-                            <div class="space-y-8 text-base">
-
-                                
-
-                                <!-- Signature and Date Line -->
-
-                                <div class="grid grid-cols-3 gap-x-12">
-
-                                    <div class="col-span-2 pb-1">
-
-                                        <div class="border-b border-gray-500 mb-1 h-8"></div>
-
-                                        <span class="text-gray-600">Signature</span>
-
-                                    </div>
-
-                                    <div class="pb-1">
-
-                                        <div class="border-b border-gray-500 mb-1 h-8"></div>
-
-                                        <span class="text-gray-600">Date</span>
-
-                                    </div>
-
-                                </div>
-
-                                <!-- Printed Name Line -->
-
-                                <div class="pb-1 mt-[-10px]">
-
-                                    <div class="border-b border-gray-300 mb-1 h-5"></div>
-
-                                    <span class="text-gray-600 text-sm italic">Printed Name</span>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <p class="mt-10 text-center text-sm text-gray-600 border-t pt-4">This quote is subject to the terms and conditions outlined above.</p>
-
-                    </div>
-
-                `;
-
-                receiptContainer.innerHTML = receiptHTML;
-
-            };
-
-            const calculateTotal = () => {
-
-                let total = 0;
-
-                let breakdown = [];
-
-                // --- Helper function for adding itemized costs ---
-
-                const addItem = (id, name, rateId, unit) => {
-
-                    const qty = getValue(id);
-
-                    if (qty > 0) {
-
-                        const rate = PRICES[rateId];
-
-                        const cost = qty * rate;
-
-                        total += cost;
-
-                        breakdown.push({ name: name, cost: cost, qty: qty, unit: unit, rate: rate });
-
-                    }
-
-                };
-
-                // --- 1. Linear Foot Items (ft) ---
-
-                addItem('input-base', 'Base', 'base', 'ft');
-
-                addItem('input-half-shelf', 'Half-Depth Shelving', 'halfShelf', 'ft');
-
-                addItem('input-base-install', 'Base with Install', 'baseInstall', 'ft');
-
-                addItem('input-full-height', 'Full Height', 'fullHeight', 'ft');
-
-                addItem('input-full-shelf', 'Full-Depth Shelving', 'fullShelf', 'ft');
-
-                addItem('input-full-height-install', 'Full Height with Install', 'fullHeightInstall', 'ft');
-
-                
-
-                // European Style (Faceless)
-
-                addItem('input-base-european', 'Base European (Faceless)', 'baseEuropean', 'ft');
-
-                addItem('input-base-european-install', 'Base European w/ Install (Faceless)', 'baseEuropeanInstall', 'ft');
-
-                addItem('input-full-height-european', 'Full Height European (Faceless)', 'fullHeightEuropean', 'ft');
-
-                addItem('input-full-height-european-install', 'Full Height European w/ Install (Faceless)', 'fullHeightEuropeanInstall', 'ft');
-
-                // --- 2. Piece Items (PC) ---
-
-                addItem('input-base-skins', 'Base/Wall Skins', 'baseSkins', 'PC');
-
-                addItem('input-full-skins', 'Full Height Skin / Back Panel', 'fullSkins', 'PC');
-
-                addItem('input-toekick', 'Toekick (8ft)', 'toekick', 'PC');
-
-                addItem('input-scribe', 'Scribe (8ft)', 'scribe', 'PC');
-
-                addItem('input-fillers', 'Fillers', 'fillers', 'PC');
-
-                
-
-                // --- 3. Match Fee (Checkbox) ---
-
-                const isStainChecked = document.getElementById('checkbox-stain-match').checked;
-
-                const isPaintChecked = document.getElementById('checkbox-paint-match').checked;
-
-                const isLacquerChecked = document.getElementById('checkbox-lacquer-match').checked;
-
-                // Calculate the number of matching services selected (1 per checked box)
-
-                let matchCount = 0;
-
-                if (isStainChecked) matchCount += 1;
-
-                if (isPaintChecked) matchCount += 1;
-
-                if (isLacquerChecked) matchCount += 1;
-
-                matchFeeStatusEl.classList.add('hidden');
-
-                if (matchCount > 0) {
-
-                    const ratePerService = PRICES.matchFee; // $150
-
-                    const matchCost = matchCount * ratePerService;
-
-                    total += matchCost;
-
-                    
-
-                    let matchType = [];
-
-                    if (isStainChecked) matchType.push('Stain');
-
-                    if (isPaintChecked) matchType.push('Paint');
-
-                    if (isLacquerChecked) matchType.push('Lacquer');
-
-                    const matchName = `Color/Finish Match Fee (${matchType.join(' & ')})`;
-
-                    breakdown.push({ 
-
-                        name: matchName, 
-
-                        cost: matchCost, 
-
-                        qty: matchCount, 
-
-                        unit: 'service(s)', // Using 'service(s)' as the unit for clarity
-
-                        rate: ratePerService 
-
-                    });
-
-                    
-
-                    // Update status message with the calculated total match fee
-
-                    matchFeeStatusEl.textContent = `$${matchCost.toFixed(2)} Match Fee Applied`;
-
-                    matchFeeStatusEl.classList.remove('hidden');
-
-                }
-
-                // --- 4. Custom Flat Rate Items ---
-
-                
-
-                // Faceframe Repair
-
-                const faceframeCost = getValue('input-faceframe-repair');
-
-                if (faceframeCost > 0) {
-
-                    total += faceframeCost;
-
-                    breakdown.push({ name: 'Faceframe Repair (Custom)', cost: faceframeCost, qty: 1, unit: null, rate: faceframeCost });
-
-                }
-
-                // Miscellaneous/Customization
-
-                const miscCost = getValue('input-misc-custom');
-
-                // Retrieve description for miscellaneous item
-
-                const miscDescription = document.getElementById('input-misc-description').value.trim(); 
-
-                
-
-                if (miscCost > 0) {
-
-                    total += miscCost;
-
-                    breakdown.push({ 
-
-                        name: 'Miscellaneous/Customization (Custom)', 
-
-                        cost: miscCost, 
-
-                        qty: 1, 
-
-                        unit: null, 
-
-                        rate: miscCost,
-
-                        description: miscDescription // Pass description to breakdown
-
-                    });
-
-                }
-
-                
-
-                // Final Total Formatting
-
-                const formattedTotal = total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-                totalCostEl.textContent = `$${formattedTotal}`;
-
-                // --- Update Summary Breakdown (Screen View) ---
-
-                const activeBreakdown = breakdown.filter(item => item.cost > 0);
-
-                
-
-                if (activeBreakdown.length > 0) {
-
-                    summaryList.innerHTML = activeBreakdown
-
-                        .map(item => {
-
-                            let detail = '';
-
-                            if (item.unit && item.unit !== 'service(s)') {
-
-                                detail = `${item.qty} ${item.unit} @ $${item.rate.toFixed(2)}`;
-
-                            } else if (item.unit === 'service(s)') {
-
-                                detail = `${item.qty} ${item.unit} @ $${item.rate.toFixed(2)}`;
-
-                            } else {
-
-                                detail = 'Flat Rate';
-
-                            }
-
-                            
-
-                            // Include description in the screen summary if present
-
-                            let descriptionText = item.description ? `<span class="text-xs italic text-gray-400"> (${item.description.substring(0, 30)}...)</span>` : '';
-
-                                
-
-                            return `
-
-                                <li class="flex justify-between">
-
-                                    <span class="text-gray-700">${item.name} (${detail}) ${descriptionText}</span>
-
-                                    <span class="font-medium text-gray-800">$${item.cost.toFixed(2)}</span>
-
-                                </li>
-
-                            `;
-
-                        })
-
-                        .join('');
-
-                } else {
-
-                    summaryList.innerHTML = '<li class="text-center italic text-gray-400">Enter quantities to see the breakdown.</li>';
-
-                }
-
-                // Enable/disable print button and generate receipt
-
-                if (total > 0) {
-
-                    printBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-
-                    printBtn.disabled = false;
-
-                    generatePrintReceipt(formattedTotal, activeBreakdown);
-
-                } else {
-
-                    printBtn.classList.add('opacity-50', 'cursor-not-allowed');
-
-                    printBtn.disabled = true;
-
-                    receiptContainer.innerHTML = ''; // Clear receipt if total is zero
-
-                }
-
-            };
-
+            jobDateInput.value = `${yyyy}-${mm}-${dd}`;
             
-
-            // --- Event Listeners ---
-
             // Attach event listeners to all relevant inputs for real-time calculation
-
-            // The added textarea (#input-misc-description) is included in the inputElements query
-
             inputElements.forEach(input => {
-
-                // Listen to 'input' for number/text fields and 'change' for select/checkbox
-
                 input.addEventListener(input.type === 'checkbox' || input.tagName === 'SELECT' ? 'change' : 'input', calculateTotal); 
-
             });
 
-            // Add print functionality
-
+            // Add button functionality
             printBtn.addEventListener('click', () => {
-
-                if (printBtn.disabled) {
-
-                    // Provide visual feedback for disabled print button
-
-                    totalCostEl.textContent = "($0.00 - Add items first)";
-
-                    setTimeout(() => calculateTotal(), 2000); // Revert after 2 seconds
-
-                } else {
-
-                    // This calls the browser's print function, which uses the @media print CSS to hide #app-input and show #print-receipt
-
-                    window.print();
-
-                }
-
+                if (!printBtn.disabled) window.print();
             });
 
-            // Run calculation once on load to initialize the total and receipt content
-
+            // Initial calculation to set the total/summary state
             calculateTotal();
-
         });
-
     </script>
-
 </body>
-
 </html>
