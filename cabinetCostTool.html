@@ -18,7 +18,7 @@
                         'accent': '#059669', // Vibrant Emerald Green
                         'nav-dark': '#171725', // Deep Charcoal/Navy (NavBar background)
                         'nav-text': '#f3f4f6', // Light gray/White for navbar text
-                        'active-yellow': '#f59e0b', // UPDATED: Specific yellow/gold color from screenshot (f59e0b)
+                        'active-yellow': '#f59e0b', // Specific yellow/gold color (f59e0b)
                     }
                 }
             }
@@ -52,7 +52,7 @@
         /* --- PRINT STYLES for PDF Receipt --- */
         @media print {
             /* Hide the input form and print controls when printing */
-            #app-input, #print-controls, #top-nav {
+            #app-input, #print-controls, #top-nav, #mobile-menu {
                 display: none !important;
             }
             body { 
@@ -108,14 +108,14 @@
     <header id="top-nav" class="fixed top-0 left-0 right-0 z-50 bg-nav-dark shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo/Brand Link (Uses light text color to match screenshot contrast) -->
+                <!-- Logo/Brand Link -->
                 <div class="flex-shrink-0">
                     <a href="index.html" class="text-2xl font-bold text-nav-text hover:text-accent transition duration-150">
                         Neff Enterprises
                     </a>
                 </div>
 
-                <!-- Navigation Links (Hidden on small screens, shown as menu button) -->
+                <!-- Desktop Navigation Links (Hidden on small screens) -->
                 <nav class="hidden md:flex space-x-6 items-center">
                     <a href="resources.html" class="text-nav-text hover:text-accent font-medium transition duration-150 p-2 rounded-lg">
                         Resources
@@ -123,20 +123,36 @@
                     <a href="newCabinets.html" class="text-nav-text hover:text-accent font-medium transition duration-150 p-2 rounded-lg">
                         New Cabinets
                     </a>
-                    <!-- Active Link Styling (Now uses the specific #f59e0b color) -->
+                    <!-- Active Link Styling -->
                     <a href="cabinetCostTool.html" class="bg-active-yellow text-nav-dark font-bold px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition duration-150">
                         Rebuild Price Calculator
                     </a>
                 </nav>
 
-                <!-- Mobile Menu Button (Optional, not implemented for simplicity) -->
-                <div class="md:hidden">
-                    <button class="text-nav-text p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent">
-                        <!-- Menu Icon (e.g., Lucide icon if available, using simple text here) -->
-                        MENU
+                <!-- Mobile Menu Button (Visible on small screens) -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-nav-text p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent border border-gray-600">
+                        <!-- Hamburger Icon (Inline SVG to match screenshot) -->
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
                     </button>
                 </div>
             </div>
+        </div>
+        
+        <!-- Mobile Menu Dropdown (Hidden by default, toggled by JS) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-nav-dark pb-4 px-2 space-y-1 sm:px-3 border-t border-gray-700">
+            <a href="resources.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-accent transition duration-150">
+                Resources
+            </a>
+            <a href="newCabinets.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-accent transition duration-150">
+                New Cabinets
+            </a>
+            <!-- Active Link Styling for Mobile -->
+            <a href="cabinetCostTool.html" class="block px-3 py-2 rounded-md text-base font-bold bg-active-yellow text-nav-dark shadow-md">
+                Rebuild Price Calculator
+            </a>
         </div>
     </header>
 
@@ -447,6 +463,21 @@
 
 
     <script>
+        // --- Mobile Menu Toggle Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const button = document.getElementById('mobile-menu-button');
+            const menu = document.getElementById('mobile-menu');
+
+            if (button && menu) {
+                button.addEventListener('click', () => {
+                    menu.classList.toggle('hidden');
+                    // Optional: Change icon when menu is open/closed
+                    // We'll keep the same icon for simplicity here, but can be updated with more complex SVGs
+                });
+            }
+        });
+
+
         // --- DOM Elements ---
         const inputElements = document.querySelectorAll('#app-input input, #app-input select, #app-input textarea');
         const totalCostEl = document.getElementById('total-cost');
