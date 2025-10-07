@@ -27,6 +27,7 @@
     <style>
         /* Custom styles for better mobile experience and printing */
         body {
+            font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
             /* Ensure padding at the top to clear the fixed navigation bar */
             padding-top: 64px; 
@@ -172,23 +173,23 @@
             
             <!-- Job Details Container -->
             <div id="job-details" class="space-y-4 mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <h2 class="text-xl font-semibold text-primary-dark border-b pb-2 text-accent">Client / Job Information</h2>
+                <h2 class="text-xl font-semibold text-primary-dark border-b pb-2 text-accent">Job Details</h2>
                 
                 <div class="job-input">
-                    <label for="job-name" class="block text-sm font-medium text-gray-700">Client Name / Job Identifier</label>
-                    <input type="text" id="job-name" placeholder="E.g., Smith Kitchen / Jane Smith" 
+                    <label for="job-name" class="block text-sm font-medium text-gray-700">Job Name/Number</label>
+                    <input type="text" id="job-name" placeholder="E.g., 2024-001 or Jane Smith" 
                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
                 </div>
                 
                 <div class="job-input">
-                    <label for="job-address" class="block text-sm font-medium text-gray-700">Project Location (Address for Quote)</label>
+                    <label for="job-address" class="block text-sm font-medium text-gray-700">Address</label>
                     <input type="text" id="job-address" placeholder="123 Main St, Anytown, USA" 
                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
                 </div>
 
                 <div class="job-input grid grid-cols-2 gap-4">
                     <div>
-                        <label for="client-phone" class="block text-sm font-medium text-gray-700">Client Phone Number (Optional)</label>
+                        <label for="client-phone" class="block text-sm font-medium text-gray-700">Project Manager's Phone</label>
                         <input type="tel" id="client-phone" placeholder="(555) 555-5555" 
                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
                     </div>
@@ -206,17 +207,19 @@
                 </div>
             </div>
 
-            <!-- Hidden Price Constants -->
+            <!-- Hidden Price Constants - UPDATED FOR EUROPEAN STYLE -->
             <input type="hidden" id="price-base" value="90">
             <input type="hidden" id="price-half-shelf" value="18">
             <input type="hidden" id="price-base-install" value="155">
             <input type="hidden" id="price-full-height" value="180">
             <input type="hidden" id="price-full-shelf" value="36">
             <input type="hidden" id="price-full-height-install" value="310">
+            <!-- NEW/UPDATED EUROPEAN PRICES -->
             <input type="hidden" id="price-base-european" value="195">
             <input type="hidden" id="price-base-european-install" value="280">
             <input type="hidden" id="price-full-height-european" value="285">
             <input type="hidden" id="price-full-height-european-install" value="435">
+            
             <input type="hidden" id="price-base-skins" value="85">
             <input type="hidden" id="price-full-skins" value="170">
             <input type="hidden" id="price-toekick" value="30">
@@ -228,11 +231,12 @@
             <!-- Input Fields Container -->
             <div class="space-y-6 mb-8">
                 
-                <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Standard Faceframe Rebuilds (ft)</h2>
+                <!-- SECTION HEADER -->
+                <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Cabinetry & Shelving</h2>
 
-                <!-- Base $90/ft -->
+                <!-- 1. Base $90/ft -->
                 <div class="input-group">
-                    <label for="input-base" class="block text-lg font-medium text-gray-700 mb-1">Base Lineal Feet</label>
+                    <label for="input-base" class="block text-lg font-medium text-gray-700 mb-1">Base</label>
                     <div class="flex items-center">
                         <input type="number" id="input-base" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
@@ -242,76 +246,9 @@
                     </div>
                 </div>
 
-                <!-- Base with Install $155/ft -->
+                <!-- 2. Half-Depth Shelving $18/ft (MOVED UP) -->
                 <div class="input-group">
-                    <label for="input-base-install" class="block text-lg font-medium text-gray-700 mb-1">Base with Installation (Lineal Feet)</label>
-                    <div class="flex items-center">
-                        <input type="number" id="input-base-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
-                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                            $155 / ft
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Full Height $180/ft -->
-                <div class="input-group">
-                    <label for="input-full-height" class="block text-lg font-medium text-gray-700 mb-1">Full Height Lineal Feet</label>
-                    <div class="flex items-center">
-                        <input type="number" id="input-full-height" data-unit="ft" placeholder="0.0" min="0" step="0.5"
-                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                            $180 / ft
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Full Height with Install $310/ft -->
-                <div class="input-group">
-                    <label for="input-full-height-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height with Installation (Lineal Feet)</label>
-                    <div class="flex items-center">
-                        <input type="number" id="input-full-height-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
-                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                            $310 / ft
-                        </span>
-                    </div>
-                </div>
-
-                <!-- European Style (Faceless) -->
-                <div class="border-t border-gray-200 pt-4">
-                    <h3 class="text-xl font-bold text-accent mb-3">European Style (Faceless)</h3>
-                </div>
-
-                <!-- Base European $195/ft -->
-                <div class="input-group">
-                    <label for="input-base-european" class="block text-lg font-medium text-gray-700 mb-1">Base European Lineal Feet</label>
-                    <div class="flex items-center">
-                        <input type="number" id="input-base-european" data-unit="ft" placeholder="0.0" min="0" step="0.5"
-                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                            $195 / ft
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Full Height European with Install $435/ft -->
-                <div class="input-group">
-                    <label for="input-full-height-european-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height European w/ Install (Lineal Feet)</label>
-                    <div class="flex items-center">
-                        <input type="number" id="input-full-height-european-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
-                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                            $435 / ft
-                        </span>
-                    </div>
-                </div>
-                
-                <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Material Pieces & Accessories</h2>
-                
-                <!-- Half-Depth Shelving $18/ft -->
-                <div class="input-group">
-                    <label for="input-half-shelf" class="block text-lg font-medium text-gray-700 mb-1">Half-Depth Shelving (Lineal Feet)</label>
+                    <label for="input-half-shelf" class="block text-lg font-medium text-gray-700 mb-1">Half-Depth Shelving</label>
                     <div class="flex items-center">
                         <input type="number" id="input-half-shelf" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
@@ -321,9 +258,33 @@
                     </div>
                 </div>
 
-                <!-- Full-Depth Shelving $36/ft -->
+                <!-- 3. Base with Install $155/ft -->
                 <div class="input-group">
-                    <label for="input-full-shelf" class="block text-lg font-medium text-gray-700 mb-1">Full-Depth Shelving (Lineal Feet)</label>
+                    <label for="input-base-install" class="block text-lg font-medium text-gray-700 mb-1">Base with Installation</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-base-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $155 / ft
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 4. Full Height $180/ft -->
+                <div class="input-group">
+                    <label for="input-full-height" class="block text-lg font-medium text-gray-700 mb-1">Full Height</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-full-height" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $180 / ft
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 5. Full-Depth Shelving $36/ft (MOVED UP) -->
+                <div class="input-group">
+                    <label for="input-full-shelf" class="block text-lg font-medium text-gray-700 mb-1">Full-Depth Shelving</label>
                     <div class="flex items-center">
                         <input type="number" id="input-full-shelf" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
@@ -333,6 +294,74 @@
                     </div>
                 </div>
 
+                <!-- 6. Full Height with Install $310/ft -->
+                <div class="input-group">
+                    <label for="input-full-height-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height with Installation</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-full-height-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $310 / ft
+                        </span>
+                    </div>
+                </div>
+
+                <!-- European Style (Faceless) (REMAINS SEPARATE) -->
+                <div class="border-t border-gray-200 pt-4">
+                    <h3 class="text-xl font-bold text-accent mb-3">European Style (Faceless)</h3>
+                </div>
+
+                <!-- Base European $195/ft -->
+                <div class="input-group">
+                    <label for="input-base-european" class="block text-lg font-medium text-gray-700 mb-1">Base European</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-base-european" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $195 / ft
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Base European w/ Install $280/ft -->
+                <div class="input-group">
+                    <label for="input-base-european-install" class="block text-lg font-medium text-gray-700 mb-1">Base European w/ Install</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-base-european-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $280 / ft
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Full Height European $285/ft -->
+                <div class="input-group">
+                    <label for="input-full-height-european" class="block text-lg font-medium text-gray-700 mb-1">Full Height European</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-full-height-european" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $285 / ft
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Full Height European w/ Install $435/ft -->
+                <div class="input-group">
+                    <label for="input-full-height-european-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height European w/ Install</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-full-height-european-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $435 / ft
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- NEW SECTION HEADER FOR PIECE ITEMS -->
+                <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Hardware & Accessory Pieces (Each)</h2>
+                
                 <!-- Base/Wall Skins $85/pc -->
                 <div class="input-group">
                     <label for="input-base-skins" class="block text-lg font-medium text-gray-700 mb-1">Base/Wall Skins (Pieces)</label>
@@ -493,7 +522,9 @@
         // --- Price Constants (Same as hidden inputs) ---
         const PRICES = {
             base: 90, halfShelf: 18, baseInstall: 155, fullHeight: 180, fullShelf: 36, fullHeightInstall: 310,
+            // UPDATED EUROPEAN PRICES
             baseEuropean: 195, baseEuropeanInstall: 280, fullHeightEuropean: 285, fullHeightEuropeanInstall: 435,
+            
             baseSkins: 85, fullSkins: 170, toekick: 30, scribe: 35, fillers: 50, matchFee: 150
         };
 
@@ -531,16 +562,20 @@
             };
 
             // 1. Lineal Foot Items (ft)
-            addItem('input-base', 'Base (Rebuild)', 'base', 'ft');
-            addItem('input-base-install', 'Base w/ Installation', 'baseInstall', 'ft');
-            addItem('input-full-height', 'Full Height (Rebuild)', 'fullHeight', 'ft');
-            addItem('input-full-height-install', 'Full Height w/ Installation', 'fullHeightInstall', 'ft');
-            addItem('input-base-european', 'Base European (Faceless)', 'baseEuropean', 'ft');
-            addItem('input-full-height-european-install', 'Full Height European w/ Install', 'fullHeightEuropeanInstall', 'ft');
+            addItem('input-base', 'Base (Rebuild)', 'base', 'ft'); 
+            addItem('input-half-shelf', 'Half-Depth Shelving', 'halfShelf', 'ft'); 
+            addItem('input-base-install', 'Base w/ Installation', 'baseInstall', 'ft'); 
+            addItem('input-full-height', 'Full Height (Rebuild)', 'fullHeight', 'ft'); 
+            addItem('input-full-shelf', 'Full-Depth Shelving', 'fullShelf', 'ft'); 
+            addItem('input-full-height-install', 'Full Height w/ Installation', 'fullHeightInstall', 'ft'); 
             
-            // 2. Accessories/Piece Items
-            addItem('input-half-shelf', 'Half-Depth Shelving', 'halfShelf', 'ft');
-            addItem('input-full-shelf', 'Full-Depth Shelving', 'fullShelf', 'ft');
+            // European Styles (ALL FOUR NEW ENTRIES)
+            addItem('input-base-european', 'Base European (Faceless)', 'baseEuropean', 'ft');
+            addItem('input-base-european-install', 'Base European w/ Install', 'baseEuropeanInstall', 'ft'); // New
+            addItem('input-full-height-european', 'Full Height European (Faceless)', 'fullHeightEuropean', 'ft'); // New
+            addItem('input-full-height-european-install', 'Full Height European w/ Install', 'fullHeightEuropeanInstall', 'ft'); 
+
+            // 2. Accessories/Piece Items 
             addItem('input-base-skins', 'Base/Wall Skins', 'baseSkins', 'PC');
             addItem('input-full-skins', 'Full Height Skin / Back Panel', 'fullSkins', 'PC');
             addItem('input-toekick', 'Toekick (8ft)', 'toekick', 'PC');
@@ -630,7 +665,7 @@
                 matchTypeDisplay = matchTypeList.join(' & ');
             }
 
-            const disclaimerText = `In order to complete your cabinet order, it is necessary to have a written authorization from you. Please note, material finishes may vary once installed from finish samples used to make the material selections. Cabinetry may appear distinct from finish samples due to; but not limited to lighting surrounding contrasting furnishings and natural flaws in the wood grain. Also note: Depending on the type and size of the faceframe repair, there may be variations in: grain, color, sheen, and grunge when compared the original material. Once materials selection is made by you and the order is placed, it cannot be changed: Also completion of work is subject to current lead-times of materials, which may include, but not limited to; back order and/or transportation.`;
+            const disclaimerText = `In order to complete your cabinet order, it is necessary to have a written authorization from you. Please note, material finishes may vary once installed from finish samples used to make the material selections. Cabinetry may appear distinct from finish samples due to; but not limited to lighting surrounding contrasting furnishings and natural flaws in the wood grain. Cabinetry, especially faceframe repairs, may have variations in: grain, color, sheen, and grunge when compared to the original material. Once materials selection is made by you and the order is placed, it cannot be changed: Also completion of work is subject to current lead-times of materials, which may include, but not limited to; back order and/or transportation.`;
 
             const companyHeaderHTML = `
                 <div class="text-center mb-8 border-b pb-4 border-gray-300">
@@ -657,11 +692,11 @@
                     <div class="mb-8 p-4 rounded-lg border receipt-info-box">
                         <h2 class="text-2xl font-semibold text-accent mb-3">Client / Job Details</h2>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-base">
-                            <div><strong class="text-gray-700">Client Name / Job ID:</strong> ${jobName}</div>
+                            <div><strong class="text-gray-700">Job Name/Number:</strong> ${jobName}</div>
                             <div><strong class="text-gray-700">Quote Date:</strong> ${jobDate}</div>
-                            <div><strong class="text-gray-700">Client Phone:</strong> ${clientPhone}</div>
+                            <div><strong class="text-gray-700">Project Manager's Phone:</strong> ${clientPhone}</div>
                             <div><strong class="text-gray-700">Finish Match:</strong> ${matchTypeDisplay}</div>
-                            <div class="sm:col-span-2"><strong class="text-gray-700">Project Address:</strong> ${jobAddress}</div>
+                            <div class="sm:col-span-2"><strong class="text-gray-700">Address:</strong> ${jobAddress}</div>
                         </div>
                     </div>
 
