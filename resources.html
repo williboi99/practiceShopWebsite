@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Euro Cabinet Cut List Generator</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-dark': '#1f2937', // Gray-800
+                        'accent': '#059669', // Vibrant Emerald Green
+                        'nav-dark': '#171725', // Deep Charcoal/Navy (NavBar background)
+                        'nav-text': '#f3f4f6', // Light gray/White for navbar text
+                        'active-yellow': '#f59e0b', // Specific yellow/gold color (f59e0b) - Used for active Resources and hover state
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for better mobile experience */
+        body {
+            background-color: #f3f4f6;
+            padding-top: 64px; /* Ensure padding at the top to clear the fixed navigation bar */
+        }
+        .card {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="font-sans min-h-screen">
+    
+    <!-- 
+        ================================================================================
+        0. TOP NAVIGATION BAR (Updated for Resources.html)
+        ================================================================================
+    -->
+    <header id="top-nav" class="fixed top-0 left-0 right-0 z-50 bg-nav-dark shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo/Brand Link - HOVER COLOR CHANGED TO active-yellow -->
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-2xl font-bold text-nav-text hover:text-active-yellow transition duration-150">
+                        Neff Enterprises
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation Links (Hidden on small screens) -->
+                <nav class="hidden md:flex space-x-6 items-center">
+                    <!-- Active Link Styling for Resources -->
+                    <a href="resources.html" class="bg-active-yellow text-nav-dark font-bold px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition duration-150">
+                        Resources
+                    </a>
+                    <!-- Non-active links HOVER COLOR CHANGED TO active-yellow -->
+                    <a href="newCabinets.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
+                        New Cabinets
+                    </a>
+                    <a href="cabinetCostTool.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
+                        Rebuild Price Calculator
+                    </a>
+                </nav>
+
+                <!-- Mobile Menu Button (Visible on small screens) -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-nav-text p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent border border-gray-600">
+                        <!-- Hamburger Icon (Inline SVG) -->
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Dropdown (Hidden by default, toggled by JS) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-nav-dark pb-4 px-2 space-y-1 sm:px-3 border-t border-gray-700">
+            <!-- Active Link Styling for Mobile -->
+            <a href="resources.html" class="block px-3 py-2 rounded-md text-base font-bold bg-active-yellow text-nav-dark shadow-md">
+                Resources
+            </a>
+            <!-- Non-active links HOVER COLOR CHANGED TO active-yellow -->
+            <a href="newCabinets.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
+                New Cabinets
+            </a>
+            <a href="cabinetCostTool.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
+                Rebuild Price Calculator
+            </a>
+        </div>
+    </header>
+
+    <!-- 
+        ================================================================================
+        1. CUT LIST INPUT AND OUTPUT AREA 
+        ================================================================================
+    -->
+    <div class="p-4 flex justify-center items-start pt-8">
+        <div class="w-full max-w-4xl bg-white rounded-xl p-6 card">
+            <h1 class="text-3xl font-bold text-primary-dark mb-2 text-center">Euro Cabinet Cut List Generator</h1>
+            <p class="text-center text-gray-500 mb-8">Calculate precise dimensions for your frameless (Euro) cabinet components.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Input Panel -->
+                <div class="space-y-6">
+                    <h2 class="text-xl font-semibold text-accent border-b pb-2">Cabinet Specifications</h2>
+
+                    <!-- Material Thickness Selector -->
+                    <div class="input-group mb-4">
+                        <label for="material-thickness" class="block text-lg font-medium text-gray-700 mb-1">Material Thickness (T)</label>
+                        <select id="material-thickness" class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                            <option value="0.75" selected>3/4" (0.75 in)</option>
+                            <option value="0.625">5/8" (0.625 in)</option>
+                        </select>
+                        <p class="text-sm text-gray-500 mt-1">This is critical for calculating box width reductions.</p>
+                    </div>
+
+                    <!-- Input Fields: Height, Face Height, Depth, Width -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="input-group">
+                            <label for="box-height" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Height (A)</label>
+                            <input type="number" id="box-height" value="34.5" min="0" step="0.01" placeholder="34.5"
+                                   class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                            <p class="text-sm text-gray-500 mt-1">Overall height of the box.</p>
+                        </div>
+                        <div class="input-group">
+                            <label for="face-height" class="block text-lg font-medium text-gray-700 mb-1">Face Height (B)</label>
+                            <input type="number" id="face-height" value="30.5" min="0" step="0.01" placeholder="30.5"
+                                   class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                            <p class="text-sm text-gray-500 mt-1">Height of the face/door/drawer.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="input-group">
+                            <label for="box-depth" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Depth (C)</label>
+                            <input type="number" id="box-depth" value="24.0" min="0" step="0.01" placeholder="24.0"
+                                   class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                            <p class="text-sm text-gray-500 mt-1">Standard 24 or 21 inches.</p>
+                        </div>
+                        <div class="input-group">
+                            <label for="box-width" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Width (D)</label>
+                            <input type="number" id="box-width" value="36.0" min="0" step="0.01" placeholder="36.0"
+                                   class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                            <p class="text-sm text-gray-500 mt-1">Overall width (e.g., 36 inches).</p>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Output Panel -->
+                <div class="space-y-6">
+                    <h2 class="text-xl font-semibold text-accent border-b pb-2">Calculated Cut List</h2>
+                    
+                    <div id="results-container" class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <!-- Sides -->
+                        <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-accent">
+                            <h3 class="text-lg font-bold text-primary-dark">Sides (2x)</h3>
+                            <p class="text-2xl font-extrabold text-accent" id="cut-side-dims">0" x 0"</p>
+                            <p class="text-sm text-gray-600">Height x Depth (A x C)</p>
+                        </div>
+
+                        <!-- Bottom (1x) -->
+                        <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-blue-500">
+                            <h3 class="text-lg font-bold text-primary-dark">Bottom (1x)</h3>
+                            <p class="text-2xl font-extrabold text-blue-500" id="cut-bottom-dims-actual">0" x 0"</p>
+                            <p class="text-sm text-gray-600">Adjusted Width x Deduced Depth ($(D - 2T) \times (C - (T + 1/4"))$)</p>
+                        </div>
+                        
+                        <!-- Stretchers (5x) - Updated count -->
+                        <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-indigo-500">
+                            <h3 class="text-lg font-bold text-primary-dark">Stretchers (5x)</h3>
+                            <p class="text-2xl font-extrabold text-indigo-500" id="cut-stretcher-dims">0" x 0"</p>
+                            <p class="text-sm text-gray-600">Adjusted Width x Assumed Depth (($D - 2T) \times 4")$</p>
+                        </div>
+
+                        <!-- Back Panel -->
+                        <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-red-500">
+                            <h3 class="text-lg font-bold text-primary-dark">Back Panel (1x)</h3>
+                            <p class="text-2xl font-extrabold text-red-500" id="cut-back-dims">0" x 0.00"</p>
+                            <p class="text-sm text-gray-600">Calculated Width (Fraction) x Face Height (Decimal)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 pt-4 border-t border-gray-200">
+                <p class="text-sm text-gray-500 text-center">All dimensions are in inches (in). Width is always listed first, followed by height/depth.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        /**
+         * Helper function to convert decimal inches to a mixed fraction string (e.g., 34.9375 -> "34 15/16").
+         * Rounds to the nearest specified denominator (default 16th of an inch).
+         */
+        const decimalToFraction = (decimal, denominator = 16) => {
+            if (isNaN(decimal)) return "0";
+
+            // Round the value to avoid floating point errors before separating integer/fractional parts
+            decimal = Math.round(decimal * 10000) / 10000;
+
+            const integerPart = Math.floor(decimal);
+            let fractionalPart = decimal - integerPart;
+
+            if (fractionalPart === 0) return integerPart.toString();
+
+            // Multiply the fractional part by the denominator and round to the nearest whole number
+            let numerator = Math.round(fractionalPart * denominator);
+            
+            // Check for rounding up to the next integer
+            if (numerator === denominator) {
+                return (integerPart + 1).toString();
+            }
+
+            // Simplify the fraction (divide both by their greatest common divisor)
+            const gcd = (a, b) => (b ? gcd(b, a % b) : a);
+            const divisor = gcd(numerator, denominator);
+
+            numerator /= divisor;
+            denominator /= divisor;
+
+            let fractionString = `${numerator}/${denominator}`;
+
+            if (integerPart === 0) {
+                return fractionString;
+            } else {
+                return `${integerPart} ${fractionString}`;
+            }
+        };
+
+
+        // --- Core Calculation Logic ---
+        const calculateCutList = () => {
+            // Get raw input values
+            const T_str = document.getElementById('material-thickness').value;
+            
+            const BoxH_raw = parseFloat(document.getElementById('box-height').value); // A (Cabinet Height)
+            const FaceH_raw = parseFloat(document.getElementById('face-height').value); // B (Face/Door Height)
+            
+            const D_raw = parseFloat(document.getElementById('box-depth').value); // C (Depth)
+            const W_raw = parseFloat(document.getElementById('box-width').value); // D (Overall Width)
+
+            const T = parseFloat(T_str); // Thickness: 0.75 or 0.625
+            
+            // Constants for frameless construction
+            const DADO_DEPTH = 0.25; // 1/4" dado depth
+            const STRETCHER_DEPTH = 4.0; // Common 4" deep stretchers
+            const BACK_WIDTH_OFFSET = 0.4375; // 7/16"
+
+            if (isNaN(BoxH_raw) || isNaN(FaceH_raw) || isNaN(D_raw) || isNaN(W_raw) || isNaN(T)) {
+                // Keep the fields at 0.00 if input is invalid
+                updateResult('cut-side-dims', '0', '0');
+                updateResult('cut-bottom-dims-actual', '0', '0'); 
+                updateResult('cut-stretcher-dims', '0', '0'); 
+                updateResult('cut-back-dims', '0', '0.00');
+                return;
+            }
+            
+            // --- 1. Calculate Final Dimensions ---
+            
+            // Sides (2x)
+            // Cut: Height x Depth
+            const side_height = decimalToFraction(BoxH_raw);
+            const side_depth = decimalToFraction(D_raw);
+            
+            // Common Width for Bottom and Stretchers: (Overall Width - 2T)
+            const common_inner_width = W_raw - (2 * T); 
+
+            // --- Bottom Deduction Logic ---
+            // Bottom Depth = Cabinet Depth (C) - Material Thickness (T) - 1/4" (Dado Depth)
+            const bottom_deduction = T + DADO_DEPTH;
+            
+            // Bottom (1x)
+            // Cut: Width (Fractional) x Depth (Fractional)
+            const bottom_width = decimalToFraction(common_inner_width);
+            const bottom_depth_raw = D_raw - bottom_deduction;
+            const bottom_depth = decimalToFraction(bottom_depth_raw); 
+
+            // Stretchers (5x)
+            // Cut: Width (Fractional) x Depth (Fractional, 4.0 assumed)
+            const stretcher_width = decimalToFraction(common_inner_width); 
+            const stretcher_depth = decimalToFraction(STRETCHER_DEPTH); 
+
+            // Back Panel (1x)
+            // Back Panel Width = Bottom/Stretchers Width + 7/16" (0.4375)
+            const back_width_decimal = common_inner_width + BACK_WIDTH_OFFSET; 
+            
+            // Back Panel Height = Face Height (B)
+            const back_height_decimal = FaceH_raw.toFixed(2);
+            
+            // --- 2. Update UI ---
+            
+            updateResult('cut-side-dims', side_height, side_depth);
+            updateResult('cut-bottom-dims-actual', bottom_width, bottom_depth);
+            updateResult('cut-stretcher-dims', stretcher_width, stretcher_depth);
+
+            // Back Panel uses the fractional width string
+            const back_width_fraction = decimalToFraction(back_width_decimal);
+            updateResult('cut-back-dims', back_width_fraction, back_height_decimal);
+        };
+
+        const updateResult = (id, dim1, dim2) => {
+            const el = document.getElementById(id);
+            if (el) {
+                // Dim1 and Dim2 include the decimal or fractional part
+                el.textContent = `${dim1}" x ${dim2}"`;
+            }
+        };
+
+
+        // --- Event Listener Setup ---
+        const inputs = [
+            'material-thickness', 'box-height', 'face-height', 'box-depth', 'box-width'
+        ];
+        
+        // Add listeners to all relevant inputs
+        inputs.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                // Using 'input' for immediate calculation on change
+                el.addEventListener('input', calculateCutList);
+            }
+        });
+
+        // --- Mobile Menu Toggle Logic & Initial Calc ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const button = document.getElementById('mobile-menu-button');
+            const menu = document.getElementById('mobile-menu');
+
+            if (button && menu) {
+                button.addEventListener('click', () => {
+                    menu.classList.toggle('hidden');
+                    // Prevent body scroll when menu is open on mobile
+                    document.body.classList.toggle('overflow-hidden');
+                });
+            }
+            
+            // Initial calculation to populate fields on load
+            calculateCutList();
+        });
+    </script>
+</body>
+</html>
