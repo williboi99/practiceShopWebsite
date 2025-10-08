@@ -95,6 +95,19 @@
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
+            /* Styling for the Rush Fee line item */
+            .is-rush-fee {
+                background-color: #fef2f2 !important; /* Light red */
+                border-left: 4px solid #ef4444; /* Red border */
+                padding-left: 10px !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            /* Force inputs/spans to print prices correctly */
+            .price-display {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
             h1, h2, h3 { color: #1f2937 !important; }
         }
     </style>
@@ -103,26 +116,24 @@
     
     <!-- 
         ================================================================================
-        0. TOP NAVIGATION BAR (Matching Screenshot Colors)
+        0. TOP NAVIGATION BAR
         ================================================================================
     -->
     <header id="top-nav" class="fixed top-0 left-0 right-0 z-50 bg-nav-dark shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo/Brand Link - HOVER COLOR CHANGED TO active-yellow -->
+                <!-- Logo/Brand Link -->
                 <div class="flex-shrink-0">
                     <a href="index.html" class="text-2xl font-bold text-nav-text hover:text-active-yellow transition duration-150">
                         Neff Enterprises
                     </a>
                 </div>
 
-                <!-- Desktop Navigation Links (Hidden on small screens) -->
+                <!-- Desktop Navigation Links -->
                 <nav class="hidden md:flex space-x-6 items-center">
-                    <!-- HOVER COLOR CHANGED TO active-yellow -->
                     <a href="resources.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
                         Resources
                     </a>
-                    <!-- HOVER COLOR CHANGED TO active-yellow -->
                     <a href="newCabinets.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
                         New Cabinets
                     </a>
@@ -132,10 +143,10 @@
                     </a>
                 </nav>
 
-                <!-- Mobile Menu Button (Visible on small screens) -->
+                <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
                     <button id="mobile-menu-button" class="text-nav-text p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent border border-gray-600">
-                        <!-- Hamburger Icon (Inline SVG to match screenshot) -->
+                        <!-- Hamburger Icon -->
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                         </svg>
@@ -144,13 +155,11 @@
             </div>
         </div>
         
-        <!-- Mobile Menu Dropdown (Hidden by default, toggled by JS) -->
+        <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu" class="hidden md:hidden bg-nav-dark pb-4 px-2 space-y-1 sm:px-3 border-t border-gray-700">
-            <!-- HOVER COLOR CHANGED TO active-yellow -->
             <a href="resources.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
                 Resources
             </a>
-            <!-- HOVER COLOR CHANGED TO active-yellow -->
             <a href="newCabinets.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
                 New Cabinets
             </a>
@@ -171,7 +180,7 @@
             <h1 class="text-3xl font-bold text-primary-dark mb-2 text-center">Cabinet Rebuild Quote</h1>
             <p class="text-center text-gray-500 mb-8">Enter details and quantities below to generate your printable quote.</p>
             
-            <!-- Job Details Container -->
+            <!-- Job Details Container (Includes Rushed Checkbox) -->
             <div id="job-details" class="space-y-4 mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
                 <h2 class="text-xl font-semibold text-primary-dark border-b pb-2 text-accent">Job Details</h2>
                 
@@ -205,34 +214,41 @@
                     <textarea id="job-notes" rows="3" placeholder="E.g., Client wants a smooth finish. Job requires lead time of 6 weeks." 
                               class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"></textarea>
                 </div>
+                
+                <div class="job-input pt-4 border-t border-gray-200">
+                    <!-- Rushed Checkbox -->
+                    <div class="flex items-start mb-2">
+                        <input type="checkbox" id="checkbox-rushed" 
+                               class="mt-1 h-5 w-5 text-red-600 border-gray-300 rounded focus:ring-red-500">
+                        <label for="checkbox-rushed" class="ml-3 block text-lg font-bold text-red-600">
+                            RUSHED
+                        </label>
+                    </div>
+                    <p class="text-sm text-red-700 italic font-medium -mt-1 p-2 bg-red-100 rounded-md">
+                        Depending on the condition of the job, we can have it complete within 4 business days at a 50% cost.
+                    </p>
+                </div>
             </div>
-
-            <!-- Hidden Price Constants - UPDATED FOR EUROPEAN STYLE -->
-            <input type="hidden" id="price-base" value="90">
-            <input type="hidden" id="price-half-shelf" value="18">
-            <input type="hidden" id="price-base-install" value="155">
-            <input type="hidden" id="price-full-height" value="180">
-            <input type="hidden" id="price-full-shelf" value="36">
-            <input type="hidden" id="price-full-height-install" value="310">
-            <!-- NEW/UPDATED EUROPEAN PRICES -->
-            <input type="hidden" id="price-base-european" value="195">
-            <input type="hidden" id="price-base-european-install" value="280">
-            <input type="hidden" id="price-full-height-european" value="285">
-            <input type="hidden" id="price-full-height-european-install" value="435">
             
-            <input type="hidden" id="price-base-skins" value="85">
-            <input type="hidden" id="price-full-skins" value="170">
-            <input type="hidden" id="price-toekick" value="30">
-            <input type="hidden" id="price-scribe" value="35">
-            <input type="hidden" id="price-fillers" value="50">
-            <input type="hidden" id="price-match-fee" value="150">
-
-
             <!-- Input Fields Container -->
             <div class="space-y-6 mb-8">
                 
                 <!-- SECTION HEADER -->
                 <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Cabinetry & Shelving</h2>
+
+                <!-- MATERIAL SELECTION DROPDOWN (Now Moved Here) -->
+                <div class="job-input mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <label for="material-select" class="block text-sm font-medium text-gray-700 font-bold">Material Selection</label>
+                    <select id="material-select" onchange="applyMaterialPricing()"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-lg font-semibold bg-white shadow-sm">
+                        <option value="Hardrock Maple">Hardrock Maple</option>
+                        <option value="White">White</option>
+                        <option value="Almond">Almond</option>
+                        <option value="Particle Board">Particle Board</option>
+                        <option value="Plywood">Plywood</option>
+                    </select>
+                </div>
+                <!-- END MATERIAL SELECTION DROPDOWN -->
 
                 <!-- 1. Base $90/ft -->
                 <div class="input-group">
@@ -240,19 +256,19 @@
                     <div class="flex items-center">
                         <input type="number" id="input-base" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                        <span id="display-base" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
                             $90 / ft
                         </span>
                     </div>
                 </div>
 
-                <!-- 2. Half-Depth Shelving $18/ft (MOVED UP) -->
+                <!-- 2. Half-Depth Shelving $18/ft -->
                 <div class="input-group">
                     <label for="input-half-shelf" class="block text-lg font-medium text-gray-700 mb-1">Half-Depth Shelving</label>
                     <div class="flex items-center">
                         <input type="number" id="input-half-shelf" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                        <span id="display-half-shelf" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
                             $18 / ft
                         </span>
                     </div>
@@ -264,7 +280,7 @@
                     <div class="flex items-center">
                         <input type="number" id="input-base-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                        <span id="display-base-install" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
                             $155 / ft
                         </span>
                     </div>
@@ -276,19 +292,19 @@
                     <div class="flex items-center">
                         <input type="number" id="input-full-height" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                        <span id="display-full-height" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
                             $180 / ft
                         </span>
                     </div>
                 </div>
 
-                <!-- 5. Full-Depth Shelving $36/ft (MOVED UP) -->
+                <!-- 5. Full-Depth Shelving $36/ft -->
                 <div class="input-group">
                     <label for="input-full-shelf" class="block text-lg font-medium text-gray-700 mb-1">Full-Depth Shelving</label>
                     <div class="flex items-center">
                         <input type="number" id="input-full-shelf" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                        <span id="display-full-shelf" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
                             $36 / ft
                         </span>
                     </div>
@@ -300,13 +316,13 @@
                     <div class="flex items-center">
                         <input type="number" id="input-full-height-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                        <span id="display-full-height-install" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
                             $310 / ft
                         </span>
                     </div>
                 </div>
 
-                <!-- European Style (Faceless) (REMAINS SEPARATE) -->
+                <!-- European Style (Faceless) -->
                 <div class="border-t border-gray-200 pt-4">
                     <h3 class="text-xl font-bold text-accent mb-3">European Style (Faceless)</h3>
                 </div>
@@ -317,7 +333,7 @@
                     <div class="flex items-center">
                         <input type="number" id="input-base-european" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                        <span id="display-base-european" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
                             $195 / ft
                         </span>
                     </div>
@@ -329,7 +345,7 @@
                     <div class="flex items-center">
                         <input type="number" id="input-base-european-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                        <span id="display-base-european-install" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
                             $280 / ft
                         </span>
                     </div>
@@ -341,7 +357,7 @@
                     <div class="flex items-center">
                         <input type="number" id="input-full-height-european" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                        <span id="display-full-height-european" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
                             $285 / ft
                         </span>
                     </div>
@@ -353,64 +369,16 @@
                     <div class="flex items-center">
                         <input type="number" id="input-full-height-european-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                        <span id="display-full-height-european-install" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
                             $435 / ft
                         </span>
                     </div>
                 </div>
                 
                 <!-- NEW SECTION HEADER FOR PIECE ITEMS -->
-                <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Hardware & Accessory Pieces (Each)</h2>
+                <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Hardware & Accessory Pieces</h2>
                 
-                <!-- Base/Wall Skins $85/pc -->
-                <div class="input-group">
-                    <label for="input-base-skins" class="block text-lg font-medium text-gray-700 mb-1">Base/Wall Skins (Pieces)</label>
-                    <div class="flex items-center">
-                        <input type="number" id="input-base-skins" data-unit="PC" placeholder="0" min="0" step="1"
-                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                            $85 / PC
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Full Height Skin / Back Panel $170/pc -->
-                <div class="input-group">
-                    <label for="input-full-skins" class="block text-lg font-medium text-gray-700 mb-1">Full Height Skin / Back Panel (Pieces)</label>
-                    <div class="flex items-center">
-                        <input type="number" id="input-full-skins" data-unit="PC" placeholder="0" min="0" step="1"
-                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                            $170 / PC
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Toekick (8ft) $30/pc -->
-                <div class="input-group">
-                    <label for="input-toekick" class="block text-lg font-medium text-gray-700 mb-1">Toekick (8ft Pieces)</label>
-                    <div class="flex items-center">
-                        <input type="number" id="input-toekick" data-unit="PC" placeholder="0" min="0" step="1"
-                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                            $30 / PC
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Fillers $50/pc -->
-                <div class="input-group">
-                    <label for="input-fillers" class="block text-lg font-medium text-gray-700 mb-1">Fillers (Pieces)</label>
-                    <div class="flex items-center">
-                        <input type="number" id="input-fillers" data-unit="PC" placeholder="0" min="0" step="1"
-                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                            $50 / PC
-                        </span>
-                    </div>
-                </div>
-                
-                <!-- MATCH CHECKBOXES -->
+                <!-- MATCH CHECKBOXES (MOVED TO THE TOP OF THIS SECTION) -->
                 <div class="input-group p-3 bg-emerald-50 rounded-lg border border-emerald-200 space-y-2">
                     <p class="text-sm font-semibold text-gray-800">Select required matching services (<span class="font-bold">$150 per service</span>):</p>
                     <div class="grid grid-cols-3 gap-2">
@@ -429,8 +397,105 @@
                     </div>
                     <p id="match-fee-status" class="text-center font-bold text-red-600 text-sm pt-2 border-t border-emerald-300 hidden"></p>
                 </div>
+                <!-- END MATCH CHECKBOXES -->
 
+                <!-- Base/Wall Skins $85/pc -->
+                <div class="input-group">
+                    <label for="input-base-skins" class="block text-lg font-medium text-gray-700 mb-1">Base/Wall Skins</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-base-skins" data-unit="PC" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span id="display-base-skins" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $85 / PC
+                        </span>
+                    </div>
+                </div>
 
+                <!-- Full Height Skin / Back Panel $170/pc -->
+                <div class="input-group">
+                    <label for="input-full-skins" class="block text-lg font-medium text-gray-700 mb-1">Full Height Skin / Back Panel</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-full-skins" data-unit="PC" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span id="display-full-skins" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $170 / PC
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Toekick (8ft) $30/pc -->
+                <div class="input-group">
+                    <label for="input-toekick" class="block text-lg font-medium text-gray-700 mb-1">Toekick (8ft)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-toekick" data-unit="PC" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span id="display-toekick" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $30 / PC
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Fillers $50/pc -->
+                <div class="input-group">
+                    <label for="input-fillers" class="block text-lg font-medium text-gray-700 mb-1">Fillers</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-fillers" data-unit="PC" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span id="display-fillers" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $50 / PC
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Scribe (8ft) $35/pc -->
+                <div class="input-group">
+                    <label for="input-scribe" class="block text-lg font-medium text-gray-700 mb-1">Scribe (8ft)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-scribe" data-unit="PC" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span id="display-scribe" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $35 / PC
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- 1-1/4" Scribe (8/ft) $50/pc -->
+                <div class="input-group">
+                    <label for="input-mid-scribe" class="block text-lg font-medium text-gray-700 mb-1">1-1/4" Scribe (8/ft)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-mid-scribe" data-unit="PC" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span id="display-mid-scribe" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $50 / PC
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Outside Corner Scribe (8ft) $55/pc -->
+                <div class="input-group">
+                    <label for="input-outside-scribe" class="block text-lg font-medium text-gray-700 mb-1">Outside Corner Scribe (8ft)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-outside-scribe" data-unit="PC" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span id="display-outside-scribe" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $55 / PC
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Quarter-Round Scribe (8ft) $55/pc -->
+                <div class="input-group">
+                    <label for="input-quarter-scribe" class="block text-lg font-medium text-gray-700 mb-1">Quarter-Round Scribe (8ft)</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-quarter-scribe" data-unit="PC" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span id="display-quarter-scribe" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $55 / PC
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Custom Flat Rate Items -->
                 <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Custom Flat Rate Items</h2>
 
                 <!-- Custom Input: Faceframe Repair - NOTE ADDED HERE -->
@@ -504,8 +569,6 @@
             if (button && menu) {
                 button.addEventListener('click', () => {
                     menu.classList.toggle('hidden');
-                    // Optional: Change icon when menu is open/closed
-                    // We'll keep the same icon for simplicity here, but can be updated with more complex SVGs
                 });
             }
         });
@@ -518,15 +581,56 @@
         const jobDateInput = document.getElementById('job-date');
         const receiptContainer = document.getElementById('print-receipt');
         const matchFeeStatusEl = document.getElementById('match-fee-status');
+        const materialSelect = document.getElementById('material-select');
 
-        // --- Price Constants (Same as hidden inputs) ---
-        const PRICES = {
+        // --- Price Constants Definitions ---
+        // Base prices (for Maple, White, Almond, Particle Board)
+        const DEFAULT_PRICES = {
             base: 90, halfShelf: 18, baseInstall: 155, fullHeight: 180, fullShelf: 36, fullHeightInstall: 310,
-            // UPDATED EUROPEAN PRICES
             baseEuropean: 195, baseEuropeanInstall: 280, fullHeightEuropean: 285, fullHeightEuropeanInstall: 435,
-            
-            baseSkins: 85, fullSkins: 170, toekick: 30, scribe: 35, fillers: 50, matchFee: 150
+            baseSkins: 85, fullSkins: 170, toekick: 30, fillers: 50, matchFee: 150,
+            scribe: 35, midScribe: 50, outsideCornerScribe: 55, quarterRoundScribe: 55
         };
+
+        // Plywood-specific price overrides
+        const PLYWOOD_OVERRIDE_PRICES = {
+            base: 145, 
+            halfShelf: 29, 
+            baseInstall: 210, 
+            fullHeight: 288, 
+            fullShelf: 58, 
+            fullHeightInstall: 420
+        };
+
+        let CURRENT_PRICES = {...DEFAULT_PRICES}; // Active prices used for calculation
+
+        // Map linking input IDs to price keys and display IDs
+        const ITEM_MAP = [
+            // Standard Lineal Foot Items (dynamically priced)
+            { id: 'input-base', priceKey: 'base', name: 'Base (Rebuild)', unit: 'ft', displayId: 'display-base' }, 
+            { id: 'input-half-shelf', priceKey: 'halfShelf', name: 'Half-Depth Shelving', unit: 'ft', displayId: 'display-half-shelf' }, 
+            { id: 'input-base-install', priceKey: 'baseInstall', name: 'Base w/ Installation', unit: 'ft', displayId: 'display-base-install' }, 
+            { id: 'input-full-height', priceKey: 'fullHeight', name: 'Full Height (Rebuild)', unit: 'ft', displayId: 'display-full-height' }, 
+            { id: 'input-full-shelf', priceKey: 'fullShelf', name: 'Full-Depth Shelving', unit: 'ft', displayId: 'display-full-shelf' }, 
+            { id: 'input-full-height-install', priceKey: 'fullHeightInstall', name: 'Full Height w/ Installation', unit: 'ft', displayId: 'display-full-height-install' }, 
+            
+            // European Styles (static price)
+            { id: 'input-base-european', priceKey: 'baseEuropean', name: 'Base European (Faceless)', unit: 'ft', displayId: 'display-base-european' },
+            { id: 'input-base-european-install', priceKey: 'baseEuropeanInstall', name: 'Base European w/ Install', unit: 'ft', displayId: 'display-base-european-install' },
+            { id: 'input-full-height-european', priceKey: 'fullHeightEuropean', name: 'Full Height European (Faceless)', unit: 'ft', displayId: 'display-full-height-european' },
+            { id: 'input-full-height-european-install', priceKey: 'fullHeightEuropeanInstall', name: 'Full Height European w/ Install', unit: 'ft', displayId: 'display-full-height-european-install' },
+            
+            // Accessory Items (static price)
+            { id: 'input-base-skins', priceKey: 'baseSkins', name: 'Base/Wall Skins', unit: 'PC', displayId: 'display-base-skins' },
+            { id: 'input-full-skins', priceKey: 'fullSkins', name: 'Full Height Skin / Back Panel', unit: 'PC', displayId: 'display-full-skins' },
+            { id: 'input-toekick', priceKey: 'toekick', name: 'Toekick (8ft)', unit: 'PC', displayId: 'display-toekick' },
+            { id: 'input-fillers', priceKey: 'fillers', name: 'Fillers', unit: 'PC', displayId: 'display-fillers' },
+            { id: 'input-scribe', priceKey: 'scribe', name: 'Scribe (8ft)', unit: 'PC', displayId: 'display-scribe' },
+            { id: 'input-mid-scribe', priceKey: 'midScribe', name: '1-1/4" Scribe (8/ft)', unit: 'PC', displayId: 'display-mid-scribe' },
+            { id: 'input-outside-scribe', priceKey: 'outsideCornerScribe', name: 'Outside Corner Scribe (8ft)', unit: 'PC', displayId: 'display-outside-scribe' },
+            { id: 'input-quarter-scribe', priceKey: 'quarterRoundScribe', name: 'Quarter-Round Scribe (8ft)', unit: 'PC', displayId: 'display-quarter-scribe' },
+        ];
+
 
         // --- Utility Functions ---
 
@@ -545,43 +649,60 @@
             return el.value || '';
         };
         
+        // --- Dynamic Pricing and Display Updates ---
+
+        const updatePricesDisplay = () => {
+            ITEM_MAP.forEach(item => {
+                const spanEl = document.getElementById(item.displayId);
+                if (spanEl && item.unit) {
+                    const price = CURRENT_PRICES[item.priceKey];
+                    // Ensure price is defined and a number before trying to fix it.
+                    if (typeof price === 'number') {
+                        spanEl.textContent = `$${price.toFixed(0)} / ${item.unit}`;
+                    }
+                }
+            });
+            calculateTotal(); // Recalculate everything after prices change
+        }
+
+        const applyMaterialPricing = () => {
+            const selectedMaterial = materialSelect.value;
+
+            if (selectedMaterial === 'Plywood') {
+                // Apply Plywood-specific overrides to the default prices
+                CURRENT_PRICES = {...DEFAULT_PRICES, ...PLYWOOD_OVERRIDE_PRICES};
+            } else {
+                // Use default prices for all other selections (Maple, White, Almond, Particle Board)
+                CURRENT_PRICES = {...DEFAULT_PRICES};
+            }
+            
+            updatePricesDisplay();
+        };
+
+
         // --- Calculation & Receipt Generation Logic ---
 
         const calculateTotal = () => {
-            let total = 0;
+            let subtotal = 0; // Cost before rush fee
+            let total = 0;    // Final cost after rush fee
             let breakdown = [];
+            
             // Helper function for adding itemized costs
-            const addItem = (id, name, rateId, unit) => {
-                const qty = getValue(id);
-                if (qty > 0) {
-                    const rate = PRICES[rateId];
+            const addItem = (item) => {
+                const qty = getValue(item.id);
+                const rate = CURRENT_PRICES[item.priceKey]; // Use CURRENT_PRICES
+                
+                if (qty > 0 && typeof rate === 'number') {
                     const cost = parseFloat((qty * rate).toFixed(2));
-                    total += cost;
-                    breakdown.push({ name: name, cost: cost, qty: qty, unit: unit, rate: rate });
+                    subtotal += cost;
+                    breakdown.push({ name: item.name, cost: cost, qty: qty, unit: item.unit, rate: rate });
                 }
             };
 
-            // 1. Lineal Foot Items (ft)
-            addItem('input-base', 'Base (Rebuild)', 'base', 'ft'); 
-            addItem('input-half-shelf', 'Half-Depth Shelving', 'halfShelf', 'ft'); 
-            addItem('input-base-install', 'Base w/ Installation', 'baseInstall', 'ft'); 
-            addItem('input-full-height', 'Full Height (Rebuild)', 'fullHeight', 'ft'); 
-            addItem('input-full-shelf', 'Full-Depth Shelving', 'fullShelf', 'ft'); 
-            addItem('input-full-height-install', 'Full Height w/ Installation', 'fullHeightInstall', 'ft'); 
-            
-            // European Styles (ALL FOUR NEW ENTRIES)
-            addItem('input-base-european', 'Base European (Faceless)', 'baseEuropean', 'ft');
-            addItem('input-base-european-install', 'Base European w/ Install', 'baseEuropeanInstall', 'ft'); // New
-            addItem('input-full-height-european', 'Full Height European (Faceless)', 'fullHeightEuropean', 'ft'); // New
-            addItem('input-full-height-european-install', 'Full Height European w/ Install', 'fullHeightEuropeanInstall', 'ft'); 
+            // Calculate costs for all items in the map
+            ITEM_MAP.forEach(addItem);
 
-            // 2. Accessories/Piece Items 
-            addItem('input-base-skins', 'Base/Wall Skins', 'baseSkins', 'PC');
-            addItem('input-full-skins', 'Full Height Skin / Back Panel', 'fullSkins', 'PC');
-            addItem('input-toekick', 'Toekick (8ft)', 'toekick', 'PC');
-            addItem('input-fillers', 'Fillers', 'fillers', 'PC');
-            
-            // 3. Match Fee (Checkbox)
+            // Match Fee Logic
             const isStainChecked = getValue('checkbox-stain-match', false);
             const isPaintChecked = getValue('checkbox-paint-match', false);
             const isLacquerChecked = getValue('checkbox-lacquer-match', false);
@@ -589,15 +710,15 @@
 
             matchFeeStatusEl.classList.add('hidden');
             if (matchCount > 0) {
-                const ratePerService = PRICES.matchFee;
-                const matchCost = matchCount * ratePerService;
-                total += matchCost;
+                const ratePerService = CURRENT_PRICES.matchFee;
+                const matchCost = parseFloat((matchCount * ratePerService).toFixed(2));
+                subtotal += matchCost;
                 
                 let matchType = [];
                 if (isStainChecked) matchType.push('Stain');
                 if (isPaintChecked) matchType.push('Paint');
                 if (isLacquerChecked) matchType.push('Lacquer');
-                const matchName = `Color/Finish Match Fee (${matchType.join(' & ')}`;
+                const matchName = `Color/Finish Match Fee (${matchType.join(' & ')})`;
 
                 breakdown.push({ name: matchName, cost: matchCost, qty: matchCount, unit: 'service(s)', rate: ratePerService });
                 matchFeeStatusEl.textContent = `$${matchCost.toFixed(2)} Match Fee Applied`;
@@ -607,22 +728,41 @@
             // 4. Custom Flat Rate Items
             const faceframeCost = getValue('input-faceframe-repair');
             if (faceframeCost > 0) {
-                total += faceframeCost;
-                breakdown.push({ name: 'Faceframe Repair (Custom)', cost: faceframeCost, qty: 1, unit: null, rate: faceframeCost });
+                subtotal += faceframeCost;
+                breakdown.push({ name: 'Faceframe Repair (Custom)', cost: faceframeCost, qty: 1, unit: 'Lumpsum', rate: faceframeCost });
             }
 
             const miscCost = getValue('input-misc-custom');
             const miscDescription = getValue('input-misc-description', false); 
             
             if (miscCost > 0) {
-                total += miscCost;
+                subtotal += miscCost;
                 breakdown.push({ 
                     name: 'Miscellaneous/Customization (Custom)', 
                     cost: miscCost, 
                     qty: 1, 
-                    unit: null, 
+                    unit: 'Lumpsum', 
                     rate: miscCost,
                     description: miscDescription
+                });
+            }
+
+            // 5. RUSH FEE LOGIC
+            const isRushed = getValue('checkbox-rushed', false);
+            total = subtotal; // Start total at subtotal
+            
+            if (isRushed) {
+                const rushFee = parseFloat((subtotal * 0.5).toFixed(2));
+                total += rushFee; 
+                
+                // Add the rush fee line item to the breakdown
+                breakdown.push({ 
+                    name: 'Rush Service Fee (50% Cost)', 
+                    cost: rushFee, 
+                    qty: 1, 
+                    unit: 'service', 
+                    rate: '50% of Subtotal',
+                    isRushFee: true 
                 });
             }
 
@@ -635,7 +775,7 @@
             if (totalIsPositive) {
                 printBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                 printBtn.disabled = false;
-                generatePrintReceipt(formattedTotal, breakdown.filter(item => item.cost > 0));
+                generatePrintReceipt(formattedTotal, breakdown.filter(item => item.cost > 0), subtotal);
             } else {
                 printBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 printBtn.disabled = true;
@@ -643,17 +783,20 @@
             }
         };
 
-        const generatePrintReceipt = (formattedTotal, breakdownData) => {
+
+        const generatePrintReceipt = (formattedTotal, breakdownData, subtotal) => {
             // Get job details for the receipt
             const jobName = getValue('job-name', false) || 'N/A';
             const clientPhone = getValue('client-phone', false) || 'N/A';
             const jobAddress = getValue('job-address', false) || 'N/A';
             const jobDate = jobDateInput.value;
             const jobNotes = getValue('job-notes', false) || 'None.';
+            const selectedMaterial = materialSelect.value;
             
             const isStainChecked = getValue('checkbox-stain-match', false);
             const isPaintChecked = getValue('checkbox-paint-match', false);
             const isLacquerChecked = getValue('checkbox-lacquer-match', false);
+            const isRushed = getValue('checkbox-rushed', false);
             
             let matchTypeDisplay = 'None Requested';
             let matchTypeList = [];
@@ -664,6 +807,8 @@
             if (matchTypeList.length > 0) {
                 matchTypeDisplay = matchTypeList.join(' & ');
             }
+            
+            let rushDisplay = isRushed ? `<strong class="text-red-700">Yes (4 Business Days)</strong>` : 'No';
 
             const disclaimerText = `In order to complete your cabinet order, it is necessary to have a written authorization from you. Please note, material finishes may vary once installed from finish samples used to make the material selections. Cabinetry may appear distinct from finish samples due to; but not limited to lighting surrounding contrasting furnishings and natural flaws in the wood grain. Cabinetry, especially faceframe repairs, may have variations in: grain, color, sheen, and grunge when compared to the original material. Once materials selection is made by you and the order is placed, it cannot be changed: Also completion of work is subject to current lead-times of materials, which may include, but not limited to; back order and/or transportation.`;
 
@@ -683,6 +828,44 @@
                     <p class="whitespace-pre-wrap text-base text-gray-800">${jobNotes}</p>
                 </div>
             ` : '';
+            
+            // Generate the line items
+            const lineItemsHTML = breakdownData.map(item => {
+                const isRushFee = item.isRushFee;
+                const nameClass = isRushFee ? 'text-red-700 font-bold' : 'text-gray-600';
+                const costClass = isRushFee ? 'text-red-800' : 'text-gray-900';
+                const descriptionHtml = item.description ? `<p class="text-sm text-gray-500 italic mt-1 ml-4 whitespace-pre-wrap">Notes: ${item.description}</p>` : '';
+                
+                let rateDisplay = '';
+                if (item.unit === 'Lumpsum') {
+                    rateDisplay = 'Flat Rate';
+                } else if (item.isRushFee) {
+                    rateDisplay = item.rate;
+                } else if (item.unit) {
+                    rateDisplay = `$${item.rate.toFixed(2)} / ${item.unit}`;
+                }
+
+                const qtyDisplay = item.unit === 'Lumpsum' ? '' : `${item.qty} ${item.unit} @ `;
+
+                return `
+                    <li class="border-b border-gray-200 pb-2 mb-2 ${isRushFee ? 'is-rush-fee' : ''}">
+                        <div class="flex">
+                            <span class="flex-1 ${nameClass}">${item.name}</span>
+                            <span class="w-40 text-primary-dark font-medium text-right">${qtyDisplay}${rateDisplay}</span>
+                            <span class="w-24 font-bold ${costClass} text-right ml-4">$${item.cost.toFixed(2)}</span>
+                        </div>
+                        ${descriptionHtml} 
+                    </li>
+                `;
+            }).join('');
+            
+            // Generate subtotal bar if rush fee is applied
+            const subtotalBarHTML = isRushed ? `
+                <div class="flex justify-between items-center text-xl font-semibold text-gray-700 mb-3 border-b border-gray-300 pb-2">
+                    <span>Subtotal:</span>
+                    <span>$${subtotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                </div>
+            ` : '';
 
 
             let receiptHTML = `
@@ -694,8 +877,10 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-base">
                             <div><strong class="text-gray-700">Job Name/Number:</strong> ${jobName}</div>
                             <div><strong class="text-gray-700">Quote Date:</strong> ${jobDate}</div>
+                            <div><strong class="text-gray-700">Material:</strong> ${selectedMaterial}</div>
                             <div><strong class="text-gray-700">Project Manager's Phone:</strong> ${clientPhone}</div>
                             <div><strong class="text-gray-700">Finish Match:</strong> ${matchTypeDisplay}</div>
+                            <div><strong class="text-gray-700">RUSH Service:</strong> ${rushDisplay}</div>
                             <div class="sm:col-span-2"><strong class="text-gray-700">Address:</strong> ${jobAddress}</div>
                         </div>
                     </div>
@@ -703,26 +888,10 @@
                     <!-- Cost Breakdown for Receipt -->
                     <h2 class="text-2xl font-semibold text-primary-dark mb-4 receipt-section-header">Itemized Cost Breakdown</h2>
                     <ul class="space-y-3 text-lg mb-12">
-                        ${breakdownData.map(item => {
-                            const descriptionHtml = item.description ? `<p class="text-sm text-gray-500 italic mt-1 ml-4 whitespace-pre-wrap">${item.description}</p>` : '';
-                            
-                            return `
-                                <li class="border-b border-gray-200 pb-2 mb-2">
-                                    <div class="flex">
-                                        <span class="flex-1 text-gray-600">${item.name}</span>
-                                        ${item.unit 
-                                            ? `<span class="w-40 text-primary-dark font-medium text-right">${item.qty} ${item.unit} @ $${item.rate.toFixed(2)}</span>` 
-                                            : (item.qty > 1 
-                                                ? `<span class="w-40 text-primary-dark font-medium text-right">${item.qty} PCs</span>` 
-                                                : `<span class="w-40 text-primary-dark font-medium italic text-right">Flat Rate</span>`)
-                                        }
-                                        <span class="w-24 font-bold text-gray-900 text-right ml-4">$${item.cost.toFixed(2)}</span>
-                                    </div>
-                                    ${descriptionHtml} 
-                                </li>
-                            `;
-                        }).join('')}
+                        ${lineItemsHTML}
                     </ul>
+                    
+                    ${subtotalBarHTML}
 
                     <!-- Total for Receipt -->
                     <div class="flex justify-between items-center bg-accent/20 p-6 rounded-xl border-2 border-accent receipt-total-bar mb-12">
@@ -783,8 +952,8 @@
                 if (!printBtn.disabled) window.print();
             });
 
-            // Initial calculation to set the total/summary state
-            calculateTotal();
+            // Initial setup: Apply default pricing and perform initial calculation
+            applyMaterialPricing();
         });
     </script>
 </body>
