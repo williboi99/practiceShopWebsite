@@ -225,7 +225,7 @@
                         </label>
                     </div>
                     <p class="text-sm text-red-700 italic font-medium -mt-1 p-2 bg-red-100 rounded-md">
-                        Depending on the condition of the job, we can have it complete within 4 business days at a 50% cost.
+                        Depending on the condition of the job, we can have it complete within 4 business days at an extra 50% cost.
                     </p>
                 </div>
             </div>
@@ -327,7 +327,7 @@
                     <h3 class="text-xl font-bold text-accent mb-3">European Style (Faceless)</h3>
                 </div>
 
-                <!-- Base European $195/ft -->
+                <!-- Base European $195/ft (Plywood: $312/ft) -->
                 <div class="input-group">
                     <label for="input-base-european" class="block text-lg font-medium text-gray-700 mb-1">Base European</label>
                     <div class="flex items-center">
@@ -338,8 +338,8 @@
                         </span>
                     </div>
                 </div>
-                
-                <!-- Base European w/ Install $280/ft -->
+
+                <!-- Base European w/ Install $280/ft (Plywood: $397/ft) -->
                 <div class="input-group">
                     <label for="input-base-european-install" class="block text-lg font-medium text-gray-700 mb-1">Base European w/ Install</label>
                     <div class="flex items-center">
@@ -351,7 +351,7 @@
                     </div>
                 </div>
 
-                <!-- Full Height European $285/ft -->
+                <!-- Full Height European $285/ft (Plywood: $456/ft) -->
                 <div class="input-group">
                     <label for="input-full-height-european" class="block text-lg font-medium text-gray-700 mb-1">Full Height European</label>
                     <div class="flex items-center">
@@ -362,8 +362,8 @@
                         </span>
                     </div>
                 </div>
-                
-                <!-- Full Height European w/ Install $435/ft -->
+
+                <!-- Full Height European w/ Install $435/ft (Plywood: $606/ft) -->
                 <div class="input-group">
                     <label for="input-full-height-european-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height European w/ Install</label>
                     <div class="flex items-center">
@@ -592,14 +592,21 @@
             scribe: 35, midScribe: 50, outsideCornerScribe: 55, quarterRoundScribe: 55
         };
 
-        // Plywood-specific price overrides
+        // Plywood-specific price overrides 
         const PLYWOOD_OVERRIDE_PRICES = {
+            // Standard Styles
             base: 145, 
             halfShelf: 29, 
             baseInstall: 210, 
             fullHeight: 288, 
             fullShelf: 58, 
-            fullHeightInstall: 420
+            fullHeightInstall: 420,
+            
+            // European Styles
+            baseEuropean: 312,
+            baseEuropeanInstall: 397,
+            fullHeightEuropean: 456,
+            fullHeightEuropeanInstall: 606
         };
 
         let CURRENT_PRICES = {...DEFAULT_PRICES}; // Active prices used for calculation
@@ -614,7 +621,7 @@
             { id: 'input-full-shelf', priceKey: 'fullShelf', name: 'Full-Depth Shelving', unit: 'ft', displayId: 'display-full-shelf' }, 
             { id: 'input-full-height-install', priceKey: 'fullHeightInstall', name: 'Full Height w/ Installation', unit: 'ft', displayId: 'display-full-height-install' }, 
             
-            // European Styles (static price)
+            // European Styles (dynamically priced)
             { id: 'input-base-european', priceKey: 'baseEuropean', name: 'Base European (Faceless)', unit: 'ft', displayId: 'display-base-european' },
             { id: 'input-base-european-install', priceKey: 'baseEuropeanInstall', name: 'Base European w/ Install', unit: 'ft', displayId: 'display-base-european-install' },
             { id: 'input-full-height-european', priceKey: 'fullHeightEuropean', name: 'Full Height European (Faceless)', unit: 'ft', displayId: 'display-full-height-european' },
