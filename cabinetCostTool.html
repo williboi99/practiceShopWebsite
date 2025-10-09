@@ -251,21 +251,25 @@ Job requires lead time of 6 weeks."
                 <!-- SECTION HEADER -->
                 <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Cabinetry & Shelving</h2>
 
-                <!-- MATERIAL SELECTION DROPDOWN (Now Moved Here) -->
-                <div class="job-input mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <label for="material-select" class="block text-sm font-medium text-gray-700 font-bold">Material Selection</label>
-                    <select id="material-select" onchange="applyMaterialPricing()"
-                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-lg font-semibold bg-white shadow-sm">
-                        <option value="Hardrock Maple">Hardrock Maple</option>
-                        <option value="White">White</option>
-                        <option value="Almond">Almond</option>
-                        <option value="Particle Board">Particle Board</option>
-                        <option value="Plywood">Plywood</option>
-                        <!-- NEW OPTION ADDED HERE -->
-                        <option value="Plywood (Stained Interior)">Plywood (Stained Interior)</option>
-                    </select>
+                <!-- MATERIAL SELECTION DROPDOWN (ONLY BOX MATERIAL) -->
+                <!-- This material selection drives the price per lineal foot -->
+                <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <!-- 1. Cabinet Box Material -->
+                    <div>
+                        <label for="material-select" class="block text-sm font-medium text-gray-700 font-bold">Cabinet Box Material</label>
+                        <select id="material-select" onchange="applyMaterialPricing()"
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm">
+                            <option value="Hardrock Maple">Hardrock Maple</option>
+                            <option value="White">White</option>
+                            <option value="Almond">Almond</option>
+                            <option value="Particle Board">Particle Board</option>
+                            <option value="Plywood">Plywood</option>
+                            <option value="Plywood (Stained Interior)">Plywood (Stained Interior)</option>
+                        </select>
+                    </div>
                 </div>
                 <!-- END MATERIAL SELECTION DROPDOWN -->
+
 
                 <!-- 1. Base $90/ft -->
                 <div class="input-group">
@@ -395,7 +399,7 @@ Job requires lead time of 6 weeks."
                 <!-- NEW SECTION HEADER FOR PIECE ITEMS -->
                 <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Hardware & Accessory Pieces</h2>
 
-                <!-- MATCH CHECKBOXES (MOVED TO THE TOP OF THIS SECTION) -->
+                <!-- MATCH CHECKBOXES -->
                 <div class="input-group p-3 bg-emerald-50 rounded-lg border border-emerald-200 space-y-2">
                     <p class="text-sm font-semibold text-gray-800">Select required matching services (<span class="font-bold">$150 per service</span>):</p>
                     <div class="grid grid-cols-3 gap-2">
@@ -415,6 +419,24 @@ Job requires lead time of 6 weeks."
                     <p id="match-fee-status" class="text-center font-bold text-red-600 text-sm pt-2 border-t border-emerald-300 hidden"></p>
                 </div>
                 <!-- END MATCH CHECKBOXES -->
+
+                <!-- 2. Finished Material Selection (MOVED HERE) -->
+                <div class="input-group p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <label for="finished-material-select" class="block text-sm font-medium text-gray-700 font-bold">Finished Material</label>
+                    <select id="finished-material-select"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm">
+                        <option value="Maple">Maple</option>
+                        <option value="Oak">Oak</option>
+                        <option value="Cherry">Cherry</option>
+                        <option value="Alder (clear)">Alder (clear)</option>
+                        <option value="Alder (knotty)">Alder (knotty)</option>
+                        <option value="Hickory">Hickory</option>
+                        <option value="White">White</option>
+                        <option value="MDF">MDF</option>
+                        <option value="Almond">Almond</option>
+                        <option value="Hardrock">Hardrock</option>
+                    </select>
+                </div>
 
                 <!-- Base/Wall Skins $85/pc -->
                 <div class="input-group">
@@ -597,7 +619,7 @@ Job requires lead time of 6 weeks."
         const matchFeeStatusEl = document.getElementById('match-fee-status');
         const materialSelect = document.getElementById('material-select');
 
-        // --- Price Constants Definitions (Updated) ---
+        // --- Price Constants Definitions (Unchanged) ---
         const DEFAULT_PRICES = {
             base: 90,
             halfShelf: 18,
@@ -680,7 +702,7 @@ Job requires lead time of 6 weeks."
             { id: 'input-quarter-scribe', priceKey: 'quarterRoundScribe', name: 'Quarter-Round Scribe (8ft)', unit: 'PC', displayId: 'display-quarter-scribe' },
         ];
 
-        // --- Utility Functions (Unchanged) ---
+        // --- Utility Functions (Unchanged, relies on ID) ---
         const getValue = (id, isNumber = true) => {
             const el = document.getElementById(id);
             if (!el) return isNumber ? 0 : '';
@@ -697,7 +719,7 @@ Job requires lead time of 6 weeks."
             return el.value || '';
         };
 
-        // --- Dynamic Pricing and Display Updates (Updated) ---
+        // --- Dynamic Pricing and Display Updates (Unchanged) ---
         const updatePricesDisplay = () => {
             ITEM_MAP.forEach(item => {
                 const spanEl = document.getElementById(item.displayId);
@@ -834,7 +856,7 @@ Job requires lead time of 6 weeks."
             renderReceipt(breakdown, subtotal, total, isRushed, rushFee);
         };
         
-        // --- Receipt Rendering Function (Unchanged) ---
+        // --- Receipt Rendering Function (Updated finished material label) ---
         const renderReceipt = (breakdown, subtotal, total, isRushed, rushFee) => {
             // NEW FIELDS
             const companyName = getValue('company-name', false);
@@ -846,6 +868,8 @@ Job requires lead time of 6 weeks."
             const quoteDate = getValue('job-date', false);
             const jobNotes = getValue('job-notes', false);
             const materialUsed = materialSelect.value;
+            // NEW: Get the finished material selection
+            const finishedMaterial = getValue('finished-material-select', false);
             
             // Group items into categories for display order
             const linealFootItems = breakdown.filter(item => item.unit === 'ft');
@@ -905,7 +929,8 @@ Job requires lead time of 6 weeks."
                             <div>
                                 <p><span class="font-bold">Project Mgr Phone:</span> ${clientPhone || 'TBD'}</p>
                                 <p><span class="font-bold">Quote Date:</span> ${quoteDate || 'TBD'}</p>
-                                <p><span class="font-bold">Material:</span> ${materialUsed || 'TBD'}</p>
+                                <p><span class="font-bold">Box Material:</span> ${materialUsed || 'TBD'}</p>
+                                <p><span class="font-bold">Finished Material:</span> ${finishedMaterial || 'TBD'}</p>
                                 <p class="text-red-600 font-bold">${isRushed ? 'RUSHED ORDER (4-Day)' : 'Standard Lead Time'}</p>
                             </div>
                         </div>
@@ -951,7 +976,7 @@ Job requires lead time of 6 weeks."
                         <h4 class="font-bold text-red-700 mb-2">DISCLAIMER & CONDITIONS</h4>
                         <ul class="text-xs text-gray-700 list-disc list-inside space-y-1">
                             <li>This is an estimate and is subject to change based on final measurements and material availability.</li>
-                            <li>Pricing is based on the selected material (e.g., Hardrock Maple, Plywood). Changing the material may alter the cost.</li>
+                            <li>Pricing is based on the selected **Box Material** (e.g., Plywood). Changing the material may alter the cost.</li>
                             <li>A 50% non-refundable deposit is required to begin work.</li>
                             <li>Final payment is due upon completion and prior to installation.</li>
                             <li>Lead times are subject to change. Rushed orders are subject to a 50% fee.</li>
