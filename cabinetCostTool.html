@@ -47,7 +47,7 @@
         /* Hide the receipt view on screen by default */
         #print-receipt {
             display: none;
-            min-height: 100vh;
+            min-height: 10vh;
         }
         
         /* --- PRINT STYLES for PDF Receipt --- */
@@ -58,7 +58,7 @@
             }
             body { 
                 padding-top: 0; /* Remove top padding when printing */
-                background-color: white; 
+                background-color: white;
             }
             /* Make the receipt fill the page */
             #print-receipt {
@@ -184,6 +184,20 @@
             <div id="job-details" class="space-y-4 mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
                 <h2 class="text-xl font-semibold text-primary-dark border-b pb-2 text-accent">Job Details</h2>
                 
+                <!-- NEW FIELD 1: Company -->
+                <div class="job-input">
+                    <label for="company-name" class="block text-sm font-medium text-gray-700">Company</label>
+                    <input type="text" id="company-name" placeholder="E.g., ABC Contractors" 
+                           class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
+                </div>
+                
+                <!-- NEW FIELD 2: Project Manager -->
+                <div class="job-input">
+                    <label for="project-manager" class="block text-sm font-medium text-gray-700">Project Manager Name</label>
+                    <input type="text" id="project-manager" placeholder="E.g., John Doe" 
+                           class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
+                </div>
+                
                 <div class="job-input">
                     <label for="job-name" class="block text-sm font-medium text-gray-700">Job Name/Number</label>
                     <input type="text" id="job-name" placeholder="E.g., 2024-001 or Jane Smith" 
@@ -211,7 +225,8 @@
                 
                 <div class="job-input pt-4 border-t border-gray-200">
                     <label for="job-notes" class="block text-sm font-medium text-gray-700">Job Notes (Appears on Quote)</label>
-                    <textarea id="job-notes" rows="3" placeholder="E.g., Client wants a smooth finish. Job requires lead time of 6 weeks." 
+                    <textarea id="job-notes" rows="3" placeholder="E.g., Client wants a smooth finish.
+Job requires lead time of 6 weeks." 
                               class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"></textarea>
                 </div>
                 
@@ -246,6 +261,8 @@
                         <option value="Almond">Almond</option>
                         <option value="Particle Board">Particle Board</option>
                         <option value="Plywood">Plywood</option>
+                        <!-- NEW OPTION ADDED HERE -->
+                        <option value="Plywood (Stained Interior)">Plywood (Stained Interior)</option>
                     </select>
                 </div>
                 <!-- END MATERIAL SELECTION DROPDOWN -->
@@ -327,7 +344,7 @@
                     <h3 class="text-xl font-bold text-accent mb-3">European Style (Faceless)</h3>
                 </div>
 
-                <!-- Base European $195/ft (Plywood: $312/ft) -->
+                <!-- Base European $195/ft -->
                 <div class="input-group">
                     <label for="input-base-european" class="block text-lg font-medium text-gray-700 mb-1">Base European</label>
                     <div class="flex items-center">
@@ -339,7 +356,7 @@
                     </div>
                 </div>
 
-                <!-- Base European w/ Install $280/ft (Plywood: $397/ft) -->
+                <!-- Base European w/ Install $280/ft -->
                 <div class="input-group">
                     <label for="input-base-european-install" class="block text-lg font-medium text-gray-700 mb-1">Base European w/ Install</label>
                     <div class="flex items-center">
@@ -351,7 +368,7 @@
                     </div>
                 </div>
 
-                <!-- Full Height European $285/ft (Plywood: $456/ft) -->
+                <!-- Full Height European $285/ft -->
                 <div class="input-group">
                     <label for="input-full-height-european" class="block text-lg font-medium text-gray-700 mb-1">Full Height European</label>
                     <div class="flex items-center">
@@ -363,7 +380,7 @@
                     </div>
                 </div>
 
-                <!-- Full Height European w/ Install $435/ft (Plywood: $606/ft) -->
+                <!-- Full Height European w/ Install $435/ft -->
                 <div class="input-group">
                     <label for="input-full-height-european-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height European w/ Install</label>
                     <div class="flex items-center">
@@ -377,7 +394,7 @@
                 
                 <!-- NEW SECTION HEADER FOR PIECE ITEMS -->
                 <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Hardware & Accessory Pieces</h2>
-                
+
                 <!-- MATCH CHECKBOXES (MOVED TO THE TOP OF THIS SECTION) -->
                 <div class="input-group p-3 bg-emerald-50 rounded-lg border border-emerald-200 space-y-2">
                     <p class="text-sm font-semibold text-gray-800">Select required matching services (<span class="font-bold">$150 per service</span>):</p>
@@ -494,7 +511,7 @@
                         </span>
                     </div>
                 </div>
-                
+            
                 <!-- Custom Flat Rate Items -->
                 <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Custom Flat Rate Items</h2>
 
@@ -528,7 +545,7 @@
                 <!-- Miscellaneous Description Input -->
                 <div class="input-group mt-2 p-3 border border-gray-300 rounded-lg">
                     <label for="input-misc-description" class="block text-sm font-medium text-gray-700 mb-1">Description for Custom Price</label>
-                    <textarea id="input-misc-description" rows="2" placeholder="E.g., Install client-supplied hardware, custom floating shelf labor, special lighting." 
+                    <textarea id="input-misc-description" rows="2" placeholder="E.g., Install client-supplied hardware, custom floating shelf labor, special lighting."
                               class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"></textarea>
                 </div>
 
@@ -540,7 +557,6 @@
                     <span class="text-xl font-semibold text-primary-dark">TOTAL ESTIMATED COST:</span>
                     <span id="total-cost" class="text-4xl font-extrabold text-accent">$0.00</span>
                 </div>
-                
                 <div class="mt-4">
                     <button id="print-quote-btn" class="w-full p-3 text-lg font-bold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition duration-150 shadow-md">
                         Print Quote (Save PDF)
@@ -549,7 +565,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- 
         ================================================================================
         2. PRINT RECEIPT VIEW (Hidden on screen, Visible only when printing)
@@ -559,13 +575,11 @@
         <!-- Content will be dynamically populated by JavaScript before printing -->
     </div>
 
-
     <script>
         // --- Mobile Menu Toggle Logic ---
         document.addEventListener('DOMContentLoaded', () => {
             const button = document.getElementById('mobile-menu-button');
             const menu = document.getElementById('mobile-menu');
-
             if (button && menu) {
                 button.addEventListener('click', () => {
                     menu.classList.toggle('hidden');
@@ -573,9 +587,9 @@
             }
         });
 
-
         // --- DOM Elements ---
-        const inputElements = document.querySelectorAll('#app-input input, #app-input select, #app-input textarea');
+        // This selector ensures all new inputs are included
+        const inputElements = document.querySelectorAll('#app-input input, #app-input select, #app-input textarea'); 
         const totalCostEl = document.getElementById('total-cost');
         const printBtn = document.getElementById('print-quote-btn');
         const jobDateInput = document.getElementById('job-date');
@@ -583,43 +597,71 @@
         const matchFeeStatusEl = document.getElementById('match-fee-status');
         const materialSelect = document.getElementById('material-select');
 
-        // --- Price Constants Definitions ---
-        // Base prices (for Maple, White, Almond, Particle Board)
+        // --- Price Constants Definitions (Updated) ---
         const DEFAULT_PRICES = {
-            base: 90, halfShelf: 18, baseInstall: 155, fullHeight: 180, fullShelf: 36, fullHeightInstall: 310,
-            baseEuropean: 195, baseEuropeanInstall: 280, fullHeightEuropean: 285, fullHeightEuropeanInstall: 435,
-            baseSkins: 85, fullSkins: 170, toekick: 30, fillers: 50, matchFee: 150,
-            scribe: 35, midScribe: 50, outsideCornerScribe: 55, quarterRoundScribe: 55
+            base: 90,
+            halfShelf: 18,
+            baseInstall: 155,
+            fullHeight: 180,
+            fullShelf: 36,
+            fullHeightInstall: 310,
+            baseEuropean: 195,
+            baseEuropeanInstall: 280,
+            fullHeightEuropean: 285,
+            fullHeightEuropeanInstall: 435,
+            baseSkins: 85,
+            fullSkins: 170,
+            toekick: 30,
+            fillers: 50,
+            matchFee: 150,
+            scribe: 35,
+            midScribe: 50,
+            outsideCornerScribe: 55,
+            quarterRoundScribe: 55
         };
 
-        // Plywood-specific price overrides 
         const PLYWOOD_OVERRIDE_PRICES = {
-            // Standard Styles
-            base: 145, 
-            halfShelf: 29, 
-            baseInstall: 210, 
-            fullHeight: 288, 
-            fullShelf: 58, 
+            // Standard Plywood (raw interior)
+            base: 145,
+            halfShelf: 29,
+            baseInstall: 210,
+            fullHeight: 288,
+            fullShelf: 58,
             fullHeightInstall: 420,
-            
             // European Styles
             baseEuropean: 312,
             baseEuropeanInstall: 397,
             fullHeightEuropean: 456,
             fullHeightEuropeanInstall: 606
         };
+        
+        // NEW PRICING FOR STAINED INTERIOR PLYWOOD
+        const PLYWOOD_STAINED_PRICES = {
+            // Standard Styles
+            base: 185,
+            halfShelf: 37,
+            baseInstall: 250,
+            fullHeight: 367,
+            fullShelf: 74,
+            fullHeightInstall: 500,
+            // European Styles
+            baseEuropean: 398,
+            baseEuropeanInstall: 483,
+            fullHeightEuropean: 581,
+            fullHeightEuropeanInstall: 731
+        };
 
-        let CURRENT_PRICES = {...DEFAULT_PRICES}; // Active prices used for calculation
+        let CURRENT_PRICES = {...DEFAULT_PRICES}; 
 
-        // Map linking input IDs to price keys and display IDs
+        // Map linking input IDs to price keys and display IDs (Unchanged)
         const ITEM_MAP = [
             // Standard Lineal Foot Items (dynamically priced)
-            { id: 'input-base', priceKey: 'base', name: 'Base (Rebuild)', unit: 'ft', displayId: 'display-base' }, 
-            { id: 'input-half-shelf', priceKey: 'halfShelf', name: 'Half-Depth Shelving', unit: 'ft', displayId: 'display-half-shelf' }, 
-            { id: 'input-base-install', priceKey: 'baseInstall', name: 'Base w/ Installation', unit: 'ft', displayId: 'display-base-install' }, 
-            { id: 'input-full-height', priceKey: 'fullHeight', name: 'Full Height (Rebuild)', unit: 'ft', displayId: 'display-full-height' }, 
-            { id: 'input-full-shelf', priceKey: 'fullShelf', name: 'Full-Depth Shelving', unit: 'ft', displayId: 'display-full-shelf' }, 
-            { id: 'input-full-height-install', priceKey: 'fullHeightInstall', name: 'Full Height w/ Installation', unit: 'ft', displayId: 'display-full-height-install' }, 
+            { id: 'input-base', priceKey: 'base', name: 'Base (Rebuild)', unit: 'ft', displayId: 'display-base' },
+            { id: 'input-half-shelf', priceKey: 'halfShelf', name: 'Half-Depth Shelving', unit: 'ft', displayId: 'display-half-shelf' },
+            { id: 'input-base-install', priceKey: 'baseInstall', name: 'Base w/ Installation', unit: 'ft', displayId: 'display-base-install' },
+            { id: 'input-full-height', priceKey: 'fullHeight', name: 'Full Height (Rebuild)', unit: 'ft', displayId: 'display-full-height' },
+            { id: 'input-full-shelf', priceKey: 'fullShelf', name: 'Full-Depth Shelving', unit: 'ft', displayId: 'display-full-shelf' },
+            { id: 'input-full-height-install', priceKey: 'fullHeightInstall', name: 'Full Height w/ Installation', unit: 'ft', displayId: 'display-full-height-install' },
             
             // European Styles (dynamically priced)
             { id: 'input-base-european', priceKey: 'baseEuropean', name: 'Base European (Faceless)', unit: 'ft', displayId: 'display-base-european' },
@@ -638,26 +680,24 @@
             { id: 'input-quarter-scribe', priceKey: 'quarterRoundScribe', name: 'Quarter-Round Scribe (8ft)', unit: 'PC', displayId: 'display-quarter-scribe' },
         ];
 
-
-        // --- Utility Functions ---
-
-        /** Safely retrieves and converts an input value to a number or a string. */
+        // --- Utility Functions (Unchanged) ---
         const getValue = (id, isNumber = true) => {
             const el = document.getElementById(id);
             if (!el) return isNumber ? 0 : '';
-
+            
             if (el.type === 'checkbox') {
                 return el.checked;
             }
+
             if (isNumber) {
                 const value = +el.value;
                 return isNaN(value) ? 0 : value;
             }
+            
             return el.value || '';
         };
-        
-        // --- Dynamic Pricing and Display Updates ---
 
+        // --- Dynamic Pricing and Display Updates (Updated) ---
         const updatePricesDisplay = () => {
             ITEM_MAP.forEach(item => {
                 const spanEl = document.getElementById(item.displayId);
@@ -674,24 +714,23 @@
 
         const applyMaterialPricing = () => {
             const selectedMaterial = materialSelect.value;
-
             if (selectedMaterial === 'Plywood') {
                 // Apply Plywood-specific overrides to the default prices
                 CURRENT_PRICES = {...DEFAULT_PRICES, ...PLYWOOD_OVERRIDE_PRICES};
+            } else if (selectedMaterial === 'Plywood (Stained Interior)') {
+                // Apply NEW Stained Plywood overrides
+                CURRENT_PRICES = {...DEFAULT_PRICES, ...PLYWOOD_STAINED_PRICES};
             } else {
                 // Use default prices for all other selections (Maple, White, Almond, Particle Board)
                 CURRENT_PRICES = {...DEFAULT_PRICES};
             }
-            
             updatePricesDisplay();
         };
 
-
-        // --- Calculation & Receipt Generation Logic ---
-
+        // --- Calculation & Receipt Generation Logic (Unchanged) ---
         const calculateTotal = () => {
             let subtotal = 0; // Cost before rush fee
-            let total = 0;    // Final cost after rush fee
+            let total = 0; // Final cost after rush fee
             let breakdown = [];
             
             // Helper function for adding itemized costs
@@ -702,10 +741,16 @@
                 if (qty > 0 && typeof rate === 'number') {
                     const cost = parseFloat((qty * rate).toFixed(2));
                     subtotal += cost;
-                    breakdown.push({ name: item.name, cost: cost, qty: qty, unit: item.unit, rate: rate });
+                    breakdown.push({
+                        name: item.name, 
+                        cost: cost, 
+                        qty: qty, 
+                        unit: item.unit, 
+                        rate: rate 
+                    });
                 }
             };
-
+            
             // Calculate costs for all items in the map
             ITEM_MAP.forEach(addItem);
 
@@ -713,237 +758,216 @@
             const isStainChecked = getValue('checkbox-stain-match', false);
             const isPaintChecked = getValue('checkbox-paint-match', false);
             const isLacquerChecked = getValue('checkbox-lacquer-match', false);
-            let matchCount = (isStainChecked ? 1 : 0) + (isPaintChecked ? 1 : 0) + (isLacquerChecked ? 1 : 0);
+            
+            let matchFeeCount = 0;
+            if (isStainChecked) matchFeeCount++;
+            if (isPaintChecked) matchFeeCount++;
+            if (isLacquerChecked) matchFeeCount++;
 
-            matchFeeStatusEl.classList.add('hidden');
-            if (matchCount > 0) {
-                const ratePerService = CURRENT_PRICES.matchFee;
-                const matchCost = parseFloat((matchCount * ratePerService).toFixed(2));
-                subtotal += matchCost;
-                
-                let matchType = [];
-                if (isStainChecked) matchType.push('Stain');
-                if (isPaintChecked) matchType.push('Paint');
-                if (isLacquerChecked) matchType.push('Lacquer');
-                const matchName = `Color/Finish Match Fee (${matchType.join(' & ')})`;
-
-                breakdown.push({ name: matchName, cost: matchCost, qty: matchCount, unit: 'service(s)', rate: ratePerService });
-                matchFeeStatusEl.textContent = `$${matchCost.toFixed(2)} Match Fee Applied`;
+            if (matchFeeCount > 0) {
+                const matchFeeCost = matchFeeCount * CURRENT_PRICES.matchFee;
+                subtotal += matchFeeCost;
+                breakdown.push({ 
+                    name: 'Color/Finish Matching Fee', 
+                    cost: matchFeeCost, 
+                    qty: matchFeeCount, 
+                    unit: 'SERVICE', 
+                    rate: CURRENT_PRICES.matchFee,
+                    note: (isStainChecked ? 'Stain, ' : '') + 
+                          (isPaintChecked ? 'Paint, ' : '') + 
+                          (isLacquerChecked ? 'Lacquer' : '')
+                });
+                matchFeeStatusEl.textContent = `Matching fee applied: ${matchFeeCount} x $150 = $${matchFeeCost.toFixed(2)}`;
                 matchFeeStatusEl.classList.remove('hidden');
-            }
-
-            // 4. Custom Flat Rate Items
-            const faceframeCost = getValue('input-faceframe-repair');
-            if (faceframeCost > 0) {
-                subtotal += faceframeCost;
-                breakdown.push({ name: 'Faceframe Repair (Custom)', cost: faceframeCost, qty: 1, unit: 'Lumpsum', rate: faceframeCost });
-            }
-
-            const miscCost = getValue('input-misc-custom');
-            const miscDescription = getValue('input-misc-description', false); 
-            
-            if (miscCost > 0) {
-                subtotal += miscCost;
-                breakdown.push({ 
-                    name: 'Miscellaneous/Customization (Custom)', 
-                    cost: miscCost, 
-                    qty: 1, 
-                    unit: 'Lumpsum', 
-                    rate: miscCost,
-                    description: miscDescription
-                });
-            }
-
-            // 5. RUSH FEE LOGIC
-            const isRushed = getValue('checkbox-rushed', false);
-            total = subtotal; // Start total at subtotal
-            
-            if (isRushed) {
-                const rushFee = parseFloat((subtotal * 0.5).toFixed(2));
-                total += rushFee; 
-                
-                // Add the rush fee line item to the breakdown
-                breakdown.push({ 
-                    name: 'Rush Service Fee (50% Cost)', 
-                    cost: rushFee, 
-                    qty: 1, 
-                    unit: 'service', 
-                    rate: '50% of Subtotal',
-                    isRushFee: true 
-                });
-            }
-
-            // Final Total Formatting
-            const formattedTotal = total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            totalCostEl.textContent = `$${formattedTotal}`;
-
-            // Enable/disable print button and generate receipt
-            const totalIsPositive = total > 0;
-            if (totalIsPositive) {
-                printBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                printBtn.disabled = false;
-                generatePrintReceipt(formattedTotal, breakdown.filter(item => item.cost > 0), subtotal);
             } else {
-                printBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                printBtn.disabled = true;
-                receiptContainer.innerHTML = ''; 
+                matchFeeStatusEl.classList.add('hidden');
             }
-        };
 
-
-        const generatePrintReceipt = (formattedTotal, breakdownData, subtotal) => {
-            // Get job details for the receipt
-            const jobName = getValue('job-name', false) || 'N/A';
-            const clientPhone = getValue('client-phone', false) || 'N/A';
-            const jobAddress = getValue('job-address', false) || 'N/A';
-            
-            // --- DATE FORMATTING LOGIC ---
-            const jobDateRaw = jobDateInput.value; // YYYY-MM-DD
-            let jobDateFormatted = 'N/A';
-
-            if (jobDateRaw) {
-                // Add T00:00:00 to the date string to ensure it's parsed as UTC midnight,
-                // preventing timezone offsets from changing the day.
-                const dateObj = new Date(jobDateRaw + 'T00:00:00'); 
-                jobDateFormatted = dateObj.toLocaleDateString('en-US', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
+            // Custom Flat Rate Costs
+            const faceframeRepair = getValue('input-faceframe-repair');
+            if (faceframeRepair > 0) {
+                subtotal += faceframeRepair;
+                breakdown.push({
+                    name: 'Faceframe Repair (Custom)',
+                    cost: faceframeRepair,
+                    qty: 1,
+                    unit: 'FLAT',
+                    rate: faceframeRepair
                 });
             }
-            // --- END DATE FORMATTING LOGIC ---
-            
-            const jobNotes = getValue('job-notes', false) || 'None.';
-            const selectedMaterial = materialSelect.value;
-            
-            const isStainChecked = getValue('checkbox-stain-match', false);
-            const isPaintChecked = getValue('checkbox-paint-match', false);
-            const isLacquerChecked = getValue('checkbox-lacquer-match', false);
-            const isRushed = getValue('checkbox-rushed', false);
-            
-            let matchTypeDisplay = 'None Requested';
-            let matchTypeList = [];
-            if (isStainChecked) matchTypeList.push('Stain');
-            if (isPaintChecked) matchTypeList.push('Paint');
-            if (isLacquerChecked) matchTypeList.push('Lacquer');
 
-            if (matchTypeList.length > 0) {
-                matchTypeDisplay = matchTypeList.join(' & ');
+            const miscCustom = getValue('input-misc-custom');
+            if (miscCustom > 0) {
+                const miscDescription = getValue('input-misc-description', false) || 'Miscellaneous Custom Work';
+                subtotal += miscCustom;
+                breakdown.push({
+                    name: miscDescription,
+                    cost: miscCustom,
+                    qty: 1,
+                    unit: 'FLAT',
+                    rate: miscCustom
+                });
             }
-            
-            let rushDisplay = isRushed ? `<strong class="text-red-700">Yes (4 Business Days)</strong>` : 'No';
 
-            const disclaimerText = `In order to complete your cabinet order, it is necessary to have a written authorization from you. Please note, material finishes may vary once installed from finish samples used to make the material selections. Cabinetry may appear distinct from finish samples due to; but not limited to lighting surrounding contrasting furnishings and natural flaws in the wood grain. Cabinetry, especially faceframe repairs, may have variations in: grain, color, sheen, and grunge when compared to the original material. Once materials selection is made by you and the order is placed, it cannot be changed: Also completion of work is subject to current lead-times of materials, which may include, but not limited to; back order and/or transportation.`;
+            // Rush Fee Logic
+            const isRushed = getValue('checkbox-rushed', false);
+            let rushFee = 0;
+            if (isRushed) {
+                rushFee = parseFloat((subtotal * 0.50).toFixed(2)); // 50% extra
+                total = subtotal + rushFee;
+                breakdown.push({
+                    name: 'RUSH FEE (4-Day Completion)',
+                    cost: rushFee,
+                    qty: 1,
+                    unit: 'FLAT',
+                    rate: rushFee,
+                    isRushFee: true // Tag this item for special printing style
+                });
+            } else {
+                total = subtotal;
+            }
 
-            const companyHeaderHTML = `
-                <div class="text-center mb-8 border-b pb-4 border-gray-300">
-                    <h1 class="text-3xl font-bold text-primary-dark">Neff Enterprises Inc.</h1>
-                    <p class="text-lg text-gray-700">P.O. Box 2522</p>
-                    <p class="text-lg text-gray-700">Gilbert, AZ 85299-2522</p>
-                    <p class="text-lg text-gray-700 mt-2">ROC 120032</p>
-                    <p class="text-lg text-gray-700">480-688-7978</p>
-                </div>
-            `;
+            // Update Total Display
+            totalCostEl.textContent = `$${total.toFixed(2)}`;
             
-            const notesSectionHTML = jobNotes !== 'None.' ? `
-                <div class="mt-8 mb-8 p-4 rounded-lg border border-gray-300 bg-gray-50 receipt-info-box">
-                    <h2 class="text-xl font-semibold text-primary-dark mb-2">Job Notes</h2>
-                    <p class="whitespace-pre-wrap text-base text-gray-800">${jobNotes}</p>
-                </div>
-            ` : '';
+            // Re-render the receipt view content
+            renderReceipt(breakdown, subtotal, total, isRushed, rushFee);
+        };
+        
+        // --- Receipt Rendering Function (Unchanged) ---
+        const renderReceipt = (breakdown, subtotal, total, isRushed, rushFee) => {
+            // NEW FIELDS
+            const companyName = getValue('company-name', false);
+            const projectManager = getValue('project-manager', false);
             
-            // Generate the line items
-            const lineItemsHTML = breakdownData.map(item => {
-                const isRushFee = item.isRushFee;
-                const nameClass = isRushFee ? 'text-red-700 font-bold' : 'text-gray-600';
-                const costClass = isRushFee ? 'text-red-800' : 'text-gray-900';
-                const descriptionHtml = item.description ? `<p class="text-sm text-gray-500 italic mt-1 ml-4 whitespace-pre-wrap">Notes: ${item.description}</p>` : '';
+            const jobName = getValue('job-name', false);
+            const jobAddress = getValue('job-address', false);
+            const clientPhone = getValue('client-phone', false);
+            const quoteDate = getValue('job-date', false);
+            const jobNotes = getValue('job-notes', false);
+            const materialUsed = materialSelect.value;
+            
+            // Group items into categories for display order
+            const linealFootItems = breakdown.filter(item => item.unit === 'ft');
+            const pieceItems = breakdown.filter(item => item.unit === 'PC');
+            const flatRateItems = breakdown.filter(item => item.unit === 'FLAT' && !item.isRushFee);
+            const rushFeeItem = breakdown.find(item => item.isRushFee);
+            
+            // Helper function to format currency
+            const formatCurrency = (amount) => `$${(amount || 0).toFixed(2)}`;
+            
+            // Helper function to render a breakdown section
+            const renderSection = (items, title, showRate = true) => {
+                if (items.length === 0) return '';
                 
-                let rateDisplay = '';
-                if (item.unit === 'Lumpsum') {
-                    rateDisplay = 'Flat Rate';
-                } else if (item.isRushFee) {
-                    rateDisplay = item.rate;
-                } else if (item.unit) {
-                    rateDisplay = `$${item.rate.toFixed(2)} / ${item.unit}`;
-                }
-
-                const qtyDisplay = item.unit === 'Lumpsum' ? '' : `${item.qty} ${item.unit} @ `;
-
-                return `
-                    <li class="border-b border-gray-200 pb-2 mb-2 ${isRushFee ? 'is-rush-fee' : ''}">
-                        <div class="flex">
-                            <span class="flex-1 ${nameClass}">${item.name}</span>
-                            <span class="w-40 text-primary-dark font-medium text-right">${qtyDisplay}${rateDisplay}</span>
-                            <span class="w-24 font-bold ${costClass} text-right ml-4">$${item.cost.toFixed(2)}</span>
-                        </div>
-                        ${descriptionHtml} 
-                    </li>
+                let html = `
+                    <div class="mb-6">
+                        <h3 class="receipt-section-header text-lg font-bold text-primary-dark">${title}</h3>
+                        <div class="space-y-2">
                 `;
-            }).join('');
-            
-            // Generate subtotal bar if rush fee is applied
-            const subtotalBarHTML = isRushed ? `
-                <div class="flex justify-between items-center text-xl font-semibold text-gray-700 mb-3 border-b border-gray-300 pb-2">
-                    <span>Subtotal:</span>
-                    <span>$${subtotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
-                </div>
-            ` : '';
-
-
-            let receiptHTML = `
-                <div class="p-8 bg-white max-w-3xl mx-auto">
-                    ${companyHeaderHTML}
-                    <h1 class="text-4xl font-extrabold text-primary-dark mb-4 text-center receipt-section-header">QUOTE</h1>
-                    <div class="mb-8 p-4 rounded-lg border receipt-info-box">
-                        <h2 class="text-2xl font-semibold text-accent mb-3">Client / Job Details</h2>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-base">
-                            <div><strong class="text-gray-700">Job Name/Number:</strong> ${jobName}</div>
-                            <div><strong class="text-gray-700">Quote Date:</strong> ${jobDateFormatted}</div>
-                            <div><strong class="text-gray-700">Material:</strong> ${selectedMaterial}</div>
-                            <div><strong class="text-gray-700">Project Manager's Phone:</strong> ${clientPhone}</div>
-                            <div><strong class="text-gray-700">Finish Match:</strong> ${matchTypeDisplay}</div>
-                            <div><strong class="text-gray-700">RUSH Service:</strong> ${rushDisplay}</div>
-                            <div class="sm:col-span-2"><strong class="text-gray-700">Address:</strong> ${jobAddress}</div>
-                        </div>
-                    </div>
-
-                    <!-- Cost Breakdown for Receipt -->
-                    <h2 class="text-2xl font-semibold text-primary-dark mb-4 receipt-section-header">Itemized Cost Breakdown</h2>
-                    <ul class="space-y-3 text-lg mb-12">
-                        ${lineItemsHTML}
-                    </ul>
+                
+                items.forEach(item => {
+                    const rateDisplay = showRate ? `${formatCurrency(item.rate)} / ${item.unit}` : 'FLAT RATE';
+                    const noteDisplay = item.note ? `<p class="text-xs text-gray-500 italic ml-4">(${item.note})</p>` : '';
                     
-                    ${subtotalBarHTML}
-
-                    <!-- Total for Receipt -->
-                    <div class="flex justify-between items-center bg-accent/20 p-6 rounded-xl border-2 border-accent receipt-total-bar mb-12">
-                        <span class="text-2xl font-bold text-primary-dark">GRAND TOTAL:</span>
-                        <span class="text-5xl font-extrabold text-accent">$${formattedTotal}</span>
-                    </div>
-                    
-                    ${notesSectionHTML}
-
-                    <!-- Authorization Section -->
-                    <div class="mt-8 pt-6 border-t border-gray-200">
-                        <h3 class="text-xl font-bold text-primary-dark mb-4">Client Authorization & Terms</h3>
-                        <div class="p-4 mb-10 text-sm text-gray-700 rounded-lg receipt-disclaimer-box border">
-                            ${disclaimerText}
-                        </div>
-                        <div class="space-y-8 text-base">
-                            <div class="grid grid-cols-3 gap-x-12">
-                                <div class="col-span-2 pb-1">
-                                    <div class="border-b border-gray-500 mb-1 h-8"></div>
-                                    <span class="text-gray-600">Signature</span>
-                                </div>
-                                <div class="pb-1">
-                                    <div class="border-b border-gray-500 mb-1 h-8"></div>
-                                    <span class="text-gray-600">Date</span>
-                                </div>
+                    html += `
+                        <div class="flex justify-between items-start p-2 border-b border-gray-100 ${item.isRushFee ? 'is-rush-fee' : ''}">
+                            <div class="flex-1">
+                                <p class="font-medium text-primary-dark">${item.name}</p>
+                                <p class="text-sm text-gray-600">${item.qty} ${item.unit} @ ${rateDisplay}</p>
+                                ${noteDisplay}
                             </div>
-                            <div class="pb-1 mt-[-10px]">
-                                <div class="border-b border-gray-300 mb-1 h-5"></div>
-                                <span class="text-gray-600 text-sm italic">Printed Name</span>
+                            <span class="font-bold text-lg text-primary-dark price-display">${formatCurrency(item.cost)}</span>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+                return html;
+            };
+
+            const receiptHTML = `
+                <div class="p-8 max-w-2xl mx-auto bg-white shadow-xl min-h-screen">
+                    <header class="text-center mb-8">
+                        <h1 class="text-4xl font-extrabold text-accent mb-2">NEFF ENTERPRISES</h1>
+                        <p class="text-xl font-semibold text-primary-dark border-b-2 border-gray-200 pb-3 mb-4">Cabinet Rebuild Estimate</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 text-left text-sm receipt-info-box p-4 rounded-lg">
+                            <div>
+                                <p><span class="font-bold">Company:</span> ${companyName || 'TBD'}</p>
+                                <p><span class="font-bold">Project Manager:</span> ${projectManager || 'TBD'}</p>
+                                <p><span class="font-bold">Job Name:</span> ${jobName || 'TBD'}</p>
+                                <p><span class="font-bold">Address:</span> ${jobAddress || 'TBD'}</p>
+                            </div>
+                            <div>
+                                <p><span class="font-bold">Project Mgr Phone:</span> ${clientPhone || 'TBD'}</p>
+                                <p><span class="font-bold">Quote Date:</span> ${quoteDate || 'TBD'}</p>
+                                <p><span class="font-bold">Material:</span> ${materialUsed || 'TBD'}</p>
+                                <p class="text-red-600 font-bold">${isRushed ? 'RUSHED ORDER (4-Day)' : 'Standard Lead Time'}</p>
+                            </div>
+                        </div>
+                    </header>
+                    
+                    <!-- Notes Section -->
+                    ${jobNotes ? `
+                        <div class="mb-6 p-4 border border-gray-300 rounded-lg bg-gray-50">
+                            <h3 class="font-bold text-primary-dark mb-2 border-b pb-1">Job Notes</h3>
+                            <p class="text-sm text-gray-700">${jobNotes}</p>
+                        </div>
+                    ` : ''}
+
+                    <!-- Itemized Breakdown -->
+                    ${renderSection(linealFootItems, 'Cabinetry & Shelving (Lineal Feet)', true)}
+                    ${renderSection(pieceItems, 'Hardware & Accessory Pieces', true)}
+                    ${renderSection(flatRateItems, 'Custom & Flat Rate Items', false)}
+                    
+                    <!-- Totals Summary -->
+                    <div class="mt-8">
+                        <div class="flex justify-between items-center text-xl font-semibold text-primary-dark p-3 border-t border-b border-gray-300">
+                            <span>Subtotal</span>
+                            <span class="price-display">${formatCurrency(subtotal)}</span>
+                        </div>
+                        
+                        <!-- Rush Fee Line -->
+                        ${rushFeeItem ? `
+                            <div class="flex justify-between items-center text-red-600 font-bold p-3 receipt-disclaimer-box border-b border-gray-300 is-rush-fee">
+                                <span>${rushFeeItem.name} (50% of Subtotal)</span>
+                                <span class="price-display">${formatCurrency(rushFee)}</span>
+                            </div>
+                        ` : ''}
+
+                        <!-- Grand Total -->
+                        <div class="receipt-total-bar flex justify-between items-center text-2xl font-extrabold text-accent p-4 mt-2 rounded-lg">
+                            <span>GRAND TOTAL:</span>
+                            <span id="receipt-grand-total" class="price-display">${formatCurrency(total)}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Disclaimer / Terms -->
+                    <div class="mt-8 receipt-disclaimer-box p-4 rounded-lg border border-red-300">
+                        <h4 class="font-bold text-red-700 mb-2">DISCLAIMER & CONDITIONS</h4>
+                        <ul class="text-xs text-gray-700 list-disc list-inside space-y-1">
+                            <li>This is an estimate and is subject to change based on final measurements and material availability.</li>
+                            <li>Pricing is based on the selected material (e.g., Hardrock Maple, Plywood). Changing the material may alter the cost.</li>
+                            <li>A 50% non-refundable deposit is required to begin work.</li>
+                            <li>Final payment is due upon completion and prior to installation.</li>
+                            <li>Lead times are subject to change. Rushed orders are subject to a 50% fee.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Signature Lines -->
+                    <div class="mt-10 pt-4 border-t border-gray-300">
+                        <div class="grid grid-cols-2 gap-8">
+                            <div>
+                                <p class="border-b border-black w-full h-10"></p>
+                                <span class="block text-center text-gray-600 text-sm italic">Client Signature</span>
+                            </div>
+                            <div>
+                                <p class="border-b border-black w-full h-10"></p>
+                                <span class="block text-center text-gray-600 text-sm italic">Printed Name</span>
                             </div>
                         </div>
                     </div>
