@@ -796,7 +796,23 @@
             const jobName = getValue('job-name', false) || 'N/A';
             const clientPhone = getValue('client-phone', false) || 'N/A';
             const jobAddress = getValue('job-address', false) || 'N/A';
-            const jobDate = jobDateInput.value;
+            
+            // --- DATE FORMATTING LOGIC ---
+            const jobDateRaw = jobDateInput.value; // YYYY-MM-DD
+            let jobDateFormatted = 'N/A';
+
+            if (jobDateRaw) {
+                // Add T00:00:00 to the date string to ensure it's parsed as UTC midnight,
+                // preventing timezone offsets from changing the day.
+                const dateObj = new Date(jobDateRaw + 'T00:00:00'); 
+                jobDateFormatted = dateObj.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            }
+            // --- END DATE FORMATTING LOGIC ---
+            
             const jobNotes = getValue('job-notes', false) || 'None.';
             const selectedMaterial = materialSelect.value;
             
@@ -883,7 +899,7 @@
                         <h2 class="text-2xl font-semibold text-accent mb-3">Client / Job Details</h2>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-base">
                             <div><strong class="text-gray-700">Job Name/Number:</strong> ${jobName}</div>
-                            <div><strong class="text-gray-700">Quote Date:</strong> ${jobDate}</div>
+                            <div><strong class="text-gray-700">Quote Date:</strong> ${jobDateFormatted}</div>
                             <div><strong class="text-gray-700">Material:</strong> ${selectedMaterial}</div>
                             <div><strong class="text-gray-700">Project Manager's Phone:</strong> ${clientPhone}</div>
                             <div><strong class="text-gray-700">Finish Match:</strong> ${matchTypeDisplay}</div>
