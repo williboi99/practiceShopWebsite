@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Euro Cabinet Cut List Generator</title>
+    <title>Neff Enterprises Tool Suite</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -16,7 +16,6 @@
                     colors: {
                         'primary-dark': '#1f2937', // Gray-800
                         'accent': '#059669', // Vibrant Emerald Green
-                        // Confirmed: This is the requested hex code for the navigation bar
                         'nav-dark': '#0f172a', // Deep Charcoal/Navy (NavBar background)
                         'nav-text': '#f3f4f6', // Light gray/White for navbar text
                         'active-yellow': '#f59e0b', // Specific yellow/gold color (f59e0b) - Used for active Resources and hover state
@@ -32,7 +31,8 @@
             padding-top: 64px; /* Ensure padding at the top to clear the fixed navigation bar */
         }
         .card {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            /* Adjusted shadow for the individual tool containers */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
         }
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
@@ -54,14 +54,12 @@
             border-radius: 0.5rem;
             cursor: pointer;
             transition: all 0.15s ease-in-out;
-            /* Add hover effect for better UX */
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
         .configuration-group .custom-radio-label:hover {
              border-color: #d1d5db; /* Slightly darker gray border on hover */
         }
         
-        /* ADDED: Instant feedback on click/tap */
         .configuration-group .custom-radio-label:active {
             transform: scale(0.98);
         }
@@ -69,12 +67,10 @@
         /* --- Final Checked State (Very Dark Gray Fill) --- */
         .configuration-group input[type="radio"]:checked + .custom-radio-label {
             border-color: #059669; /* Keep the Accent color border */
-            /* UPDATED to a very deep gray (Tailwind gray-700: #374151) for strong "filled" appearance */
-            background-color: #374151; 
+            background-color: #374151; /* Dark Gray Fill */
             color: #ffffff; /* White text for maximum contrast */
             box-shadow: 0 1px 3px rgba(5, 150, 105, 0.4);
         }
-        /* Ensure the text within the selected label is white for readability */
         .configuration-group input[type="radio"]:checked + .custom-radio-label span {
             color: #ffffff; 
         }
@@ -120,125 +116,240 @@
                 New Cabinets
             </a>
             <a href="cabinetCostTool.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
-                Rebuild Price Calculator
-            </a>
+                        Rebuild Price Calculator
+                    </a>
         </div>
     </header>
 
-    <!-- CUT LIST INPUT AND OUTPUT AREA -->
+    <!-- MAIN TOOL AREA: Contains Collapsible Sections -->
     <div class="p-4 flex justify-center items-start pt-8">
-        <div class="w-full max-w-4xl bg-white rounded-xl p-6 card">
-            <h1 class="text-3xl font-bold text-primary-dark mb-2 text-center">Euro Cabinet Cut List Generator</h1>
-            <p class="text-center text-gray-500 mb-8">Calculate precise dimensions for your frameless (Euro) cabinet components.</p>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Input Panel -->
-                <div class="space-y-6">
-                    <h2 class="text-xl font-semibold text-accent border-b pb-2">Cabinet Specifications</h2>
+        <div class="w-full max-w-4xl space-y-6">
 
-                    <!-- Material Thickness Selector -->
-                    <div class="input-group mb-4">
-                        <label for="material-thickness" class="block text-lg font-medium text-gray-700 mb-1">Material Thickness (T)</label>
-                        <select id="material-thickness" class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <option value="0.75" selected>3/4" (0.75 in)</option>
-                            <option value="0.625">5/8" (0.625 in)</option>
-                        </select>
-                        <p class="text-sm text-gray-500 mt-1">This is critical for calculating box width reductions.</p>
-                    </div>
-
-                    <!-- Input Fields: Height, Face Height, Depth, Width -->
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="input-group">
-                            <label for="box-height" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Height (A)</label>
-                            <input type="number" id="box-height" value="34.5" min="0" step="0.01" placeholder="34.5"
-                                        class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
-                            <p class="text-sm text-gray-500 mt-1">Overall height of the box.</p>
-                        </div>
-                        <div class="input-group">
-                            <label for="face-height" class="block text-lg font-medium text-gray-700 mb-1">Face Height (B)</label>
-                            <input type="number" id="face-height" value="30.5" min="0" step="0.01" placeholder="30.5"
-                                        class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
-                            <p class="text-sm text-gray-500 mt-1">Height of the face/door/drawer.</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="input-group">
-                            <label for="box-depth" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Depth (C)</label>
-                            <input type="number" id="box-depth" value="24.0" min="0" step="0.01" placeholder="24.0"
-                                        class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
-                            <p class="text-sm text-gray-500 mt-1">Standard 24 or 21 inches.</p>
-                        </div>
-                        <div class="input-group">
-                            <label for="box-width" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Width (D)</label>
-                            <input type="number" id="box-width" value="36.0" min="0" step="0.01" placeholder="36.0"
-                                        class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
-                            <p class="text-sm text-gray-500 mt-1">Overall width (e.g., 36 inches).</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Configuration Selector (New Section) -->
-                    <div class="configuration-group border-t pt-6 space-y-2">
-                        <label class="block text-xl font-semibold text-accent mb-2">Cabinet Configuration</label>
-                        
-                        <label class="custom-radio-label">
-                            <input type="radio" name="cabinet-type" value="door_drawer" id="config-door-drawer" checked>
-                            <span class="ml-3 text-lg font-medium text-gray-800">Door + Drawer</span>
-                        </label>
-                        
-                        <label class="custom-radio-label">
-                            <input type="radio" name="cabinet-type" value="full_door" id="config-full-door">
-                            <span class="ml-3 text-lg font-medium text-gray-800">Full Height Doors</span>
-                        </label>
-                        
-                        <label class="custom-radio-label">
-                            <input type="radio" name="cabinet-type" value="drawer_bank" id="config-drawer-bank">
-                            <span class="ml-3 text-lg font-medium text-gray-800">Drawer Bank</span>
-                        </label>
-                    </div>
-
+            <!-- 1. EURO CABINET CUT LIST GENERATOR (Collapsible) -->
+            <div class="bg-white rounded-xl shadow-xl">
+                <!-- Header (Clickable to Toggle) -->
+                <div id="cut-list-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
+                    <h1 class="text-2xl font-bold text-primary-dark">Euro Cabinet Cut List Generator</h1>
+                    <!-- Down Arrow Icon -->
+                    <svg id="cut-list-icon" class="w-6 h-6 text-gray-700 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
                 </div>
+                
+                <!-- Content (Initially Hidden) -->
+                <div id="cut-list-content" class="hidden p-6">
+                    <p class="text-center text-gray-500 mb-8">Calculate precise dimensions for your frameless (Euro) cabinet components.</p>
+            
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Input Panel -->
+                        <div class="space-y-6">
+                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Cabinet Specifications</h2>
 
-                <!-- Output Panel -->
-                <div class="space-y-4">
-                    <h2 class="text-xl font-semibold text-accent border-b pb-2">Calculated Cut List</h2>
-                    
-                    <!-- Cut List Results -->
-                    <div id="results-container" class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <!-- Sides -->
-                        <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-accent">
-                            <h3 class="text-lg font-bold text-primary-dark">Sides (2x)</h3>
-                            <p class="text-2xl font-extrabold text-accent" id="cut-side-dims">0" x 0"</p>
-                            <p class="text-sm text-gray-600">Height x Depth (A x C)</p>
+                            <!-- Material Thickness Selector -->
+                            <div class="input-group mb-4">
+                                <label for="material-thickness" class="block text-lg font-medium text-gray-700 mb-1">Material Thickness (T)</label>
+                                <select id="material-thickness" class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                                    <option value="0.75" selected>3/4" (0.75 in)</option>
+                                    <option value="0.625">5/8" (0.625 in)</option>
+                                </select>
+                                <p class="text-sm text-gray-500 mt-1">This is critical for calculating box width reductions.</p>
+                            </div>
+
+                            <!-- Input Fields: Height, Face Height, Depth, Width -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="input-group">
+                                    <label for="box-height" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Height (A)</label>
+                                    <input type="number" id="box-height" value="34.5" min="0" step="0.01" placeholder="34.5"
+                                                class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                                    <p class="text-sm text-gray-500 mt-1">Overall height of the box.</p>
+                                </div>
+                                <div class="input-group">
+                                    <label for="face-height" class="block text-lg font-medium text-gray-700 mb-1">Face Height (B)</label>
+                                    <input type="number" id="face-height" value="30.5" min="0" step="0.01" placeholder="30.5"
+                                                class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                                    <p class="text-sm text-gray-500 mt-1">Height of the face/door/drawer.</p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="input-group">
+                                    <label for="box-depth" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Depth (C)</label>
+                                    <input type="number" id="box-depth" value="24.0" min="0" step="0.01" placeholder="24.0"
+                                                class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                                    <p class="text-sm text-gray-500 mt-1">Standard 24 or 21 inches.</p>
+                                </div>
+                                <div class="input-group">
+                                    <label for="box-width" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Width (D)</label>
+                                    <input type="number" id="box-width" value="36.0" min="0" step="0.01" placeholder="36.0"
+                                                class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                                    <p class="text-sm text-gray-500 mt-1">Overall width (e.g., 36 inches).</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Configuration Selector (New Section) -->
+                            <div class="configuration-group border-t pt-6 space-y-2">
+                                <label class="block text-xl font-semibold text-accent mb-2">Cabinet Configuration</label>
+                                
+                                <label class="custom-radio-label">
+                                    <input type="radio" name="cabinet-type" value="door_drawer" id="config-door-drawer" checked>
+                                    <span class="ml-3 text-lg font-medium text-gray-800">Door + Drawer</span>
+                                </label>
+                                
+                                <label class="custom-radio-label">
+                                    <input type="radio" name="cabinet-type" value="full_door" id="config-full-door">
+                                    <span class="ml-3 text-lg font-medium text-gray-800">Full Height Doors</span>
+                                </label>
+                                
+                                <label class="custom-radio-label">
+                                    <input type="radio" name="cabinet-type" value="drawer_bank" id="config-drawer-bank">
+                                    <span class="ml-3 text-lg font-medium text-gray-800">Drawer Bank</span>
+                                </label>
+                            </div>
+
                         </div>
 
-                        <!-- Bottom (1x) -->
-                        <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-blue-500">
-                            <h3 class="text-lg font-bold text-primary-dark">Bottom (1x)</h3>
-                            <p class="text-2xl font-extrabold text-blue-500" id="cut-bottom-dims-actual">0" x 0"</p>
-                            <p class="text-sm text-gray-600">Adjusted Width x Deduced Depth ($(D - 2T) \times (C - (T + 1/4"))$)</p>
+                        <!-- Output Panel -->
+                        <div class="space-y-4">
+                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Calculated Cut List</h2>
+                            
+                            <!-- Cut List Results -->
+                            <div id="results-container" class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                <!-- Sides -->
+                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-accent">
+                                    <h3 class="text-lg font-bold text-primary-dark">Sides (2x)</h3>
+                                    <p class="text-2xl font-extrabold text-accent" id="cut-side-dims">0" x 0"</p>
+                                </div>
+
+                                <!-- Bottom (1x) -->
+                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-blue-500">
+                                    <h3 class="text-lg font-bold text-primary-dark">Bottom (1x)</h3>
+                                    <p class="text-2xl font-extrabold text-blue-500" id="cut-bottom-dims-actual">0" x 0"</p>
+                                </div>
+                                
+                                <!-- Stretchers (Nx) -->
+                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-indigo-500">
+                                    <h3 class="text-lg font-bold text-primary-dark" id="stretcher-count-title">Stretchers (5x)</h3>
+                                    <p class="text-2xl font-extrabold text-indigo-500" id="cut-stretcher-dims">0" x 0"</p>
+                                </div>
+
+                                <!-- Back Panel -->
+                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-red-500">
+                                    <h3 class="text-lg font-bold text-primary-dark">Back Panel (1x)</h3>
+                                    <p class="text-2xl font-extrabold text-red-500" id="cut-back-dims">0" x 0.00"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 pt-4 border-t border-gray-200">
+                        <p class="text-sm text-gray-500 text-center">All dimensions are in inches (in). Width is always listed first, followed by height/depth.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. DRAWER REBUILD COST CALCULATOR (Collapsible Section) -->
+            <div class="bg-white rounded-xl shadow-xl">
+                <!-- Header (Clickable to Toggle) -->
+                <div id="drawer-cost-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
+                    <h1 class="text-2xl font-bold text-primary-dark">Drawer Rebuild Cost Calculator</h1>
+                    <!-- Down Arrow Icon -->
+                    <svg id="drawer-cost-icon" class="w-6 h-6 text-gray-700 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+                
+                <!-- Content (Initially Hidden) -->
+                <div id="drawer-cost-content" class="hidden p-6">
+                    <p class="text-center text-gray-500 mb-8">Calculate the estimated cost for rebuilding a single drawer box.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Inputs -->
+                        <div class="space-y-4">
+                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Drawer Dimensions</h2>
+
+                            <div class="input-group">
+                                <label for="drawer-width" class="block text-lg font-medium text-gray-700 mb-1">Drawer Width (in)</label>
+                                <input type="number" id="drawer-width" value="18.0" min="0" step="0.1" placeholder="18.0"
+                                            class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                                <p class="text-sm text-gray-500 mt-1">Overall width of the drawer box.</p>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="drawer-depth" class="block text-lg font-medium text-gray-700 mb-1">Drawer Depth (in)</label>
+                                <input type="number" id="drawer-depth" value="21.0" min="0" step="0.1" placeholder="21.0"
+                                            class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                                <p class="text-sm text-gray-500 mt-1">Overall depth of the drawer box.</p>
+                            </div>
                         </div>
                         
-                        <!-- Stretchers (Nx) -->
-                        <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-indigo-500">
-                            <h3 class="text-lg font-bold text-primary-dark" id="stretcher-count-title">Stretchers (5x)</h3>
-                            <p class="text-2xl font-extrabold text-indigo-500" id="cut-stretcher-dims">0" x 0"</p>
-                            <p class="text-sm text-gray-600">Adjusted Width x Calculated Depth ($(D - 2T) \times (A - B)$)</p>
+                        <!-- Output -->
+                        <div class="space-y-4">
+                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Calculated Cost</h2>
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <h3 class="text-lg font-bold text-primary-dark">Estimated Cost</h3>
+                                <p class="text-4xl font-extrabold text-green-600 mt-1" id="calculated-cost">$0.00</p>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
 
-                        <!-- Back Panel -->
-                        <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-red-500">
-                            <h3 class="text-lg font-bold text-primary-dark">Back Panel (1x)</h3>
-                            <p class="text-2xl font-extrabold text-red-500" id="cut-back-dims">0" x 0.00"</p>
-                            <p class="text-sm text-gray-600">Calculated Width (Fraction) x Face Height (Decimal)</p>
+            <!-- 3. FACEFRAME REPAIR COST CALCULATOR (New Collapsible Section) -->
+            <div class="bg-white rounded-xl shadow-xl">
+                <!-- Header (Clickable to Toggle) -->
+                <div id="faceframe-repair-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
+                    <h1 class="text-2xl font-bold text-primary-dark">Faceframe Repair Cost Calculator</h1>
+                    <!-- Down Arrow Icon -->
+                    <svg id="faceframe-repair-icon" class="w-6 h-6 text-gray-700 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+                
+                <!-- Content (Initially Hidden) -->
+                <div id="faceframe-repair-content" class="hidden p-6">
+                    <p class="text-center text-gray-500 mb-8">Estimate the labor and material costs for repairing damaged faceframe sections.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Inputs -->
+                        <div class="space-y-4">
+                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Repair Details</h2>
+
+                            <!-- 1. How many sections of face are damaged -->
+                            <div class="input-group">
+                                <label for="faceframe-sections" class="block text-lg font-medium text-gray-700 mb-1">Sections Damaged</label>
+                                <input type="number" id="faceframe-sections" value="1" min="1" step="1" placeholder="1"
+                                            class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                                <p class="text-sm text-gray-500 mt-1">Number of distinct sections (stiles/rails) requiring repair (max 10).</p>
+                            </div>
+
+                            <!-- Dynamic Damage Level Selectors will go here (NOW IN A RESPONSIVE 2-COLUMN GRID) -->
+                            <div id="damage-level-container" class="pt-4 border-t border-gray-200">
+                                <!-- Selectors generated by JavaScript -->
+                            </div>
+
+                            <!-- 2. Whole faceframe checkbox (Price text removed) -->
+                            <div class="input-group pt-4">
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" id="faceframe-remade" class="form-checkbox h-5 w-5 text-accent rounded focus:ring-accent border-gray-300">
+                                    <span class="text-lg font-medium text-gray-700">Whole faceframe will need remade / sanded + refinished</span>
+                                </label>
+                                <p class="text-sm text-gray-500 mt-1">Checking this box sets a flat total price of $250.00 and disregards individual sections.</p>
+                            </div>
+
+                        </div>
+                        
+                        <!-- Output -->
+                        <div class="space-y-4">
+                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Estimated Total</h2>
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <h3 class="text-lg font-bold text-primary-dark">Estimated Repair Cost</h3>
+                                <p class="text-4xl font-extrabold text-green-600 mt-1" id="faceframe-calculated-cost">$0.00</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="mt-8 pt-4 border-t border-gray-200">
-                <p class="text-sm text-gray-500 text-center">All dimensions are in inches (in). Width is always listed first, followed by height/depth.</p>
-            </div>
+            <!-- Global Footer Note (REMOVED) -->
+
         </div>
     </div>
 
@@ -283,7 +394,24 @@
             }
         };
 
-        // --- Core Calculation Logic ---
+        // --- Toggle Function for Collapsible Sections ---
+        const toggleSection = (headerId, contentId, iconId) => {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+            
+            if (content && icon) {
+                const isHidden = content.classList.toggle('hidden');
+                
+                // Rotate the icon 180 degrees when visible
+                if (isHidden) {
+                    icon.classList.remove('rotate-180');
+                } else {
+                    icon.classList.add('rotate-180');
+                }
+            }
+        };
+
+        // --- Core Calculation Logic for Cut List ---
         const calculateCutList = () => {
             // Get raw input values
             const T_str = document.getElementById('material-thickness').value;
@@ -365,20 +493,168 @@
             const back_width_fraction = decimalToFraction(back_width_decimal);
             updateResult('cut-back-dims', back_width_fraction, back_height_decimal);
         };
+        
+        // --- Calculation Logic for Drawer Rebuild Cost ---
+        const calculateDrawerCost = () => {
+            const W_raw = parseFloat(document.getElementById('drawer-width').value); // Width
+            const D_raw = parseFloat(document.getElementById('drawer-depth').value); // Depth
+            const costEl = document.getElementById('calculated-cost');
+            const MAX_COST = 135.00;
+
+            if (isNaN(W_raw) || W_raw <= 0 || isNaN(D_raw) || D_raw <= 0) {
+                costEl.textContent = "$0.00";
+                return;
+            }
+
+            let multiplier;
+            // Multiplier is 3.0 if width <= 6, or 3.5 if width > 6
+            if (W_raw <= 6) {
+                multiplier = 3.0;
+            } else { // W_raw > 6
+                multiplier = 3.5;
+            }
+
+            // FORMULA: Cost = (Depth * 2) + (Width * 2) * Multiplier
+            const cost_unlimited = (D_raw * 2) + (W_raw * 2 * multiplier);
+            
+            let finalCost = cost_unlimited;
+
+            // Apply max cap of $135.00
+            if (finalCost > MAX_COST) {
+                finalCost = MAX_COST;
+            }
+
+            costEl.textContent = `$${finalCost.toFixed(2)}`;
+        };
+        
+        // Utility function to generate the selector options HTML
+        const getDamageOptionHTML = (index) => {
+            // Updated classes for larger input box (p-3, text-base)
+            // Full descriptive text restored for options
+            return `
+                <div>
+                    <label for="damage-level-${index}" class="block text-lg font-medium text-gray-700 mb-1">Section ${index}</label>
+                    <select id="damage-level-${index}" 
+                            class="faceframe-damage-level-selector block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-base transition duration-150">
+                        <option value="touch-up" data-cost="20" selected>Simple touch-up (marker/putty)</option>
+                        <option value="small-break" data-cost="50">Small break (epoxy + refinish)</option>
+                        <option value="replaced" data-cost="70">Needs replaced</option>
+                    </select>
+                </div>
+            `;
+        };
+
+        // --- Renders Dynamic Damage Severity Selectors ---
+        const renderDamageLevelSelectors = () => {
+            const sectionsInput = document.getElementById('faceframe-sections');
+            const container = document.getElementById('damage-level-container');
+            if (!sectionsInput || !container) return;
+
+            const sections = parseInt(sectionsInput.value);
+            // Limit sections for safety and performance (max 10)
+            const numSections = Math.max(1, Math.min(10, sections || 1)); 
+
+            // Wrap selectors in a responsive grid container: 1 column on mobile, 2 columns on sm+ screens
+            let html = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">';
+            for (let i = 1; i <= numSections; i++) {
+                html += getDamageOptionHTML(i);
+            }
+            html += '</div>';
+
+            container.innerHTML = html;
+            
+            // Attach event listeners to all newly created selects
+            document.querySelectorAll('.faceframe-damage-level-selector').forEach(select => {
+                select.addEventListener('change', calculateFaceframeCost);
+            });
+            
+            // Re-run calculation after rendering new inputs
+            calculateFaceframeCost(); 
+        };
+
+        // --- Calculation Logic for Faceframe Repair Cost (Updated) ---
+        const calculateFaceframeCost = () => {
+            const remade = document.getElementById('faceframe-remade').checked;
+            const costEl = document.getElementById('faceframe-calculated-cost');
+            const sections = parseInt(document.getElementById('faceframe-sections').value);
+            const FLAT_REFINISH_COST = 250.00;
+            const MAX_COST = 999.00; 
+
+            if (isNaN(sections) || sections < 1) {
+                costEl.textContent = "$0.00";
+                return;
+            }
+            
+            let totalCost = 0;
+
+            // Priority Logic: If whole faceframe remade is checked, lock the price at $250.00
+            if (remade) {
+                totalCost = FLAT_REFINISH_COST;
+            } else {
+                // If not remade, calculate damage cost based on individual sections
+                let damageCost = 0;
+                
+                // 1. Calculate damage cost by summing up all dynamic selectors
+                document.querySelectorAll('.faceframe-damage-level-selector').forEach(select => {
+                    // Read the cost directly from the data-cost attribute of the selected option
+                    const selectedOption = select.options[select.selectedIndex];
+                    const sectionCost = parseFloat(selectedOption.getAttribute('data-cost'));
+                    if (!isNaN(sectionCost)) {
+                        damageCost += sectionCost;
+                    }
+                });
+                
+                totalCost = damageCost;
+            }
+            
+            // Apply mock max cap (helpful if non-remade damage cost is extremely high)
+            if (totalCost > MAX_COST) {
+                totalCost = MAX_COST;
+            }
+
+            costEl.textContent = `$${totalCost.toFixed(2)}`;
+        };
+
 
         // --- Event Listener Setup ---
-        const inputs = [
+        const cutListInputs = [
             'material-thickness', 'box-height', 'face-height', 'box-depth', 'box-width',
-            'config-door-drawer', 'config-full-door', 'config-drawer-bank' // New radio button IDs
+            'config-door-drawer', 'config-full-door', 'config-drawer-bank' 
+        ];
+        const drawerCostInputs = [
+            'drawer-width', 'drawer-depth'
         ];
         
-        // Add listeners to all relevant inputs
-        inputs.forEach(id => {
+        // Add listeners to cut list inputs
+        cutListInputs.forEach(id => {
             const el = document.getElementById(id);
             if (el) {
                 el.addEventListener('input', calculateCutList);
             }
         });
+        
+        // Add listeners to drawer cost inputs
+        drawerCostInputs.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', calculateDrawerCost);
+            }
+        });
+        
+        // Faceframe Repair Listeners
+        const faceframeSectionInput = document.getElementById('faceframe-sections');
+        const faceframeRemadeCheckbox = document.getElementById('faceframe-remade');
+
+        if (faceframeSectionInput) {
+            // When the number of sections changes, re-render the selectors and recalculate
+            faceframeSectionInput.addEventListener('input', renderDamageLevelSelectors);
+        }
+        
+        if (faceframeRemadeCheckbox) {
+            // When the checkbox changes, just recalculate
+            faceframeRemadeCheckbox.addEventListener('change', calculateFaceframeCost);
+        }
+
 
         // --- Mobile Menu Toggle Logic & Initial Calc ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -392,8 +668,23 @@
                 });
             }
             
+            // --- Toggle Listeners ---
+            document.getElementById('cut-list-header')?.addEventListener('click', () => {
+                toggleSection('cut-list-header', 'cut-list-content', 'cut-list-icon');
+            });
+            document.getElementById('drawer-cost-header')?.addEventListener('click', () => {
+                toggleSection('drawer-cost-header', 'drawer-cost-content', 'drawer-cost-icon');
+            });
+            // New Faceframe Repair Toggle Listener
+            document.getElementById('faceframe-repair-header')?.addEventListener('click', () => {
+                toggleSection('faceframe-repair-header', 'faceframe-repair-content', 'faceframe-repair-icon');
+            });
+
+
             // Initial calculation to populate fields on load
             calculateCutList();
+            calculateDrawerCost();
+            renderDamageLevelSelectors(); // Initialize the dynamic selectors for the faceframe repair
         });
     </script>
 </body>
