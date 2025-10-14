@@ -326,7 +326,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Inputs -->
                         <div class="space-y-4">
-                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Drawer Dimensions (in)</h2>
+                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Drawer Specifications (in)</h2>
                             <div class="input-group">
                                 <label for="drawer-width" class="block text-lg font-medium text-gray-700 mb-1">Drawer Width</label>
                                 <!-- Defaulted to 0.0 -->
@@ -340,6 +340,17 @@
                                 <input type="number" id="drawer-depth" value="0.0" min="0" step="0.1" placeholder="21.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">Depth/Length of the drawer box (in).</p>
+                            </div>
+                            
+                            <!-- Checkbox for Glides (UPDATED in previous step) -->
+                            <div class="input-group pt-4 border-t border-gray-200">
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" id="drawer-new-glides" 
+                                           class="form-checkbox h-5 w-5 text-accent rounded focus:ring-accent border-gray-300">
+                                    <!-- Price text removed as requested -->
+                                    <span class="text-lg font-medium text-gray-700">Needs new set of glides</span>
+                                </label>
+                                <!-- Descriptive paragraph removed as requested -->
                             </div>
                         </div>
                         
@@ -612,20 +623,30 @@
         const calculateDrawerCost = () => {
             const W_raw = parseFloat(document.getElementById('drawer-width').value); // Width
             const D_raw = parseFloat(document.getElementById('drawer-depth').value); // Depth (Length)
+            const glidesChecked = document.getElementById('drawer-new-glides').checked; // NEW: Checkbox status
+            
             const costEl = document.getElementById('calculated-cost');
             const MAX_COST = 130.00;
+            const GLIDES_COST = 40.00; // NEW: Glide cost (still used in JS logic)
 
             // Use 0.00 if input is invalid or non-positive
             if (isNaN(W_raw) || W_raw <= 0 || isNaN(D_raw) || D_raw <= 0) {
-                costEl.textContent = "$0.00";
+                // If dimensions are invalid, cost is 0 unless glides are needed
+                let initialCost = glidesChecked ? GLIDES_COST : 0.00;
+                costEl.textContent = `$${initialCost.toFixed(2)}`;
                 return;
             }
 
             // Formula: Price = (Length + Width) * 3
-            const calculatedCost = (W_raw + D_raw) * 3;
+            const calculatedBaseCost = (W_raw + D_raw) * 3;
             
-            // Apply maximum cap of $130.00
-            const finalCost = Math.min(calculatedCost, MAX_COST); 
+            // 1. Apply maximum cap of $130.00 to the base rebuild cost
+            let finalCost = Math.min(calculatedBaseCost, MAX_COST); 
+            
+            // 2. Add glides cost after the cap, if checked
+            if (glidesChecked) {
+                finalCost += GLIDES_COST; 
+            }
             
             costEl.textContent = `$${finalCost.toFixed(2)}`;
         };
@@ -639,7 +660,8 @@
                     <select id="damage-level-${index}" 
                             class="faceframe-damage-level-selector block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-base transition duration-150">
                         <option value="touch-up" data-cost="20" selected>Simple touch-up (marker/putty)</option>
-                        <option value="small-break" data-cost="50">Small break (epoxy + refinish)</option>
+                        <!-- UPDATED TEXT HERE -->
+                        <option value="small-break" data-cost="50">Small break (epoxy / glue+clamp)</option>
                         <option value="replaced" data-cost="70">Needs replaced</option>
                     </select>
                 </div>
@@ -727,7 +749,9 @@
         ];
         
         const drawerCostInputs = [
-            'drawer-width', 'drawer-depth'
+            'drawer-width', 
+            'drawer-depth',
+            'drawer-new-glides' // NEW INPUT
         ];
         
         // Add listeners to cut list inputs
@@ -748,11 +772,13 @@
             }
         });
         
-        // Add listeners to drawer cost inputs
+        // Add listeners to drawer cost inputs (checking element type for better event handling)
         drawerCostInputs.forEach(id => {
             const el = document.getElementById(id);
             if (el) {
-                el.addEventListener('input', calculateDrawerCost);
+                // Use 'change' for checkbox/select elements, and 'input' for text/number fields
+                const eventType = (el.type === 'checkbox' || el.tagName === 'SELECT') ? 'change' : 'input';
+                el.addEventListener(eventType, calculateDrawerCost);
             }
         });
         
