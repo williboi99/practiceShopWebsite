@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neff Enterprises Tool Suite</title>
+    <title>Neff Enterprises Tool Suite - Resources</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -63,7 +63,6 @@
         .configuration-group .custom-radio-label:active {
             transform: scale(0.98);
         }
-
         /* --- Final Checked State (Very Dark Gray Fill) --- */
         .configuration-group input[type="radio"]:checked + .custom-radio-label {
             border-color: #059669; /* Keep the Accent color border */
@@ -74,7 +73,6 @@
         .configuration-group input[type="radio"]:checked + .custom-radio-label span {
             color: #ffffff; 
         }
-
     </style>
 </head>
 <body class="font-sans min-h-screen">
@@ -89,6 +87,7 @@
                     </a>
                 </div>
                 <nav class="hidden md:flex space-x-6 items-center">
+                    <!-- Note: This link now points to itself and is styled as active -->
                     <a href="resources.html" class="bg-active-yellow text-nav-dark font-bold px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition duration-150">
                         Resources
                     </a>
@@ -124,7 +123,6 @@
     <!-- MAIN TOOL AREA: Contains Collapsible Sections -->
     <div class="p-4 flex justify-center items-start pt-8">
         <div class="w-full max-w-4xl space-y-6">
-
             <!-- 1. EURO CABINET CUT LIST GENERATOR (Collapsible) -->
             <div class="bg-white rounded-xl shadow-xl">
                 <!-- Header (Clickable to Toggle) -->
@@ -144,7 +142,6 @@
                         <!-- Input Panel -->
                         <div class="space-y-6">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Cabinet Specifications</h2>
-
                             <!-- Material Thickness Selector -->
                             <div class="input-group mb-4">
                                 <label for="material-thickness" class="block text-lg font-medium text-gray-700 mb-1">Material Thickness (T)</label>
@@ -154,7 +151,6 @@
                                 </select>
                                 <p class="text-sm text-gray-500 mt-1">This is critical for calculating box width reductions.</p>
                             </div>
-
                             <!-- Input Fields: Height, Face Height, Depth, Width -->
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="input-group">
@@ -170,7 +166,6 @@
                                     <p class="text-sm text-gray-500 mt-1">Height of the face/door/drawer.</p>
                                 </div>
                             </div>
-
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="input-group">
                                     <label for="box-depth" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Depth (C)</label>
@@ -205,9 +200,7 @@
                                     <span class="ml-3 text-lg font-medium text-gray-800">Drawer Bank</span>
                                 </label>
                             </div>
-
                         </div>
-
                         <!-- Output Panel -->
                         <div class="space-y-4">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Calculated Cut List</h2>
@@ -219,7 +212,6 @@
                                     <h3 class="text-lg font-bold text-primary-dark">Sides (2x)</h3>
                                     <p class="text-2xl font-extrabold text-accent" id="cut-side-dims">0" x 0"</p>
                                 </div>
-
                                 <!-- Bottom (1x) -->
                                 <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-blue-500">
                                     <h3 class="text-lg font-bold text-primary-dark">Bottom (1x)</h3>
@@ -231,7 +223,6 @@
                                     <h3 class="text-lg font-bold text-primary-dark" id="stretcher-count-title">Stretchers (5x)</h3>
                                     <p class="text-2xl font-extrabold text-indigo-500" id="cut-stretcher-dims">0" x 0"</p>
                                 </div>
-
                                 <!-- Back Panel -->
                                 <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-red-500">
                                     <h3 class="text-lg font-bold text-primary-dark">Back Panel (1x)</h3>
@@ -246,7 +237,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- 2. DRAWER REBUILD COST CALCULATOR (Collapsible Section) -->
             <div class="bg-white rounded-xl shadow-xl">
                 <!-- Header (Clickable to Toggle) -->
@@ -260,24 +250,23 @@
                 
                 <!-- Content (Initially Hidden) -->
                 <div id="drawer-cost-content" class="hidden p-6">
+                    <!-- Removed the explicit formula text -->
                     <p class="text-center text-gray-500 mb-8">Calculate the estimated cost for rebuilding a single drawer box.</p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Inputs -->
                         <div class="space-y-4">
-                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Drawer Dimensions</h2>
-
+                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Drawer Dimensions (in)</h2>
                             <div class="input-group">
-                                <label for="drawer-width" class="block text-lg font-medium text-gray-700 mb-1">Drawer Width (in)</label>
+                                <label for="drawer-width" class="block text-lg font-medium text-gray-700 mb-1">Drawer Width</label>
                                 <input type="number" id="drawer-width" value="18.0" min="0" step="0.1" placeholder="18.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
-                                <p class="text-sm text-gray-500 mt-1">Overall width of the drawer box.</p>
+                                <p class="text-sm text-gray-500 mt-1">Width of the drawer box (in).</p>
                             </div>
-
                             <div class="input-group">
-                                <label for="drawer-depth" class="block text-lg font-medium text-gray-700 mb-1">Drawer Depth (in)</label>
+                                <label for="drawer-depth" class="block text-lg font-medium text-gray-700 mb-1">Drawer Depth (or Length)</label>
                                 <input type="number" id="drawer-depth" value="21.0" min="0" step="0.1" placeholder="21.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
-                                <p class="text-sm text-gray-500 mt-1">Overall depth of the drawer box.</p>
+                                <p class="text-sm text-gray-500 mt-1">Depth/Length of the drawer box (in).</p>
                             </div>
                         </div>
                         
@@ -292,7 +281,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- 3. FACEFRAME REPAIR COST CALCULATOR (New Collapsible Section) -->
             <div class="bg-white rounded-xl shadow-xl">
                 <!-- Header (Clickable to Toggle) -->
@@ -306,12 +294,11 @@
                 
                 <!-- Content (Initially Hidden) -->
                 <div id="faceframe-repair-content" class="hidden p-6">
-                    <p class="text-center text-gray-500 mb-8">Estimate the labor and material costs for repairing damaged faceframe sections.</p>
+                    <!-- Removed introductory paragraph -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Inputs -->
                         <div class="space-y-4">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Repair Details</h2>
-
                             <!-- 1. How many sections of face are damaged -->
                             <div class="input-group">
                                 <label for="faceframe-sections" class="block text-lg font-medium text-gray-700 mb-1">Sections Damaged</label>
@@ -319,21 +306,18 @@
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">Number of distinct sections (stiles/rails) requiring repair (max 10).</p>
                             </div>
-
                             <!-- Dynamic Damage Level Selectors will go here (NOW IN A RESPONSIVE 2-COLUMN GRID) -->
                             <div id="damage-level-container" class="pt-4 border-t border-gray-200">
                                 <!-- Selectors generated by JavaScript -->
                             </div>
-
                             <!-- 2. Whole faceframe checkbox (Price text removed) -->
                             <div class="input-group pt-4">
                                 <label class="flex items-center space-x-3">
                                     <input type="checkbox" id="faceframe-remade" class="form-checkbox h-5 w-5 text-accent rounded focus:ring-accent border-gray-300">
                                     <span class="text-lg font-medium text-gray-700">Whole faceframe will need remade / sanded + refinished</span>
                                 </label>
-                                <p class="text-sm text-gray-500 mt-1">Checking this box sets a flat total price of $250.00 and disregards individual sections.</p>
+                                <!-- Removed descriptive text here -->
                             </div>
-
                         </div>
                         
                         <!-- Output -->
@@ -349,11 +333,8 @@
             </div>
             
             <!-- Global Footer Note (REMOVED) -->
-
         </div>
     </div>
-
-
     <script>
         /**
          * Helper function to convert decimal inches to a mixed fraction string (e.g., 34.9375 -> "34 15/16").
@@ -365,21 +346,16 @@
             const integerPart = Math.floor(decimal);
             let fractionalPart = decimal - integerPart;
             if (fractionalPart === 0) return integerPart.toString();
-
             let numerator = Math.round(fractionalPart * denominator);
             
             if (numerator === denominator) {
                 return (integerPart + 1).toString();
             }
-
             const gcd = (a, b) => (b ? gcd(b, a % b) : a);
             const divisor = gcd(numerator, denominator);
-
             numerator /= divisor;
             denominator /= divisor;
-
             let fractionString = `${numerator}/${denominator}`;
-
             if (integerPart === 0) {
                 return fractionString;
             } else {
@@ -421,13 +397,12 @@
             
             const D_raw = parseFloat(document.getElementById('box-depth').value); // C (Depth)
             const W_raw = parseFloat(document.getElementById('box-width').value); // D (Overall Width)
-
             const T = parseFloat(T_str); // Thickness: 0.75 or 0.625
             
             // Constants for frameless construction
             const DADO_DEPTH = 0.25; // 1/4" dado depth for recessing the bottom
             const BACK_WIDTH_OFFSET = 0.4375; // 7/16"
-
+            
             if (isNaN(BoxH_raw) || isNaN(FaceH_raw) || isNaN(D_raw) || isNaN(W_raw) || isNaN(T)) {
                 // Keep the fields at 0.00 if input is invalid
                 updateResult('cut-side-dims', '0', '0');
@@ -464,7 +439,7 @@
             
             // Common Width for Bottom and Stretchers: (Overall Width - 2T)
             const common_inner_width = W_raw - (2 * T); 
-
+            
             // Bottom Deduction Logic: Cabinet Depth (C) - Material Thickness (T) - Dado Depth
             const bottom_deduction = T + DADO_DEPTH;
             
@@ -472,14 +447,14 @@
             const bottom_width = decimalToFraction(common_inner_width);
             const bottom_depth_raw = D_raw - bottom_deduction;
             const bottom_depth = decimalToFraction(bottom_depth_raw); 
-
+            
             // CALCULATED STRETCHER DEPTH: Cabinet Height (A) - Face Height (B)
             const STRETCHER_DEPTH_RAW = BoxH_raw - FaceH_raw;
-
+            
             // Stretchers (Nx) - Cut: Width (Fractional) x Depth (Fractional)
             const stretcher_width = decimalToFraction(common_inner_width); 
             const stretcher_depth = decimalToFraction(STRETCHER_DEPTH_RAW); 
-
+            
             // Back Panel (1x)
             // Back Panel Width = Bottom/Stretchers Width + 7/16" (0.4375)
             const back_width_decimal = common_inner_width + BACK_WIDTH_OFFSET; 
@@ -489,41 +464,28 @@
             updateResult('cut-side-dims', side_height, side_depth);
             updateResult('cut-bottom-dims-actual', bottom_width, bottom_depth);
             updateResult('cut-stretcher-dims', stretcher_width, stretcher_depth);
-
             const back_width_fraction = decimalToFraction(back_width_decimal);
             updateResult('cut-back-dims', back_width_fraction, back_height_decimal);
         };
         
-        // --- Calculation Logic for Drawer Rebuild Cost ---
+        // --- Calculation Logic for Drawer Rebuild Cost (UPDATED with $130 CAP) ---
         const calculateDrawerCost = () => {
             const W_raw = parseFloat(document.getElementById('drawer-width').value); // Width
-            const D_raw = parseFloat(document.getElementById('drawer-depth').value); // Depth
+            const D_raw = parseFloat(document.getElementById('drawer-depth').value); // Depth (Length)
             const costEl = document.getElementById('calculated-cost');
-            const MAX_COST = 135.00;
+            const MAX_COST = 130.00;
 
             if (isNaN(W_raw) || W_raw <= 0 || isNaN(D_raw) || D_raw <= 0) {
                 costEl.textContent = "$0.00";
                 return;
             }
 
-            let multiplier;
-            // Multiplier is 3.0 if width <= 6, or 3.5 if width > 6
-            if (W_raw <= 6) {
-                multiplier = 3.0;
-            } else { // W_raw > 6
-                multiplier = 3.5;
-            }
-
-            // FORMULA: Cost = (Depth * 2) + (Width * 2) * Multiplier
-            const cost_unlimited = (D_raw * 2) + (W_raw * 2 * multiplier);
+            // Formula: Price = (Length + Width) * 3 + 10
+            const calculatedCost = (W_raw + D_raw) * 3 + 10;
             
-            let finalCost = cost_unlimited;
-
-            // Apply max cap of $135.00
-            if (finalCost > MAX_COST) {
-                finalCost = MAX_COST;
-            }
-
+            // Apply maximum cap of $130.00
+            const finalCost = Math.min(calculatedCost, MAX_COST); 
+            
             costEl.textContent = `$${finalCost.toFixed(2)}`;
         };
         
@@ -543,14 +505,14 @@
                 </div>
             `;
         };
-
+        
         // --- Renders Dynamic Damage Severity Selectors ---
         const renderDamageLevelSelectors = () => {
             const sectionsInput = document.getElementById('faceframe-sections');
             const container = document.getElementById('damage-level-container');
             if (!sectionsInput || !container) return;
-
             const sections = parseInt(sectionsInput.value);
+
             // Limit sections for safety and performance (max 10)
             const numSections = Math.max(1, Math.min(10, sections || 1)); 
 
@@ -560,7 +522,6 @@
                 html += getDamageOptionHTML(i);
             }
             html += '</div>';
-
             container.innerHTML = html;
             
             // Attach event listeners to all newly created selects
@@ -611,11 +572,9 @@
             if (totalCost > MAX_COST) {
                 totalCost = MAX_COST;
             }
-
             costEl.textContent = `$${totalCost.toFixed(2)}`;
         };
-
-
+        
         // --- Event Listener Setup ---
         const cutListInputs = [
             'material-thickness', 'box-height', 'face-height', 'box-depth', 'box-width',
@@ -630,6 +589,7 @@
             const el = document.getElementById(id);
             if (el) {
                 el.addEventListener('input', calculateCutList);
+                el.addEventListener('change', calculateCutList); // for select and radio changes
             }
         });
         
@@ -655,12 +615,10 @@
             faceframeRemadeCheckbox.addEventListener('change', calculateFaceframeCost);
         }
 
-
         // --- Mobile Menu Toggle Logic & Initial Calc ---
         document.addEventListener('DOMContentLoaded', () => {
             const button = document.getElementById('mobile-menu-button');
             const menu = document.getElementById('mobile-menu');
-
             if (button && menu) {
                 button.addEventListener('click', () => {
                     menu.classList.toggle('hidden');
@@ -679,7 +637,6 @@
             document.getElementById('faceframe-repair-header')?.addEventListener('click', () => {
                 toggleSection('faceframe-repair-header', 'faceframe-repair-content', 'faceframe-repair-icon');
             });
-
 
             // Initial calculation to populate fields on load
             calculateCutList();
