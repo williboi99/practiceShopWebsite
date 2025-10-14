@@ -1,11 +1,10 @@
-<!DOCTYPE html>
+<!-- Paste ALL your HTML, CSS, and JavaScript here --><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cabinetry Quote Calculator - Print Ready</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -118,36 +117,30 @@
         ================================================================================
         0. TOP NAVIGATION BAR
         ================================================================================
-    -->
-    <header id="top-nav" class="fixed top-0 left-0 right-0 z-50 bg-nav-dark shadow-lg">
+    --><header id="top-nav" class="fixed top-0 left-0 right-0 z-50 bg-nav-dark shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo/Brand Link -->
-                <div class="flex-shrink-0">
+                <!-- Logo/Brand Link --><div class="flex-shrink-0">
                     <a href="index.html" class="text-2xl font-bold text-nav-text hover:text-active-yellow transition duration-150">
                         Neff Enterprises
                     </a>
                 </div>
 
-                <!-- Desktop Navigation Links -->
-                <nav class="hidden md:flex space-x-6 items-center">
+                <!-- Desktop Navigation Links --><nav class="hidden md:flex space-x-6 items-center">
                     <a href="resources.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
                         Resources
                     </a>
                     <a href="newCabinets.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
                         New Cabinets
                     </a>
-                    <!-- Active Link Styling -->
-                    <a href="cabinetCostTool.html" class="bg-active-yellow text-nav-dark font-bold px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition duration-150">
+                    <!-- Active Link Styling --><a href="cabinetCostTool.html" class="bg-active-yellow text-nav-dark font-bold px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition duration-150">
                         Rebuild Price Calculator
                     </a>
                 </nav>
 
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
+                <!-- Mobile Menu Button --><div class="md:hidden flex items-center">
                     <button id="mobile-menu-button" class="text-nav-text p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent border border-gray-600">
-                        <!-- Hamburger Icon -->
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Hamburger Icon --><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                         </svg>
                     </button>
@@ -155,16 +148,14 @@
             </div>
         </div>
         
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-nav-dark pb-4 px-2 space-y-1 sm:px-3 border-t border-gray-700">
+        <!-- Mobile Menu Dropdown --><div id="mobile-menu" class="hidden md:hidden bg-nav-dark pb-4 px-2 space-y-1 sm:px-3 border-t border-gray-700">
             <a href="resources.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
                 Resources
             </a>
             <a href="newCabinets.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
                 New Cabinets
             </a>
-            <!-- Active Link Styling for Mobile -->
-            <a href="cabinetCostTool.html" class="block px-3 py-2 rounded-md text-base font-bold bg-active-yellow text-nav-dark shadow-md">
+            <!-- Active Link Styling for Mobile --><a href="cabinetCostTool.html" class="block px-3 py-2 rounded-md text-base font-bold bg-active-yellow text-nav-dark shadow-md">
                 Rebuild Price Calculator
             </a>
         </div>
@@ -174,25 +165,21 @@
         ================================================================================
         1. INPUT / INTERACTIVE VIEW 
         ================================================================================
-    -->
-    <div class="p-4 flex justify-center items-start pt-8">
+    --><div class="p-4 flex justify-center items-start pt-8">
         <div id="app-input" class="w-full max-w-lg bg-white rounded-xl p-6 card">
             <h1 class="text-3xl font-bold text-primary-dark mb-2 text-center">Cabinet Rebuild Quote</h1>
             <p class="text-center text-gray-500 mb-8">Enter details and quantities below to generate your printable quote.</p>
             
-            <!-- Job Details Container (Includes Rushed Checkbox) -->
-            <div id="job-details" class="space-y-4 mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <!-- Job Details Container (Includes Rushed Checkbox) --><div id="job-details" class="space-y-4 mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
                 <h2 class="text-xl font-semibold text-primary-dark border-b pb-2 text-accent">Job Details</h2>
                 
-                <!-- NEW FIELD 1: Company -->
-                <div class="job-input">
+                <!-- NEW FIELD 1: Company --><div class="job-input">
                     <label for="company-name" class="block text-sm font-medium text-gray-700">Company</label>
                     <input type="text" id="company-name" placeholder="E.g., ABC Contractors" 
                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
                 </div>
                 
-                <!-- NEW FIELD 2: Project Manager -->
-                <div class="job-input">
+                <!-- NEW FIELD 2: Project Manager --><div class="job-input">
                     <label for="project-manager" class="block text-sm font-medium text-gray-700">Project Manager Name</label>
                     <input type="text" id="project-manager" placeholder="E.g., John Doe" 
                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
@@ -231,8 +218,7 @@ Job requires lead time of 6 weeks."
                 </div>
                 
                 <div class="job-input pt-4 border-t border-gray-200">
-                    <!-- Rushed Checkbox -->
-                    <div class="flex items-start mb-2">
+                    <!-- Rushed Checkbox --><div class="flex items-start mb-2">
                         <input type="checkbox" id="checkbox-rushed" 
                                class="mt-1 h-5 w-5 text-red-600 border-gray-300 rounded focus:ring-red-500">
                         <label for="checkbox-rushed" class="ml-3 block text-lg font-bold text-red-600">
@@ -245,17 +231,12 @@ Job requires lead time of 6 weeks."
                 </div>
             </div>
             
-            <!-- Input Fields Container -->
-            <div class="space-y-6 mb-8">
+            <!-- Input Fields Container --><div class="space-y-6 mb-8">
                 
-                <!-- SECTION HEADER -->
-                <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Cabinetry & Shelving</h2>
+                <!-- SECTION HEADER --><h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Cabinetry & Shelving</h2>
 
-                <!-- MATERIAL SELECTION DROPDOWN (ONLY BOX MATERIAL) -->
-                <!-- This material selection drives the price per lineal foot -->
-                <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <!-- 1. Cabinet Box Material -->
-                    <div>
+                <!-- MATERIAL SELECTION DROPDOWN (ONLY BOX MATERIAL) --><!-- This material selection drives the price per lineal foot --><div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <!-- 1. Cabinet Box Material --><div>
                         <label for="material-select" class="block text-sm font-medium text-gray-700 font-bold">Cabinet Box Material</label>
                         <select id="material-select" onchange="applyMaterialPricing()"
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm">
@@ -268,11 +249,7 @@ Job requires lead time of 6 weeks."
                         </select>
                     </div>
                 </div>
-                <!-- END MATERIAL SELECTION DROPDOWN -->
-
-
-                <!-- 1. Base $90/ft -->
-                <div class="input-group">
+                <!-- END MATERIAL SELECTION DROPDOWN --><!-- 1. Base $90/ft --><div class="input-group">
                     <label for="input-base" class="block text-lg font-medium text-gray-700 mb-1">Base</label>
                     <div class="flex items-center">
                         <input type="number" id="input-base" data-unit="ft" placeholder="0.0" min="0" step="0.5"
@@ -283,8 +260,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- 2. Half-Depth Shelving $18/ft -->
-                <div class="input-group">
+                <!-- 2. Half-Depth Shelving $18/ft --><div class="input-group">
                     <label for="input-half-shelf" class="block text-lg font-medium text-gray-700 mb-1">Half-Depth Shelving</label>
                     <div class="flex items-center">
                         <input type="number" id="input-half-shelf" data-unit="ft" placeholder="0.0" min="0" step="0.5"
@@ -295,8 +271,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- 3. Base with Install $155/ft -->
-                <div class="input-group">
+                <!-- 3. Base with Install $155/ft --><div class="input-group">
                     <label for="input-base-install" class="block text-lg font-medium text-gray-700 mb-1">Base with Installation</label>
                     <div class="flex items-center">
                         <input type="number" id="input-base-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
@@ -307,8 +282,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- 4. Full Height $180/ft -->
-                <div class="input-group">
+                <!-- 4. Full Height $180/ft --><div class="input-group">
                     <label for="input-full-height" class="block text-lg font-medium text-gray-700 mb-1">Full Height</label>
                     <div class="flex items-center">
                         <input type="number" id="input-full-height" data-unit="ft" placeholder="0.0" min="0" step="0.5"
@@ -319,8 +293,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- 5. Full-Depth Shelving $36/ft -->
-                <div class="input-group">
+                <!-- 5. Full-Depth Shelving $36/ft --><div class="input-group">
                     <label for="input-full-shelf" class="block text-lg font-medium text-gray-700 mb-1">Full-Depth Shelving</label>
                     <div class="flex items-center">
                         <input type="number" id="input-full-shelf" data-unit="ft" placeholder="0.0" min="0" step="0.5"
@@ -331,8 +304,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- 6. Full Height with Install $310/ft -->
-                <div class="input-group">
+                <!-- 6. Full Height with Install $310/ft --><div class="input-group">
                     <label for="input-full-height-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height with Installation</label>
                     <div class="flex items-center">
                         <input type="number" id="input-full-height-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
@@ -343,13 +315,11 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- European Style (Faceless) -->
-                <div class="border-t border-gray-200 pt-4">
+                <!-- European Style (Faceless) --><div class="border-t border-gray-200 pt-4">
                     <h3 class="text-xl font-bold text-accent mb-3">European Style (Faceless)</h3>
                 </div>
 
-                <!-- Base European $195/ft -->
-                <div class="input-group">
+                <!-- Base European $195/ft --><div class="input-group">
                     <label for="input-base-european" class="block text-lg font-medium text-gray-700 mb-1">Base European</label>
                     <div class="flex items-center">
                         <input type="number" id="input-base-european" data-unit="ft" placeholder="0.0" min="0" step="0.5"
@@ -360,8 +330,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- Base European w/ Install $280/ft -->
-                <div class="input-group">
+                <!-- Base European w/ Install $280/ft --><div class="input-group">
                     <label for="input-base-european-install" class="block text-lg font-medium text-gray-700 mb-1">Base European w/ Install</label>
                     <div class="flex items-center">
                         <input type="number" id="input-base-european-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
@@ -372,8 +341,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- Full Height European $285/ft -->
-                <div class="input-group">
+                <!-- Full Height European $285/ft --><div class="input-group">
                     <label for="input-full-height-european" class="block text-lg font-medium text-gray-700 mb-1">Full Height European</label>
                     <div class="flex items-center">
                         <input type="number" id="input-full-height-european" data-unit="ft" placeholder="0.0" min="0" step="0.5"
@@ -384,8 +352,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- Full Height European w/ Install $435/ft -->
-                <div class="input-group">
+                <!-- Full Height European w/ Install $435/ft --><div class="input-group">
                     <label for="input-full-height-european-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height European w/ Install</label>
                     <div class="flex items-center">
                         <input type="number" id="input-full-height-european-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
@@ -396,11 +363,9 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
                 
-                <!-- NEW SECTION HEADER FOR PIECE ITEMS -->
-                <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Hardware & Accessory Pieces</h2>
+                <!-- NEW SECTION HEADER FOR PIECE ITEMS --><h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Staining and Accessories</h2>
 
-                <!-- MATCH CHECKBOXES -->
-                <div class="input-group p-3 bg-emerald-50 rounded-lg border border-emerald-200 space-y-2">
+                <!-- MATCH CHECKBOXES --><div class="input-group p-3 bg-emerald-50 rounded-lg border border-emerald-200 space-y-2">
                     <p class="text-sm font-semibold text-gray-800">Select required matching services (<span class="font-bold">$150 per service</span>):</p>
                     <div class="grid grid-cols-3 gap-2">
                         <div class="flex items-center">
@@ -418,10 +383,7 @@ Job requires lead time of 6 weeks."
                     </div>
                     <p id="match-fee-status" class="text-center font-bold text-red-600 text-sm pt-2 border-t border-emerald-300 hidden"></p>
                 </div>
-                <!-- END MATCH CHECKBOXES -->
-
-                <!-- 2. Finished Material Selection (MOVED HERE) -->
-                <div class="input-group p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <!-- END MATCH CHECKBOXES --><!-- 2. Finished Material Selection (MOVED HERE) --><div class="input-group p-4 bg-gray-50 rounded-lg border border-gray-200">
                     <label for="finished-material-select" class="block text-sm font-medium text-gray-700 font-bold">Finished Material</label>
                     <select id="finished-material-select"
                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm">
@@ -438,8 +400,7 @@ Job requires lead time of 6 weeks."
                     </select>
                 </div>
 
-                <!-- Base/Wall Skins $85/pc -->
-                <div class="input-group">
+                <!-- Base/Wall Skins $85/pc --><div class="input-group">
                     <label for="input-base-skins" class="block text-lg font-medium text-gray-700 mb-1">Base/Wall Skins</label>
                     <div class="flex items-center">
                         <input type="number" id="input-base-skins" data-unit="PC" placeholder="0" min="0" step="1"
@@ -450,8 +411,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- Full Height Skin / Back Panel $170/pc -->
-                <div class="input-group">
+                <!-- Full Height Skin / Back Panel $170/pc --><div class="input-group">
                     <label for="input-full-skins" class="block text-lg font-medium text-gray-700 mb-1">Full Height Skin / Back Panel</label>
                     <div class="flex items-center">
                         <input type="number" id="input-full-skins" data-unit="PC" placeholder="0" min="0" step="1"
@@ -462,8 +422,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- Toekick (8ft) $30/pc -->
-                <div class="input-group">
+                <!-- Toekick (8ft) $30/pc --><div class="input-group">
                     <label for="input-toekick" class="block text-lg font-medium text-gray-700 mb-1">Toekick (8ft)</label>
                     <div class="flex items-center">
                         <input type="number" id="input-toekick" data-unit="PC" placeholder="0" min="0" step="1"
@@ -474,8 +433,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- Fillers $50/pc -->
-                <div class="input-group">
+                <!-- Fillers $50/pc --><div class="input-group">
                     <label for="input-fillers" class="block text-lg font-medium text-gray-700 mb-1">Fillers</label>
                     <div class="flex items-center">
                         <input type="number" id="input-fillers" data-unit="PC" placeholder="0" min="0" step="1"
@@ -486,8 +444,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
                 
-                <!-- Scribe (8ft) $35/pc -->
-                <div class="input-group">
+                <!-- Scribe (8ft) $35/pc --><div class="input-group">
                     <label for="input-scribe" class="block text-lg font-medium text-gray-700 mb-1">Scribe (8ft)</label>
                     <div class="flex items-center">
                         <input type="number" id="input-scribe" data-unit="PC" placeholder="0" min="0" step="1"
@@ -498,8 +455,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
                 
-                <!-- 1-1/4" Scribe (8/ft) $50/pc -->
-                <div class="input-group">
+                <!-- 1-1/4" Scribe (8/ft) $50/pc --><div class="input-group">
                     <label for="input-mid-scribe" class="block text-lg font-medium text-gray-700 mb-1">1-1/4" Scribe (8/ft)</label>
                     <div class="flex items-center">
                         <input type="number" id="input-mid-scribe" data-unit="PC" placeholder="0" min="0" step="1"
@@ -510,8 +466,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- Outside Corner Scribe (8ft) $55/pc -->
-                <div class="input-group">
+                <!-- Outside Corner Scribe (8ft) $55/pc --><div class="input-group">
                     <label for="input-outside-scribe" class="block text-lg font-medium text-gray-700 mb-1">Outside Corner Scribe (8ft)</label>
                     <div class="flex items-center">
                         <input type="number" id="input-outside-scribe" data-unit="PC" placeholder="0" min="0" step="1"
@@ -522,8 +477,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- Quarter-Round Scribe (8ft) $55/pc -->
-                <div class="input-group">
+                <!-- Quarter-Round Scribe (8ft) $55/pc --><div class="input-group">
                     <label for="input-quarter-scribe" class="block text-lg font-medium text-gray-700 mb-1">Quarter-Round Scribe (8ft)</label>
                     <div class="flex items-center">
                         <input type="number" id="input-quarter-scribe" data-unit="PC" placeholder="0" min="0" step="1"
@@ -533,12 +487,34 @@ Job requires lead time of 6 weeks."
                         </span>
                     </div>
                 </div>
+                
+                <!-- New Sets of Glides $40/set --><div class="input-group">
+                    <label for="input-glides-set" class="block text-lg font-medium text-gray-700 mb-1">New Sets of Glides</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-glides-set" data-unit="SET" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span id="display-glides-set" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $40 / SET
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- NEW: New Lazy Susan Hardware $250 --><div class="input-group pt-4 border-t border-gray-200">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="checkbox-lazy-susan"
+                               class="h-5 w-5 text-accent border-gray-300 rounded focus:ring-accent/70">
+                        <label for="checkbox-lazy-susan" class="ml-3 block text-lg font-bold text-gray-700 flex-1">
+                            New Lazy Susan Hardware
+                        </label>
+                        <span id="display-lazy-susan" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 rounded-lg">
+                            $250 
+                        </span>
+                    </div>
+                </div>
             
-                <!-- Custom Flat Rate Items -->
-                <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Custom Flat Rate Items</h2>
+                <!-- Custom Flat Rate Items --><h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Custom Flat Rate Items</h2>
 
-                <!-- Custom Input: Faceframe Repair - NOTE ADDED HERE -->
-                <div class="input-group">
+                <!-- Custom Input: Faceframe Repair - NOTE ADDED HERE --><div class="input-group">
                     <label for="input-faceframe-repair" class="block text-lg font-semibold text-red-600 mb-1">Faceframe Repair (Custom Price)</label>
                     <p class="text-xs text-gray-500 italic mb-2">Note: Grain, color, sheen, and grunge may vary when matching original material.</p>
                     <div class="flex items-center">
@@ -551,8 +527,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
                 
-                <!-- Custom Input: Miscellaneous/Customization PRICE -->
-                <div class="input-group mt-6">
+                <!-- Custom Input: Miscellaneous/Customization PRICE --><div class="input-group mt-6">
                     <label for="input-misc-custom" class="block text-lg font-semibold text-red-600 mb-1">Miscellaneous / Customization (Custom Price)</label>
                     <div class="flex items-center">
                         <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-r-0 rounded-l-lg">$</span>
@@ -564,8 +539,7 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- Miscellaneous Description Input -->
-                <div class="input-group mt-2 p-3 border border-gray-300 rounded-lg">
+                <!-- Miscellaneous Description Input --><div class="input-group mt-2 p-3 border border-gray-300 rounded-lg">
                     <label for="input-misc-description" class="block text-sm font-medium text-gray-700 mb-1">Description for Custom Price</label>
                     <textarea id="input-misc-description" rows="2" placeholder="E.g., Install client-supplied hardware, custom floating shelf labor, special lighting."
                               class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"></textarea>
@@ -573,8 +547,7 @@ Job requires lead time of 6 weeks."
 
             </div>
 
-            <!-- Total Display & Print Button (Screen View) -->
-            <div class="mt-8 pt-6 border-t border-gray-200" id="print-controls">
+            <!-- Total Display & Print Button (Screen View) --><div class="mt-8 pt-6 border-t border-gray-200" id="print-controls">
                 <div id="quote-total" class="flex justify-between items-center bg-accent/10 p-4 rounded-xl">
                     <span class="text-xl font-semibold text-primary-dark">TOTAL ESTIMATED COST:</span>
                     <span id="total-cost" class="text-4xl font-extrabold text-accent">$0.00</span>
@@ -592,10 +565,8 @@ Job requires lead time of 6 weeks."
         ================================================================================
         2. PRINT RECEIPT VIEW (Hidden on screen, Visible only when printing)
         ================================================================================
-    -->
-    <div id="print-receipt" class="w-full max-w-2xl mx-auto">
-        <!-- Content will be dynamically populated by JavaScript before printing -->
-    </div>
+    --><div id="print-receipt" class="w-full max-w-2xl mx-auto">
+        <!-- Content will be dynamically populated by JavaScript before printing --></div>
 
     <script>
         // --- Mobile Menu Toggle Logic ---
@@ -619,7 +590,7 @@ Job requires lead time of 6 weeks."
         const matchFeeStatusEl = document.getElementById('match-fee-status');
         const materialSelect = document.getElementById('material-select');
 
-        // --- Price Constants Definitions (Unchanged) ---
+        // --- Price Constants Definitions (Updated with Lazy Susan Hardware) ---
         const DEFAULT_PRICES = {
             base: 90,
             halfShelf: 18,
@@ -639,7 +610,9 @@ Job requires lead time of 6 weeks."
             scribe: 35,
             midScribe: 50,
             outsideCornerScribe: 55,
-            quarterRoundScribe: 55
+            quarterRoundScribe: 55,
+            glidesSet: 40,
+            lazySusanHardware: 250 // NEW: Price for Lazy Susan Hardware
         };
 
         const PLYWOOD_OVERRIDE_PRICES = {
@@ -675,7 +648,7 @@ Job requires lead time of 6 weeks."
 
         let CURRENT_PRICES = {...DEFAULT_PRICES}; 
 
-        // Map linking input IDs to price keys and display IDs (Unchanged)
+        // Map linking input IDs to price keys and display IDs (Updated with glidesSet)
         const ITEM_MAP = [
             // Standard Lineal Foot Items (dynamically priced)
             { id: 'input-base', priceKey: 'base', name: 'Base (Rebuild)', unit: 'ft', displayId: 'display-base' },
@@ -700,6 +673,7 @@ Job requires lead time of 6 weeks."
             { id: 'input-mid-scribe', priceKey: 'midScribe', name: '1-1/4" Scribe (8/ft)', unit: 'PC', displayId: 'display-mid-scribe' },
             { id: 'input-outside-scribe', priceKey: 'outsideCornerScribe', name: 'Outside Corner Scribe (8ft)', unit: 'PC', displayId: 'display-outside-scribe' },
             { id: 'input-quarter-scribe', priceKey: 'quarterRoundScribe', name: 'Quarter-Round Scribe (8ft)', unit: 'PC', displayId: 'display-quarter-scribe' },
+            { id: 'input-glides-set', priceKey: 'glidesSet', name: 'New Sets of Glides', unit: 'SET', displayId: 'display-glides-set' }, 
         ];
 
         // --- Utility Functions (Unchanged, relies on ID) ---
@@ -719,7 +693,7 @@ Job requires lead time of 6 weeks."
             return el.value || '';
         };
 
-        // --- Dynamic Pricing and Display Updates (Unchanged) ---
+        // --- Dynamic Pricing and Display Updates (Unchanged except lazy susan) ---
         const updatePricesDisplay = () => {
             ITEM_MAP.forEach(item => {
                 const spanEl = document.getElementById(item.displayId);
@@ -731,6 +705,11 @@ Job requires lead time of 6 weeks."
                     }
                 }
             });
+            // Update the Lazy Susan price display, which is static but needs the currency format
+            const lazySusanDisplay = document.getElementById('display-lazy-susan');
+            if(lazySusanDisplay) {
+                lazySusanDisplay.textContent = `$${CURRENT_PRICES.lazySusanHardware.toFixed(0)}`; // REMOVED "/ PC"
+            }
             calculateTotal(); // Recalculate everything after prices change
         }
 
@@ -749,7 +728,7 @@ Job requires lead time of 6 weeks."
             updatePricesDisplay();
         };
 
-        // --- Calculation & Receipt Generation Logic (Unchanged) ---
+        // --- Calculation & Receipt Generation Logic (Updated to include Lazy Susan) ---
         const calculateTotal = () => {
             let subtotal = 0; // Cost before rush fee
             let total = 0; // Final cost after rush fee
@@ -773,8 +752,23 @@ Job requires lead time of 6 weeks."
                 }
             };
             
-            // Calculate costs for all items in the map
+            // Calculate costs for all items in the map (Lineal Foot & Qty Accessories)
             ITEM_MAP.forEach(addItem);
+            
+            // NEW: Lazy Susan Hardware Fee Logic
+            const isLazySusanChecked = getValue('checkbox-lazy-susan', false);
+            if (isLazySusanChecked) {
+                const lazySusanCost = CURRENT_PRICES.lazySusanHardware;
+                subtotal += lazySusanCost;
+                breakdown.push({
+                    name: 'New Lazy Susan Hardware',
+                    cost: lazySusanCost,
+                    qty: 1,
+                    unit: 'PC',
+                    rate: lazySusanCost,
+                    note: 'Flat rate for new hardware replacement.'
+                });
+            }
 
             // Match Fee Logic
             const isStainChecked = getValue('checkbox-stain-match', false);
@@ -805,7 +799,7 @@ Job requires lead time of 6 weeks."
                 matchFeeStatusEl.classList.add('hidden');
             }
 
-            // Custom Flat Rate Costs
+            // Custom Flat Rate Costs (Faceframe Repair, Misc)
             const faceframeRepair = getValue('input-faceframe-repair');
             if (faceframeRepair > 0) {
                 subtotal += faceframeRepair;
@@ -856,7 +850,7 @@ Job requires lead time of 6 weeks."
             renderReceipt(breakdown, subtotal, total, isRushed, rushFee);
         };
         
-        // --- Receipt Rendering Function (Updated finished material label) ---
+        // --- Receipt Rendering Function (Updated section title) ---
         const renderReceipt = (breakdown, subtotal, total, isRushed, rushFee) => {
             // NEW FIELDS
             const companyName = getValue('company-name', false);
@@ -873,8 +867,9 @@ Job requires lead time of 6 weeks."
             
             // Group items into categories for display order
             const linealFootItems = breakdown.filter(item => item.unit === 'ft');
-            const pieceItems = breakdown.filter(item => item.unit === 'PC');
-            const flatRateItems = breakdown.filter(item => item.unit === 'FLAT' && !item.isRushFee);
+            const pieceItems = breakdown.filter(item => item.unit === 'PC' || item.unit === 'SET'); // Include SET/PC in piece items
+            const flatRateItems = breakdown.filter(item => item.unit === 'FLAT' && !item.isRushFee && item.name !== 'Color/Finish Matching Fee');
+            const matchFeeItem = breakdown.find(item => item.unit === 'SERVICE');
             const rushFeeItem = breakdown.find(item => item.isRushFee);
             
             // Helper function to format currency
@@ -891,7 +886,16 @@ Job requires lead time of 6 weeks."
                 `;
                 
                 items.forEach(item => {
-                    const rateDisplay = showRate ? `${formatCurrency(item.rate)} / ${item.unit}` : 'FLAT RATE';
+                    // Display rate correctly for PC/SET/ft items
+                    let rateDisplay;
+                    if (item.unit === 'FLAT') {
+                        rateDisplay = 'FLAT RATE';
+                    } else if (item.unit === 'SERVICE') {
+                        rateDisplay = formatCurrency(item.rate) + ' / SERVICE';
+                    } else {
+                        rateDisplay = formatCurrency(item.rate) + ' / ' + item.unit;
+                    }
+                    
                     const noteDisplay = item.note ? `<p class="text-xs text-gray-500 italic ml-4">(${item.note})</p>` : '';
                     
                     html += `
@@ -936,43 +940,38 @@ Job requires lead time of 6 weeks."
                         </div>
                     </header>
                     
-                    <!-- Notes Section -->
-                    ${jobNotes ? `
+                    <!-- Notes Section -->${jobNotes ? `
                         <div class="mb-6 p-4 border border-gray-300 rounded-lg bg-gray-50">
                             <h3 class="font-bold text-primary-dark mb-2 border-b pb-1">Job Notes</h3>
                             <p class="text-sm text-gray-700">${jobNotes}</p>
                         </div>
                     ` : ''}
 
-                    <!-- Itemized Breakdown -->
-                    ${renderSection(linealFootItems, 'Cabinetry & Shelving (Lineal Feet)', true)}
-                    ${renderSection(pieceItems, 'Hardware & Accessory Pieces', true)}
+                    <!-- Itemized Breakdown -->${renderSection(linealFootItems, 'Cabinetry & Shelving (Lineal Feet)', true)}
+                    ${renderSection(pieceItems, 'Staining and Accessories', true)}
+                    ${matchFeeItem ? renderSection([matchFeeItem], 'Color/Finish Matching Fee', true) : ''}
                     ${renderSection(flatRateItems, 'Custom & Flat Rate Items', false)}
                     
-                    <!-- Totals Summary -->
-                    <div class="mt-8">
+                    <!-- Totals Summary --><div class="mt-8">
                         <div class="flex justify-between items-center text-xl font-semibold text-primary-dark p-3 border-t border-b border-gray-300">
                             <span>Subtotal</span>
                             <span class="price-display">${formatCurrency(subtotal)}</span>
                         </div>
                         
-                        <!-- Rush Fee Line -->
-                        ${rushFeeItem ? `
+                        <!-- Rush Fee Line -->${rushFeeItem ? `
                             <div class="flex justify-between items-center text-red-600 font-bold p-3 receipt-disclaimer-box border-b border-gray-300 is-rush-fee">
                                 <span>${rushFeeItem.name} (50% of Subtotal)</span>
                                 <span class="price-display">${formatCurrency(rushFee)}</span>
                             </div>
                         ` : ''}
 
-                        <!-- Grand Total -->
-                        <div class="receipt-total-bar flex justify-between items-center text-2xl font-extrabold text-accent p-4 mt-2 rounded-lg">
+                        <!-- Grand Total --><div class="receipt-total-bar flex justify-between items-center text-2xl font-extrabold text-accent p-4 mt-2 rounded-lg">
                             <span>GRAND TOTAL:</span>
                             <span id="receipt-grand-total" class="price-display">${formatCurrency(total)}</span>
                         </div>
                     </div>
                     
-                    <!-- Disclaimer / Terms -->
-                    <div class="mt-8 receipt-disclaimer-box p-4 rounded-lg border border-red-300">
+                    <!-- Disclaimer / Terms --><div class="mt-8 receipt-disclaimer-box p-4 rounded-lg border border-red-300">
                         <h4 class="font-bold text-red-700 mb-2">DISCLAIMER & CONDITIONS</h4>
                         <ul class="text-xs text-gray-700 list-disc list-inside space-y-1">
                             <li>This is an estimate and is subject to change based on final measurements and material availability.</li>
@@ -983,8 +982,7 @@ Job requires lead time of 6 weeks."
                         </ul>
                     </div>
 
-                    <!-- Signature Lines -->
-                    <div class="mt-10 pt-4 border-t border-gray-300">
+                    <!-- Signature Lines --><div class="mt-10 pt-4 border-t border-gray-300">
                         <div class="grid grid-cols-2 gap-8">
                             <div>
                                 <p class="border-b border-black w-full h-10"></p>
@@ -1018,6 +1016,8 @@ Job requires lead time of 6 weeks."
             inputElements.forEach(input => {
                 input.addEventListener(input.type === 'checkbox' || input.tagName === 'SELECT' ? 'change' : 'input', calculateTotal); 
             });
+            // Also attach listener to the new Lazy Susan checkbox
+            document.getElementById('checkbox-lazy-susan').addEventListener('change', calculateTotal);
 
             // Add button functionality
             printBtn.addEventListener('click', () => {
