@@ -155,13 +155,15 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="input-group">
                                     <label for="box-height" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Height (A)</label>
-                                    <input type="number" id="box-height" value="34.5" min="0" step="0.01" placeholder="34.5"
+                                    <!-- Defaulted to 0.0 -->
+                                    <input type="number" id="box-height" value="0.0" min="0" step="0.01" placeholder="34.5"
                                                 class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                     <p class="text-sm text-gray-500 mt-1">Overall height of the box.</p>
                                 </div>
                                 <div class="input-group">
                                     <label for="face-height" class="block text-lg font-medium text-gray-700 mb-1">Face Height (B)</label>
-                                    <input type="number" id="face-height" value="30.5" min="0" step="0.01" placeholder="30.5"
+                                    <!-- Defaulted to 0.0 -->
+                                    <input type="number" id="face-height" value="0.0" min="0" step="0.01" placeholder="30.5"
                                                 class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                     <p class="text-sm text-gray-500 mt-1">Height of the face/door/drawer.</p>
                                 </div>
@@ -169,13 +171,15 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="input-group">
                                     <label for="box-depth" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Depth (C)</label>
-                                    <input type="number" id="box-depth" value="24.0" min="0" step="0.01" placeholder="24.0"
+                                    <!-- Defaulted to 0.0 -->
+                                    <input type="number" id="box-depth" value="0.0" min="0" step="0.01" placeholder="24.0"
                                                 class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                     <p class="text-sm text-gray-500 mt-1">Standard 24 or 21 inches.</p>
                                 </div>
                                 <div class="input-group">
                                     <label for="box-width" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Width (D)</label>
-                                    <input type="number" id="box-width" value="36.0" min="0" step="0.01" placeholder="36.0"
+                                    <!-- Defaulted to 0.0 -->
+                                    <input type="number" id="box-width" value="0.0" min="0" step="0.01" placeholder="36.0"
                                                 class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                     <p class="text-sm text-gray-500 mt-1">Overall width (e.g., 36 inches).</p>
                                 </div>
@@ -237,7 +241,75 @@
                     </div>
                 </div>
             </div>
-            <!-- 2. DRAWER REBUILD COST CALCULATOR (Collapsible Section) -->
+            
+            <!-- 2. DRAWER BOX CUT LIST GENERATOR -->
+            <div class="bg-white rounded-xl shadow-xl">
+                <!-- Header (Clickable to Toggle) -->
+                <div id="drawer-box-cut-list-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
+                    <h1 class="text-2xl font-bold text-primary-dark">Drawer Box Cut List Generator</h1>
+                    <!-- Down Arrow Icon -->
+                    <svg id="drawer-box-cut-list-icon" class="w-6 h-6 text-gray-700 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+                
+                <!-- Content (Initially Hidden) -->
+                <div id="drawer-box-cut-list-content" class="hidden p-6">
+                    <p class="text-lg text-red-600 font-semibold text-center bg-red-100 p-3 rounded-lg mb-6 shadow-inner">
+                        Be sure to dado a 1/4" x 1/4" slit in the edge pieces to slide the 1/4" bottom.
+                    </p>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Input Panel -->
+                        <div class="space-y-4">
+                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Drawer Box Dimensions (in)</h2>
+                            <div class="input-group">
+                                <label for="drawer-box-width" class="block text-lg font-medium text-gray-700 mb-1">Overall Width</label>
+                                <input type="number" id="drawer-box-width" value="0.0" min="0" step="0.01" placeholder="18.0"
+                                            class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                                <p class="text-sm text-gray-500 mt-1">External width of the finished drawer box.</p>
+                            </div>
+                            <div class="input-group">
+                                <label for="drawer-box-depth" class="block text-lg font-medium text-gray-700 mb-1">Overall Depth (Length)</label>
+                                <input type="number" id="drawer-box-depth" value="0.0" min="0" step="0.01" placeholder="21.0"
+                                            class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                                <p class="text-sm text-gray-500 mt-1">External depth/length of the finished drawer box.</p>
+                            </div>
+                            <div class="input-group">
+                                <label for="drawer-box-height" class="block text-lg font-medium text-gray-700 mb-1">Overall Height</label>
+                                <input type="number" id="drawer-box-height" value="0.0" min="0" step="0.01" placeholder="6.0"
+                                            class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
+                                <p class="text-sm text-gray-500 mt-1">External height of the finished drawer box.</p>
+                            </div>
+                        </div>
+                        <!-- Output Panel -->
+                        <div class="space-y-4">
+                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Drawer Box Cut List</h2>
+                            
+                            <!-- Cut List Results -->
+                            <div class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                <!-- Sides (2x) -->
+                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-accent">
+                                    <h3 class="text-lg font-bold text-primary-dark">Sides (2x)</h3>
+                                    <p class="text-2xl font-extrabold text-accent" id="drawer-side-dims">0" x 0"</p>
+                                </div>
+                                <!-- Front & Back (2x) -->
+                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-blue-500">
+                                    <h3 class="text-lg font-bold text-primary-dark">Front & Back (2x)</h3>
+                                    <p class="text-2xl font-extrabold text-blue-500" id="drawer-front-back-dims">0" x 0"</p>
+                                </div>
+                                
+                                <!-- 1/4" Bottom (1x) -->
+                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-indigo-500">
+                                    <h3 class="text-lg font-bold text-primary-dark">1/4" Bottom (1x)</h3>
+                                    <p class="text-2xl font-extrabold text-indigo-500" id="drawer-bottom-dims">0" x 0"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 3. DRAWER REBUILD COST CALCULATOR (Collapsible Section - Now #3) -->
             <div class="bg-white rounded-xl shadow-xl">
                 <!-- Header (Clickable to Toggle) -->
                 <div id="drawer-cost-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
@@ -250,7 +322,6 @@
                 
                 <!-- Content (Initially Hidden) -->
                 <div id="drawer-cost-content" class="hidden p-6">
-                    <!-- Removed the explicit formula text -->
                     <p class="text-center text-gray-500 mb-8">Calculate the estimated cost for rebuilding a single drawer box.</p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Inputs -->
@@ -258,13 +329,15 @@
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Drawer Dimensions (in)</h2>
                             <div class="input-group">
                                 <label for="drawer-width" class="block text-lg font-medium text-gray-700 mb-1">Drawer Width</label>
-                                <input type="number" id="drawer-width" value="18.0" min="0" step="0.1" placeholder="18.0"
+                                <!-- Defaulted to 0.0 -->
+                                <input type="number" id="drawer-width" value="0.0" min="0" step="0.1" placeholder="18.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">Width of the drawer box (in).</p>
                             </div>
                             <div class="input-group">
                                 <label for="drawer-depth" class="block text-lg font-medium text-gray-700 mb-1">Drawer Depth (or Length)</label>
-                                <input type="number" id="drawer-depth" value="21.0" min="0" step="0.1" placeholder="21.0"
+                                <!-- Defaulted to 0.0 -->
+                                <input type="number" id="drawer-depth" value="0.0" min="0" step="0.1" placeholder="21.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">Depth/Length of the drawer box (in).</p>
                             </div>
@@ -281,7 +354,8 @@
                     </div>
                 </div>
             </div>
-            <!-- 3. FACEFRAME REPAIR COST CALCULATOR (New Collapsible Section) -->
+            
+            <!-- 4. FACEFRAME REPAIR COST CALCULATOR (Collapsible Section) -->
             <div class="bg-white rounded-xl shadow-xl">
                 <!-- Header (Clickable to Toggle) -->
                 <div id="faceframe-repair-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
@@ -294,7 +368,6 @@
                 
                 <!-- Content (Initially Hidden) -->
                 <div id="faceframe-repair-content" class="hidden p-6">
-                    <!-- Removed introductory paragraph -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Inputs -->
                         <div class="space-y-4">
@@ -302,7 +375,8 @@
                             <!-- 1. How many sections of face are damaged -->
                             <div class="input-group">
                                 <label for="faceframe-sections" class="block text-lg font-medium text-gray-700 mb-1">Sections Damaged</label>
-                                <input type="number" id="faceframe-sections" value="1" min="1" step="1" placeholder="1"
+                                <!-- Defaulted to 0 -->
+                                <input type="number" id="faceframe-sections" value="0" min="0" step="1" placeholder="1"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">Number of distinct sections (stiles/rails) requiring repair (max 10).</p>
                             </div>
@@ -316,7 +390,6 @@
                                     <input type="checkbox" id="faceframe-remade" class="form-checkbox h-5 w-5 text-accent rounded focus:ring-accent border-gray-300">
                                     <span class="text-lg font-medium text-gray-700">Whole faceframe will need remade / sanded + refinished</span>
                                 </label>
-                                <!-- Removed descriptive text here -->
                             </div>
                         </div>
                         
@@ -342,31 +415,59 @@
          */
         const decimalToFraction = (decimal, denominator = 16) => {
             if (isNaN(decimal)) return "0";
-            decimal = Math.round(decimal * 10000) / 10000;
-            const integerPart = Math.floor(decimal);
-            let fractionalPart = decimal - integerPart;
-            if (fractionalPart === 0) return integerPart.toString();
+            // Ensure positive number for fraction calculation
+            const absDecimal = Math.abs(decimal); 
+            
+            const integerPart = Math.floor(absDecimal);
+            let fractionalPart = absDecimal - integerPart;
+            if (fractionalPart === 0) return decimal.toFixed(2); // Return original if exact integer
+            
             let numerator = Math.round(fractionalPart * denominator);
             
+            // Handle rounding up to the next inch
             if (numerator === denominator) {
-                return (integerPart + 1).toString();
+                return (decimal < 0 ? '-' : '') + (integerPart + 1).toString();
             }
+            
             const gcd = (a, b) => (b ? gcd(b, a % b) : a);
             const divisor = gcd(numerator, denominator);
             numerator /= divisor;
             denominator /= divisor;
+            
             let fractionString = `${numerator}/${denominator}`;
+            let sign = decimal < 0 ? '-' : '';
+
             if (integerPart === 0) {
-                return fractionString;
+                // If the original number was negative and near zero (e.g. -0.5), it returns "-1/2"
+                // If the original number was positive and near zero (e.g. 0.5), it returns "1/2"
+                return sign + fractionString;
             } else {
-                return `${integerPart} ${fractionString}`;
+                return sign + `${integerPart} ${fractionString}`;
             }
         };
 
         const updateResult = (id, dim1, dim2) => {
             const el = document.getElementById(id);
             if (el) {
-                el.textContent = `${dim1}" x ${dim2}"`;
+                // Ensure dimensions are positive before display (as per woodworking practice)
+                const safeDim1 = parseFloat(dim1.toString().replace(/[^0-9\.\/\s-]/g, ''));
+                const safeDim2 = parseFloat(dim2.toString().replace(/[^0-9\.\/\s-]/g, ''));
+
+                if (safeDim1 < 0 || safeDim2 < 0) {
+                    el.textContent = "Error: Negative Dimension";
+                    el.classList.add('text-red-500');
+                    el.classList.remove('text-accent', 'text-blue-500', 'text-indigo-500');
+                } else {
+                    el.textContent = `${dim1}" x ${dim2}"`;
+                    // Reset styling to default colors based on the section
+                    const defaultColorClass = 
+                        id.includes('side') ? 'text-accent' : 
+                        id.includes('front-back') ? 'text-blue-500' :
+                        id.includes('bottom') ? 'text-indigo-500' : 
+                        'text-gray-900';
+                    el.classList.remove('text-red-500', 'text-accent', 'text-blue-500', 'text-indigo-500');
+                    el.classList.add(defaultColorClass);
+                }
             }
         };
 
@@ -387,7 +488,7 @@
             }
         };
 
-        // --- Core Calculation Logic for Cut List ---
+        // --- Core Calculation Logic for Euro Cabinet Cut List ---
         const calculateCutList = () => {
             // Get raw input values
             const T_str = document.getElementById('material-thickness').value;
@@ -403,7 +504,7 @@
             const DADO_DEPTH = 0.25; // 1/4" dado depth for recessing the bottom
             const BACK_WIDTH_OFFSET = 0.4375; // 7/16"
             
-            if (isNaN(BoxH_raw) || isNaN(FaceH_raw) || isNaN(D_raw) || isNaN(W_raw) || isNaN(T)) {
+            if (isNaN(BoxH_raw) || isNaN(FaceH_raw) || isNaN(D_raw) || isNaN(W_raw) || isNaN(T) || BoxH_raw <= 0 || D_raw <= 0 || W_raw <= 0) {
                 // Keep the fields at 0.00 if input is invalid
                 updateResult('cut-side-dims', '0', '0');
                 updateResult('cut-bottom-dims-actual', '0', '0'); 
@@ -458,30 +559,70 @@
             // Back Panel (1x)
             // Back Panel Width = Bottom/Stretchers Width + 7/16" (0.4375)
             const back_width_decimal = common_inner_width + BACK_WIDTH_OFFSET; 
-            const back_height_decimal = FaceH_raw.toFixed(2);
+            const back_height_decimal = FaceH_raw;
             
             // --- 2. Update UI ---
             updateResult('cut-side-dims', side_height, side_depth);
             updateResult('cut-bottom-dims-actual', bottom_width, bottom_depth);
             updateResult('cut-stretcher-dims', stretcher_width, stretcher_depth);
             const back_width_fraction = decimalToFraction(back_width_decimal);
-            updateResult('cut-back-dims', back_width_fraction, back_height_decimal);
+            const back_height_fraction = decimalToFraction(back_height_decimal);
+            updateResult('cut-back-dims', back_width_fraction, back_height_fraction);
+        };
+
+        // --- Core Calculation Logic for Drawer Box Cut List (NEW FUNCTION) ---
+        const calculateDrawerBoxCutList = () => {
+            const W_raw = parseFloat(document.getElementById('drawer-box-width').value); // Width
+            const D_raw = parseFloat(document.getElementById('drawer-box-depth').value); // Depth (Length)
+            const H_raw = parseFloat(document.getElementById('drawer-box-height').value); // Height
+            
+            const DRAWER_BOTTOM_DEDUCTION = 0.5625; // 9/16"
+
+            // Check if any input is missing or results in non-positive dimensions
+            if (isNaN(W_raw) || isNaN(D_raw) || isNaN(H_raw) || W_raw <= 0 || D_raw <= 0 || H_raw <= 0 || W_raw <= DRAWER_BOTTOM_DEDUCTION || D_raw <= DRAWER_BOTTOM_DEDUCTION) {
+                // Clear outputs if inputs are invalid or zero/negative or too small
+                updateResult('drawer-side-dims', '0', '0');
+                updateResult('drawer-front-back-dims', '0', '0');
+                updateResult('drawer-bottom-dims', '0', '0');
+                return;
+            }
+            
+            // 1. Sides (2x): Depth x Height
+            const side_dim1 = decimalToFraction(D_raw);
+            const side_dim2 = decimalToFraction(H_raw);
+            updateResult('drawer-side-dims', side_dim1, side_dim2);
+            
+            // 2. Front and Back (2x): (Width - 1") x Height
+            const front_back_width_raw = W_raw - 1.0;
+            const front_back_dim1 = decimalToFraction(front_back_width_raw);
+            const front_back_dim2 = decimalToFraction(H_raw);
+            updateResult('drawer-front-back-dims', front_back_dim1, front_back_dim2);
+
+            // 3. 1/4" Bottom (1x): (Width - 9/16") x (Depth - 9/16")
+            const bottom_depth_raw = D_raw - DRAWER_BOTTOM_DEDUCTION;
+            const bottom_width_raw = W_raw - DRAWER_BOTTOM_DEDUCTION;
+
+            // Width is typically listed first for the bottom panel
+            const bottom_dim1 = decimalToFraction(bottom_width_raw); 
+            const bottom_dim2 = decimalToFraction(bottom_depth_raw); 
+            updateResult('drawer-bottom-dims', bottom_dim1, bottom_dim2);
         };
         
-        // --- Calculation Logic for Drawer Rebuild Cost (UPDATED with $130 CAP) ---
+        // --- Calculation Logic for Drawer Rebuild Cost ---
         const calculateDrawerCost = () => {
             const W_raw = parseFloat(document.getElementById('drawer-width').value); // Width
             const D_raw = parseFloat(document.getElementById('drawer-depth').value); // Depth (Length)
             const costEl = document.getElementById('calculated-cost');
             const MAX_COST = 130.00;
 
+            // Use 0.00 if input is invalid or non-positive
             if (isNaN(W_raw) || W_raw <= 0 || isNaN(D_raw) || D_raw <= 0) {
                 costEl.textContent = "$0.00";
                 return;
             }
 
-            // Formula: Price = (Length + Width) * 3 + 10
-            const calculatedCost = (W_raw + D_raw) * 3 + 10;
+            // Formula: Price = (Length + Width) * 3
+            const calculatedCost = (W_raw + D_raw) * 3;
             
             // Apply maximum cap of $130.00
             const finalCost = Math.min(calculatedCost, MAX_COST); 
@@ -491,7 +632,6 @@
         
         // Utility function to generate the selector options HTML
         const getDamageOptionHTML = (index) => {
-            // Updated classes for larger input box (p-3, text-base)
             // Full descriptive text restored for options
             return `
                 <div>
@@ -513,8 +653,8 @@
             if (!sectionsInput || !container) return;
             const sections = parseInt(sectionsInput.value);
 
-            // Limit sections for safety and performance (max 10)
-            const numSections = Math.max(1, Math.min(10, sections || 1)); 
+            // Updated logic: Allow 0 sections, and cap at 10. Default to 0 if input is invalid/empty.
+            const numSections = Math.max(0, Math.min(10, sections || 0)); 
 
             // Wrap selectors in a responsive grid container: 1 column on mobile, 2 columns on sm+ screens
             let html = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">';
@@ -537,11 +677,12 @@
         const calculateFaceframeCost = () => {
             const remade = document.getElementById('faceframe-remade').checked;
             const costEl = document.getElementById('faceframe-calculated-cost');
-            const sections = parseInt(document.getElementById('faceframe-sections').value);
+            const sections = parseInt(document.getElementById('faceframe-sections').value || '0'); // Safely default to 0
             const FLAT_REFINISH_COST = 250.00;
             const MAX_COST = 999.00; 
 
-            if (isNaN(sections) || sections < 1) {
+            // If sections is 0 or less, cost is 0 unless remade is checked
+            if (sections <= 0 && !remade) {
                 costEl.textContent = "$0.00";
                 return;
             }
@@ -580,6 +721,11 @@
             'material-thickness', 'box-height', 'face-height', 'box-depth', 'box-width',
             'config-door-drawer', 'config-full-door', 'config-drawer-bank' 
         ];
+        
+        const drawerBoxCutListInputs = [
+            'drawer-box-width', 'drawer-box-depth', 'drawer-box-height'
+        ];
+        
         const drawerCostInputs = [
             'drawer-width', 'drawer-depth'
         ];
@@ -590,6 +736,15 @@
             if (el) {
                 el.addEventListener('input', calculateCutList);
                 el.addEventListener('change', calculateCutList); // for select and radio changes
+            }
+        });
+
+        // Add listeners to NEW Drawer Box Cut List inputs
+        drawerBoxCutListInputs.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', calculateDrawerBoxCutList);
+                el.addEventListener('change', calculateDrawerBoxCutList);
             }
         });
         
@@ -630,6 +785,10 @@
             document.getElementById('cut-list-header')?.addEventListener('click', () => {
                 toggleSection('cut-list-header', 'cut-list-content', 'cut-list-icon');
             });
+            // NEW DRAWER BOX CUT LIST TOGGLE
+            document.getElementById('drawer-box-cut-list-header')?.addEventListener('click', () => {
+                toggleSection('drawer-box-cut-list-header', 'drawer-box-cut-list-content', 'drawer-box-cut-list-icon');
+            });
             document.getElementById('drawer-cost-header')?.addEventListener('click', () => {
                 toggleSection('drawer-cost-header', 'drawer-cost-content', 'drawer-cost-icon');
             });
@@ -640,8 +799,9 @@
 
             // Initial calculation to populate fields on load
             calculateCutList();
+            calculateDrawerBoxCutList(); // Call the new calculation function
             calculateDrawerCost();
-            renderDamageLevelSelectors(); // Initialize the dynamic selectors for the faceframe repair
+            renderDamageLevelSelectors(); 
         });
     </script>
 </body>
