@@ -1,3 +1,9 @@
+<!-- 
+  ======================================================================
+  STEP 1: Please paste your entire HTML code below this line.
+  ======================================================================
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -399,7 +405,11 @@
                             <div class="input-group pt-4">
                                 <label class="flex items-center space-x-3">
                                     <input type="checkbox" id="faceframe-remade" class="form-checkbox h-5 w-5 text-accent rounded focus:ring-accent border-gray-300">
-                                    <span class="text-lg font-medium text-gray-700">Whole faceframe will need remade / sanded + refinished</span>
+                                    <span class="text-lg font-medium text-gray-700">
+                                        Whole faceframe will need remade / sanded + refinished 
+                                        <!-- NEW COMMENT ADDED HERE -->
+                                        <span class="text-sm text-gray-500 font-normal">(1 face, 48 inches or less.)</span> 
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -662,7 +672,8 @@
                         <option value="touch-up" data-cost="20" selected>Simple touch-up (marker/putty)</option>
                         <!-- UPDATED TEXT HERE -->
                         <option value="small-break" data-cost="50">Small break (epoxy / glue+clamp)</option>
-                        <option value="replaced" data-cost="70">Needs replaced</option>
+                        <!-- COST UPDATED FROM 70 TO 100 -->
+                        <option value="replaced" data-cost="100">Needs replaced</option>
                     </select>
                 </div>
             `;
@@ -700,7 +711,9 @@
             const remade = document.getElementById('faceframe-remade').checked;
             const costEl = document.getElementById('faceframe-calculated-cost');
             const sections = parseInt(document.getElementById('faceframe-sections').value || '0'); // Safely default to 0
-            const FLAT_REFINISH_COST = 250.00;
+            
+            // PRICE UPDATED FROM $250.00 TO $300.00
+            const FLAT_REFINISH_COST = 300.00; 
             const MAX_COST = 999.00; 
 
             // If sections is 0 or less, cost is 0 unless remade is checked
@@ -711,7 +724,7 @@
             
             let totalCost = 0;
 
-            // Priority Logic: If whole faceframe remade is checked, lock the price at $250.00
+            // Priority Logic: If whole faceframe remade is checked, lock the price at $300.00
             if (remade) {
                 totalCost = FLAT_REFINISH_COST;
             } else {
@@ -832,3 +845,10 @@
     </script>
 </body>
 </html>
+
+<!-- 
+  ======================================================================
+  STEP 2: When you're done pasting, reply with the specific changes 
+          or features you need me to add or fix!
+  ======================================================================
+-->
