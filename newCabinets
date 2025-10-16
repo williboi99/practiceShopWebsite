@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neff Enterprises Tool Suite - New Cabinet Lines</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-dark': '#1f2937', // Gray-800
+                        'accent': '#059669', // Vibrant Emerald Green
+                        'nav-dark': '#0f172a', // Deep Charcoal/Navy (NavBar background)
+                        'nav-text': '#f3f4f6', // Light gray/White for navbar text
+                        'active-yellow': '#f59e0b', // Specific yellow/gold color (f59e0b) - Used for active New Cabinets and hover state
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for better mobile experience */
+        body {
+            background-color: #f3f4f6;
+            padding-top: 64px; /* Ensure padding at the top to clear the fixed navigation bar */
+        }
+        .cabinet-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cabinet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="font-sans min-h-screen">
+    
+    <!-- TOP NAVIGATION BAR -->
+    <header id="top-nav" class="fixed top-0 left-0 right-0 z-50 bg-nav-dark shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-2xl font-bold text-nav-text hover:text-active-yellow transition duration-150">
+                        Neff Enterprises
+                    </a>
+                </div>
+                <nav class="hidden md:flex space-x-6 items-center">
+                    <a href="index.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
+                        Resources
+                    </a>
+                    <!-- This link is styled as active -->
+                    <a href="newCabinets.html" class="bg-active-yellow text-nav-dark font-bold px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition duration-150">
+                        New Cabinets
+                    </a>
+                    <a href="cabinetCostTool.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
+                        Rebuild Price Calculator
+                    </a>
+                </nav>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-nav-text p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent border border-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-nav-dark pb-4 px-2 space-y-1 sm:px-3 border-t border-gray-700">
+            <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
+                Resources
+            </a>
+            <!-- Mobile active link -->
+            <a href="newCabinets.html" class="block px-3 py-2 rounded-md text-base font-bold bg-active-yellow text-nav-dark shadow-md">
+                New Cabinets
+            </a>
+            <a href="cabinetCostTool.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
+                Rebuild Price Calculator
+            </a>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="p-4 flex flex-col items-center pt-10 pb-16">
+        <div class="w-full max-w-7xl px-4">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-primary-dark mb-4 text-center border-b-4 border-accent pb-2">
+                Explore Our New Cabinet Lines
+            </h1>
+            <p class="text-xl text-gray-600 mb-12 text-center">
+                From budget-friendly options to high-end, custom designs, find the perfect line for your project.
+            </p>
+
+            <!-- Cabinet Lines Grid (Responsive) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- 1. 1951 - Standard Line -->
+                <div class="cabinet-card bg-white rounded-xl overflow-hidden shadow-2xl border-t-8 border-yellow-600">
+                    <div class="p-6 bg-yellow-50">
+                        <h2 class="text-3xl font-bold text-yellow-800 mb-1">1951</h2>
+                        <span class="inline-block text-lg font-semibold text-yellow-600 bg-yellow-200 px-3 py-1 rounded-full">Standard</span>
+                    </div>
+                    <!-- SRC UPDATED TO: Images/1951Images/1951.jpg -->
+                    <img src="Images/1951Images/1951.jpg" 
+                         alt="Image of 1951 Standard Cabinet line" 
+                         class="w-full h-64 object-cover"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/f59e0b/ffffff?text=1951+Standard+Cabinets';">
+                    <div class="p-6 space-y-4">
+                        <p class="text-gray-700">
+                            Our most popular line, offering a perfect balance of quality construction and affordability. Features classic styles with reliable hardware, ideal for rental properties and mid-range remodels.
+                        </p>
+                        <a href="1951_details.html" class="block text-center bg-yellow-600 text-white font-bold py-3 rounded-lg hover:bg-yellow-700 transition duration-150 uppercase tracking-wider shadow-md">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 2. Medallion - Premium Line -->
+                <div class="cabinet-card bg-white rounded-xl overflow-hidden shadow-2xl border-t-8 border-accent">
+                    <div class="p-6 bg-green-50">
+                        <h2 class="text-3xl font-bold text-accent mb-1">Medallion</h2>
+                        <span class="inline-block text-lg font-semibold text-green-700 bg-green-200 px-3 py-1 rounded-full">Premium</span>
+                    </div>
+                    <!-- SRC UPDATED TO: Images/MedallionImages/medallion.jpg -->
+                    <img src="Images/MedallionImages/medallion.jpg" 
+                         alt="Image of Medallion Premium Cabinet line" 
+                         class="w-full h-64 object-cover"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/059669/ffffff?text=Medallion+Premium+Cabinets';">
+                    <div class="p-6 space-y-4">
+                        <p class="text-gray-700">
+                            The Medallion line represents the best in craftsmanship. Featuring custom finishes, soft-close hardware, and bespoke design options, this line is perfect for high-end residential projects.
+                        </p>
+                        <a href="medallion_details.html" class="block text-center bg-accent text-white font-bold py-3 rounded-lg hover:bg-green-700 transition duration-150 uppercase tracking-wider shadow-md">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3. Quality - Budget Line -->
+                <div class="cabinet-card bg-white rounded-xl overflow-hidden shadow-2xl border-t-8 border-blue-600">
+                    <div class="p-6 bg-blue-50">
+                        <h2 class="text-3xl font-bold text-blue-800 mb-1">Quality</h2>
+                        <span class="inline-block text-lg font-semibold text-blue-600 bg-blue-200 px-3 py-1 rounded-full">Budget</span>
+                    </div>
+                    <!-- SRC UPDATED TO: Images/QualityImages/quality.jpg -->
+                    <img src="Images/QualityImages/quality.jpg" 
+                         alt="Image of Quality Budget Cabinet line" 
+                         class="w-full h-64 object-cover"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/3b82f6/ffffff?text=Quality+Budget+Cabinets';">
+                    <div class="p-6 space-y-4">
+                        <p class="text-gray-700">
+                            The Quality line offers dependable construction at an unbeatable price point. It’s the ideal solution for large-scale developments or projects requiring maximum cost efficiency without sacrificing essential function.
+                        </p>
+                        <a href="quality_details.html" class="block text-center bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition duration-150 uppercase tracking-wider shadow-md">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // --- Mobile Menu Toggle Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const button = document.getElementById('mobile-menu-button');
+            const menu = document.getElementById('mobile-menu');
+            if (button && menu) {
+                button.addEventListener('click', () => {
+                    menu.classList.toggle('hidden');
+                    // Optional: Toggle body overflow if you want to lock scrolling when the menu is open
+                    // document.body.classList.toggle('overflow-hidden'); 
+                });
+            }
+        });
+    </script>
+</body>
+</html>
