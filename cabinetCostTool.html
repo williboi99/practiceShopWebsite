@@ -31,8 +31,8 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
-            /* Ensure padding at the top to clear the fixed navigation bar */
-            padding-top: 64px; 
+            /* REMOVED: padding-top: 64px; to eliminate whitespace above the sticky header */
+            padding-top: 0px; 
         }
         .card {
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -158,8 +158,8 @@
         </div>
     </header>
 
-    <!-- Main Application Content (Input Form) - Padding adjusted from pt-8 to pt-6 for closer look -->
-    <div class="p-4 flex justify-center items-start pt-6">
+    <!-- Main Application Content (Input Form) - Added mt-16 to clear the sticky header after removing body padding -->
+    <div class="p-4 flex justify-center items-start mt-16">
         <div id="app-input" class="w-full max-w-lg bg-white rounded-xl p-6 card">
             <h1 class="text-3xl font-bold text-primary-dark mb-2 text-center">Cabinet Rebuild Quote</h1>
             <p class="text-center text-gray-500 mb-8">Enter details and quantities below to generate your printable quote.</p>
