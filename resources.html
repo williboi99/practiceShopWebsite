@@ -22,9 +22,8 @@
                     colors: {
                         'primary-dark': '#1f2937', // Gray-800
                         'accent': '#059669', // Vibrant Emerald Green
-                        'nav-dark': '#0f172a', // Deep Charcoal/Navy (NavBar background)
-                        'nav-text': '#f3f4f6', // Light gray/White for navbar text
-                        'active-yellow': '#f59e0b', // Specific yellow/gold color (f59e0b) - Used for active Resources and hover state
+                        // Old nav colors removed as we are now using Tailwind's slate/amber classes
+                        'active-yellow': '#f59e0b', 
                     }
                 }
             }
@@ -34,7 +33,7 @@
         /* Custom styles for better mobile experience */
         body {
             background-color: #f3f4f6;
-            padding-top: 64px; /* Ensure padding at the top to clear the fixed navigation bar */
+            /* Removed padding-top: 64px; as we handle spacing on the main content div now */
         }
         .card {
             /* Adjusted shadow for the individual tool containers */
@@ -83,51 +82,50 @@
 </head>
 <body class="font-sans min-h-screen">
     
-    <!-- TOP NAVIGATION BAR -->
-    <header id="top-nav" class="fixed top-0 left-0 right-0 z-50 bg-nav-dark shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex-shrink-0">
-                    <a href="index.html" class="text-2xl font-bold text-nav-text hover:text-active-yellow transition duration-150">
-                        Neff Enterprises
-                    </a>
-                </div>
-                <nav class="hidden md:flex space-x-6 items-center">
-                    <!-- Note: This link now points to itself and is styled as active -->
-                    <a href="resources.html" class="bg-active-yellow text-nav-dark font-bold px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition duration-150">
-                        Resources
-                    </a>
-                    <a href="newCabinets.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
-                        New Cabinets
-                    </a>
-                    <a href="cabinetCostTool.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
-                        Rebuild Price Calculator
-                    </a>
-                </nav>
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" class="text-nav-text p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent border border-gray-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+    <!-- TOP NAVIGATION BAR (UPDATED) -->
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Company Name / Logo - Updated to just use Amber Text -->
+            <h1 class="text-3xl font-extrabold tracking-tight">
+                <a href="index.html" class="text-amber-500 hover:text-amber-400 transition duration-150 ease-in-out">
+                    Neff Enterprises
+                </a>
+            </h1>
+
+            <!-- Menu Button (Mobile/Tablet) -->
+            <button id="menu-toggle" class="lg:hidden p-2 rounded-lg hover:bg-slate-700 transition duration-150 ease-in-out" aria-label="Toggle menu">
+                <!-- Hamburger Icon (inline SVG for aesthetics and reliability) -->
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+
+            <!-- Desktop Menu (Hidden on mobile) -->
+            <nav class="hidden lg:flex space-x-6 text-lg font-medium">
+                <!-- ACTIVE LINK STYLING APPLIED HERE -->
+                <a href="resources.html" class="bg-amber-500 text-slate-900 font-semibold transition duration-150 ease-in-out py-2 px-3 rounded-md">Resources</a>
+                <a href="newCabinets.html" class="hover:text-amber-400 transition duration-150 ease-in-out py-2 px-3 rounded-md">New Cabinets</a>
+                <a href="cabinetCostTool.html" class="hover:text-amber-400 transition duration-150 ease-in-out py-2 px-3 rounded-md">
+                    Rebuild Price Calculator
+                </a>
+            </nav>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-nav-dark pb-4 px-2 space-y-1 sm:px-3 border-t border-gray-700">
-            <a href="resources.html" class="block px-3 py-2 rounded-md text-base font-bold bg-active-yellow text-nav-dark shadow-md">
-                Resources
-            </a>
-            <a href="newCabinets.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
-                New Cabinets
-            </a>
-            <a href="cabinetCostTool.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
-                        Rebuild Price Calculator
-                    </a>
+
+        <!-- Mobile/Collapsible Menu Content -->
+        <div id="menu-content" class="hidden lg:hidden bg-slate-800 border-t border-slate-700">
+            <nav class="flex flex-col p-4 space-y-2">
+                <!-- ACTIVE LINK STYLING APPLIED HERE -->
+                <a href="resources.html" class="block bg-amber-500 text-slate-900 rounded-lg p-3 transition duration-150 ease-in-out font-semibold">Resources</a>
+                <a href="newCabinets.html" class="block text-white hover:bg-slate-700 rounded-lg p-3 transition duration-150 ease-in-out">New Cabinets</a>
+                <a href="cabinetCostTool.html" class="block text-white hover:bg-slate-700 rounded-lg p-3 transition duration-150 ease-in-out">
+                    Rebuild Price Calculator
+                </a>
+            </nav>
         </div>
     </header>
 
-    <!-- MAIN TOOL AREA: Contains Collapsible Sections -->
-    <div class="p-4 flex justify-center items-start pt-8">
+    <!-- MAIN TOOL AREA: Contains Collapsible Sections (Padding-Top adjusted to pt-16 to clear the fixed header) -->
+    <div class="p-4 flex justify-center items-start pt-16">
         <div class="w-full max-w-4xl space-y-6">
             <!-- 1. EURO CABINET CUT LIST GENERATOR (Collapsible) -->
             <div class="bg-white rounded-xl shadow-xl">
@@ -809,16 +807,22 @@
             faceframeRemadeCheckbox.addEventListener('change', calculateFaceframeCost);
         }
 
-        // --- Mobile Menu Toggle Logic & Initial Calc ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const button = document.getElementById('mobile-menu-button');
-            const menu = document.getElementById('mobile-menu');
-            if (button && menu) {
-                button.addEventListener('click', () => {
-                    menu.classList.toggle('hidden');
-                    document.body.classList.toggle('overflow-hidden');
+        // --- Mobile Menu Toggle Logic (UPDATED) ---
+        const setupMobileMenu = () => {
+            const toggleButton = document.getElementById('menu-toggle');
+            const menuContent = document.getElementById('menu-content');
+            
+            if (toggleButton && menuContent) {
+                toggleButton.addEventListener('click', function() {
+                    menuContent.classList.toggle('hidden');
+                    // Removed document.body.classList.toggle('overflow-hidden'); for simplicity
                 });
             }
+        };
+
+        // --- DOM Load and Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            setupMobileMenu(); // Setup the new mobile menu toggle
             
             // --- Toggle Listeners ---
             document.getElementById('cut-list-header')?.addEventListener('click', () => {
