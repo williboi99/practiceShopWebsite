@@ -1,9 +1,3 @@
-<!-- 
-  ======================================================================
-  STEP 1: Please paste your entire HTML code below this line.
-  ======================================================================
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,12 +62,18 @@
         .configuration-group .custom-radio-label:active {
             transform: scale(0.98);
         }
-        /* --- Final Checked State (Very Dark Gray Fill) --- */
+        /* --- Final Checked State (Very Dark Gray Fill + Solid Black Border) --- */
         .configuration-group input[type="radio"]:checked + .custom-radio-label {
-            border-color: #059669; /* Keep the Accent color border */
-            background-color: #374151; /* Dark Gray Fill */
-            color: #ffffff; /* White text for maximum contrast */
-            box-shadow: 0 1px 3px rgba(5, 150, 105, 0.4);
+            /* 1. Use a solid black border for strong visual feedback (2px matches default) */
+            border-color: #000000; 
+            border-width: 2px;
+            
+            /* 2. Keep the dark fill and white text for high contrast (Using primary-dark) */
+            background-color: #1f2937; 
+            color: #ffffff; 
+            
+            /* 3. Add a more obvious outer shadow */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); 
         }
         .configuration-group input[type="radio"]:checked + .custom-radio-label span {
             color: #ffffff; 
@@ -140,8 +140,7 @@
                 
                 <!-- Content (Initially Hidden) -->
                 <div id="cut-list-content" class="hidden p-6">
-                    <p class="text-center text-gray-500 mb-8">Calculate precise dimensions for your frameless (Euro) cabinet components.</p>
-            
+                    <!-- Text removed: "Calculate precise dimensions for your frameless (Euro) cabinet components." -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <!-- Input Panel -->
                         <div class="space-y-6">
@@ -153,21 +152,21 @@
                                     <option value="0.75" selected>3/4" (0.75 in)</option>
                                     <option value="0.625">5/8" (0.625 in)</option>
                                 </select>
-                                <p class="text-sm text-gray-500 mt-1">This is critical for calculating box width reductions.</p>
+                                <!-- Text removed: "This is critical for calculating box width reductions." -->
                             </div>
                             <!-- Input Fields: Height, Face Height, Depth, Width -->
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="input-group">
                                     <label for="box-height" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Height (A)</label>
-                                    <!-- Defaulted to 0.0 -->
-                                    <input type="number" id="box-height" value="0.0" min="0" step="0.01" placeholder="34.5"
+                                    <!-- Value removed -->
+                                    <input type="number" id="box-height" min="0" step="0.01" placeholder="34.5"
                                                 class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                     <p class="text-sm text-gray-500 mt-1">Overall height of the box.</p>
                                 </div>
                                 <div class="input-group">
                                     <label for="face-height" class="block text-lg font-medium text-gray-700 mb-1">Face Height (B)</label>
-                                    <!-- Defaulted to 0.0 -->
-                                    <input type="number" id="face-height" value="0.0" min="0" step="0.01" placeholder="30.5"
+                                    <!-- Value removed -->
+                                    <input type="number" id="face-height" min="0" step="0.01" placeholder="30.5"
                                                 class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                     <p class="text-sm text-gray-500 mt-1">Height of the face/door/drawer.</p>
                                 </div>
@@ -175,15 +174,15 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="input-group">
                                     <label for="box-depth" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Depth (C)</label>
-                                    <!-- Defaulted to 0.0 -->
-                                    <input type="number" id="box-depth" value="0.0" min="0" step="0.01" placeholder="24.0"
+                                    <!-- Value removed -->
+                                    <input type="number" id="box-depth" min="0" step="0.01" placeholder="24.0"
                                                 class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                     <p class="text-sm text-gray-500 mt-1">Standard 24 or 21 inches.</p>
                                 </div>
                                 <div class="input-group">
                                     <label for="box-width" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Width (D)</label>
-                                    <!-- Defaulted to 0.0 -->
-                                    <input type="number" id="box-width" value="0.0" min="0" step="0.01" placeholder="36.0"
+                                    <!-- Value removed -->
+                                    <input type="number" id="box-width" min="0" step="0.01" placeholder="36.0"
                                                 class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                     <p class="text-sm text-gray-500 mt-1">Overall width (e.g., 36 inches).</p>
                                 </div>
@@ -200,7 +199,8 @@
                                 
                                 <label class="custom-radio-label">
                                     <input type="radio" name="cabinet-type" value="full_door" id="config-full-door">
-                                    <span class="ml-3 text-lg font-medium text-gray-800">Full Height Doors</span>
+                                    <!-- Text updated per request -->
+                                    <span class="ml-3 text-lg font-medium text-gray-800">Full Height Doors / Sink Base</span>
                                 </label>
                                 
                                 <label class="custom-radio-label">
@@ -241,7 +241,8 @@
                     </div>
                     
                     <div class="mt-8 pt-4 border-t border-gray-200">
-                        <p class="text-sm text-gray-500 text-center">All dimensions are in inches (in). Width is always listed first, followed by height/depth.</p>
+                        <!-- Text removed: "All dimensions are in inches (in). Width is always listed first, followed by height/depth." -->
+                        <p class="text-sm text-gray-500 text-center"></p>
                     </div>
                 </div>
             </div>
@@ -268,19 +269,22 @@
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Drawer Box Dimensions (in)</h2>
                             <div class="input-group">
                                 <label for="drawer-box-width" class="block text-lg font-medium text-gray-700 mb-1">Overall Width</label>
-                                <input type="number" id="drawer-box-width" value="0.0" min="0" step="0.01" placeholder="18.0"
+                                <!-- Value removed -->
+                                <input type="number" id="drawer-box-width" min="0" step="0.01" placeholder="18.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">External width of the finished drawer box.</p>
                             </div>
                             <div class="input-group">
                                 <label for="drawer-box-depth" class="block text-lg font-medium text-gray-700 mb-1">Overall Depth (Length)</label>
-                                <input type="number" id="drawer-box-depth" value="0.0" min="0" step="0.01" placeholder="21.0"
+                                <!-- Value removed -->
+                                <input type="number" id="drawer-box-depth" min="0" step="0.01" placeholder="21.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">External depth/length of the finished drawer box.</p>
                             </div>
                             <div class="input-group">
                                 <label for="drawer-box-height" class="block text-lg font-medium text-gray-700 mb-1">Overall Height</label>
-                                <input type="number" id="drawer-box-height" value="0.0" min="0" step="0.01" placeholder="6.0"
+                                <!-- Value removed -->
+                                <input type="number" id="drawer-box-height" min="0" step="0.01" placeholder="6.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">External height of the finished drawer box.</p>
                             </div>
@@ -326,22 +330,22 @@
                 
                 <!-- Content (Initially Hidden) -->
                 <div id="drawer-cost-content" class="hidden p-6">
-                    <p class="text-center text-gray-500 mb-8">Calculate the estimated cost for rebuilding a single drawer box.</p>
+                    <!-- Text removed: "Calculate the estimated cost for rebuilding a single drawer box." -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Inputs -->
                         <div class="space-y-4">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Drawer Specifications (in)</h2>
                             <div class="input-group">
                                 <label for="drawer-width" class="block text-lg font-medium text-gray-700 mb-1">Drawer Width</label>
-                                <!-- Defaulted to 0.0 -->
-                                <input type="number" id="drawer-width" value="0.0" min="0" step="0.1" placeholder="18.0"
+                                <!-- Value removed -->
+                                <input type="number" id="drawer-width" min="0" step="0.1" placeholder="18.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">Width of the drawer box (in).</p>
                             </div>
                             <div class="input-group">
                                 <label for="drawer-depth" class="block text-lg font-medium text-gray-700 mb-1">Drawer Depth (or Length)</label>
-                                <!-- Defaulted to 0.0 -->
-                                <input type="number" id="drawer-depth" value="0.0" min="0" step="0.1" placeholder="21.0"
+                                <!-- Value removed -->
+                                <input type="number" id="drawer-depth" min="0" step="0.1" placeholder="21.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">Depth/Length of the drawer box (in).</p>
                             </div>
@@ -351,10 +355,8 @@
                                 <label class="flex items-center space-x-3">
                                     <input type="checkbox" id="drawer-new-glides" 
                                            class="form-checkbox h-5 w-5 text-accent rounded focus:ring-accent border-gray-300">
-                                    <!-- Price text removed as requested -->
                                     <span class="text-lg font-medium text-gray-700">Needs new set of glides</span>
                                 </label>
-                                <!-- Descriptive paragraph removed as requested -->
                             </div>
                         </div>
                         
@@ -390,10 +392,11 @@
                             <!-- 1. How many sections of face are damaged -->
                             <div class="input-group">
                                 <label for="faceframe-sections" class="block text-lg font-medium text-gray-700 mb-1">Sections Damaged</label>
-                                <!-- Defaulted to 0 -->
-                                <input type="number" id="faceframe-sections" value="0" min="0" step="1" placeholder="1"
+                                <!-- Value removed -->
+                                <input type="number" id="faceframe-sections" min="0" step="1" placeholder="1"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
-                                <p class="text-sm text-gray-500 mt-1">Number of distinct sections (stiles/rails) requiring repair (max 10).</p>
+                                <!-- Text "(max 10)" removed -->
+                                <p class="text-sm text-gray-500 mt-1">Number of distinct sections (stiles/rails) requiring repair.</p>
                             </div>
                             <!-- Dynamic Damage Level Selectors will go here (NOW IN A RESPONSIVE 2-COLUMN GRID) -->
                             <div id="damage-level-container" class="pt-4 border-t border-gray-200">
@@ -405,7 +408,6 @@
                                     <input type="checkbox" id="faceframe-remade" class="form-checkbox h-5 w-5 text-accent rounded focus:ring-accent border-gray-300">
                                     <span class="text-lg font-medium text-gray-700">
                                         Whole faceframe will need remade / sanded + refinished 
-                                        <!-- NEW COMMENT ADDED HERE -->
                                         <span class="text-sm text-gray-500 font-normal">(1 face, 48 inches or less.)</span> 
                                     </span>
                                 </label>
@@ -512,11 +514,12 @@
             // Get raw input values
             const T_str = document.getElementById('material-thickness').value;
             
-            const BoxH_raw = parseFloat(document.getElementById('box-height').value); // A (Cabinet Height)
-            const FaceH_raw = parseFloat(document.getElementById('face-height').value); // B (Face/Door Height)
+            // Use logical OR to default to 0.0 if value is empty/null/NaN
+            const BoxH_raw = parseFloat(document.getElementById('box-height').value || 0.0); // A (Cabinet Height)
+            const FaceH_raw = parseFloat(document.getElementById('face-height').value || 0.0); // B (Face/Door Height)
             
-            const D_raw = parseFloat(document.getElementById('box-depth').value); // C (Depth)
-            const W_raw = parseFloat(document.getElementById('box-width').value); // D (Overall Width)
+            const D_raw = parseFloat(document.getElementById('box-depth').value || 0.0); // C (Depth)
+            const W_raw = parseFloat(document.getElementById('box-width').value || 0.0); // D (Overall Width)
             const T = parseFloat(T_str); // Thickness: 0.75 or 0.625
             
             // Constants for frameless construction
@@ -591,9 +594,10 @@
 
         // --- Core Calculation Logic for Drawer Box Cut List (NEW FUNCTION) ---
         const calculateDrawerBoxCutList = () => {
-            const W_raw = parseFloat(document.getElementById('drawer-box-width').value); // Width
-            const D_raw = parseFloat(document.getElementById('drawer-box-depth').value); // Depth (Length)
-            const H_raw = parseFloat(document.getElementById('drawer-box-height').value); // Height
+            // Use logical OR to default to 0.0 if value is empty/null/NaN
+            const W_raw = parseFloat(document.getElementById('drawer-box-width').value || 0.0); // Width
+            const D_raw = parseFloat(document.getElementById('drawer-box-depth').value || 0.0); // Depth (Length)
+            const H_raw = parseFloat(document.getElementById('drawer-box-height').value || 0.0); // Height
             
             const DRAWER_BOTTOM_DEDUCTION = 0.5625; // 9/16"
 
@@ -629,8 +633,8 @@
         
         // --- Calculation Logic for Drawer Rebuild Cost ---
         const calculateDrawerCost = () => {
-            const W_raw = parseFloat(document.getElementById('drawer-width').value); // Width
-            const D_raw = parseFloat(document.getElementById('drawer-depth').value); // Depth (Length)
+            const W_raw = parseFloat(document.getElementById('drawer-width').value || 0.0); // Width
+            const D_raw = parseFloat(document.getElementById('drawer-depth').value || 0.0); // Depth (Length)
             const glidesChecked = document.getElementById('drawer-new-glides').checked; // NEW: Checkbox status
             
             const costEl = document.getElementById('calculated-cost');
@@ -682,7 +686,7 @@
             const sectionsInput = document.getElementById('faceframe-sections');
             const container = document.getElementById('damage-level-container');
             if (!sectionsInput || !container) return;
-            const sections = parseInt(sectionsInput.value);
+            const sections = parseInt(sectionsInput.value || '0'); // Safely default to 0 if blank
 
             // Updated logic: Allow 0 sections, and cap at 10. Default to 0 if input is invalid/empty.
             const numSections = Math.max(0, Math.min(10, sections || 0)); 
@@ -841,18 +845,12 @@
             });
 
             // Initial calculation to populate fields on load
+            // Note: Calculations will run, but inputs will be blank as requested.
             calculateCutList();
-            calculateDrawerBoxCutList(); // Call the new calculation function
+            calculateDrawerBoxCutList(); 
             calculateDrawerCost();
             renderDamageLevelSelectors(); 
         });
     </script>
 </body>
 </html>
-
-<!-- 
-  ======================================================================
-  STEP 2: When you're done pasting, reply with the specific changes 
-          or features you need me to add or fix!
-  ======================================================================
--->
