@@ -16,9 +16,11 @@
                     colors: {
                         'primary-dark': '#1f2937', // Gray-800
                         'accent': '#059669', // Vibrant Emerald Green
-                        'nav-dark': '#0f172a', // Deep Charcoal/Navy (NavBar background)
-                        'nav-text': '#f3f4f6', // Light gray/White for navbar text
-                        'active-yellow': '#f59e0b', // Specific yellow/gold color (f59e0b)
+                        // The previous custom nav colors (nav-dark, nav-text, active-yellow) are no longer strictly needed for the navigation, 
+                        // but are kept in the config just in case they are used elsewhere in the application content.
+                        'nav-dark': '#0f172a', 
+                        'nav-text': '#f3f4f6',
+                        'active-yellow': '#f59e0b',
                     }
                 }
             }
@@ -52,8 +54,8 @@
         
         /* --- PRINT STYLES for PDF Receipt --- */
         @media print {
-            /* Hide the input form and print controls when printing */
-            #app-input, #print-controls, #top-nav, #mobile-menu {
+            /* Hide the input form, print controls, and the entire header when printing */
+            #app-input, #print-controls, header {
                 display: none !important;
             }
             body { 
@@ -114,61 +116,50 @@
 </head>
 <body class="font-sans min-h-screen">
     
-    <!-- Top Navigation Bar (Fixed) -->
-    <header id="top-nav" class="fixed top-0 left-0 right-0 z-50 bg-nav-dark shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                
-                <!-- Logo/Title -->
-                <div class="flex-shrink-0">
-                    <a href="index.html" class="text-2xl font-bold text-nav-text hover:text-active-yellow transition duration-150">
-                        Neff Enterprises
-                    </a>
-                </div>
+    <!-- Header and Navigation (UPDATED) -->
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Company Name / Logo - Text color changed to amber -->
+            <h1 class="text-3xl font-extrabold tracking-tight text-amber-500">
+                <a href="index.html" class="inline-block hover:text-amber-400 transition duration-150 ease-in-out">
+                    Neff Enterprises
+                </a>
+            </h1>
 
-                <!-- Desktop Navigation -->
-                <nav class="hidden md:flex space-x-6 items-center">
-                    <a href="resources.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
-                        Resources
-                    </a>
-                    <a href="newCabinets.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
-                        New Cabinets
-                    </a>
-                    
-                    <a href="cabinetCostTool.html" class="bg-active-yellow text-nav-dark font-bold px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition duration-150">
-                        Rebuild Price Calculator
-                    </a>
-                </nav>
+            <!-- Menu Button (Mobile/Tablet) -->
+            <button id="menu-toggle" class="lg:hidden p-2 rounded-lg hover:bg-slate-700 transition duration-150 ease-in-out" aria-label="Toggle menu">
+                <!-- Hamburger Icon (inline SVG for aesthetics and reliability) -->
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
 
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" class="text-nav-text p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent border border-gray-600">
-                        <!-- Hamburger Icon -->
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+            <!-- Desktop Menu (Hidden on mobile) -->
+            <nav class="hidden lg:flex space-x-6 text-lg font-medium items-center">
+                <a href="resources.html" class="hover:text-amber-400 transition duration-150 ease-in-out py-2 px-3 rounded-md">Resources</a>
+                <a href="newCabinets.html" class="hover:text-amber-400 transition duration-150 ease-in-out py-2 px-3 rounded-md">New Cabinets</a>
+                <!-- Rebuild Price Calculator - Now the amber button -->
+                <a href="cabinetCostTool.html" class="bg-amber-500 text-slate-900 font-bold px-3 py-1 rounded-lg hover:bg-amber-400 transition duration-150 ease-in-out">
+                    Rebuild Price Calculator
+                </a>
+            </nav>
         </div>
-        
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-nav-dark pb-4 px-2 space-y-1 sm:px-3 border-t border-gray-700">
-            <a href="resources.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
-                Resources
-            </a>
-            <a href="newCabinets.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
-                New Cabinets
-            </a>
-            
-            <a href="cabinetCostTool.html" class="block px-3 py-2 rounded-md text-base font-bold bg-active-yellow text-nav-dark shadow-md">
-                Rebuild Price Calculator
-            </a>
+
+        <!-- Mobile/Collapsible Menu Content -->
+        <div id="menu-content" class="hidden lg:hidden bg-slate-800 border-t border-slate-700">
+            <nav class="flex flex-col p-4 space-y-2">
+                <a href="resources.html" class="block text-white hover:bg-slate-700 rounded-lg p-3 transition duration-150 ease-in-out">Resources</a>
+                <a href="newCabinets.html" class="block text-white hover:bg-slate-700 rounded-lg p-3 transition duration-150 ease-in-out">New Cabinets</a>
+                <!-- Rebuild Price Calculator - Now the amber button -->
+                <a href="cabinetCostTool.html" class="block bg-amber-500 text-slate-900 font-bold hover:bg-amber-400 rounded-lg p-3 transition duration-150 ease-in-out">
+                    Rebuild Price Calculator
+                </a>
+            </nav>
         </div>
     </header>
 
-    <!-- Main Application Content (Input Form) -->
-    <div class="p-4 flex justify-center items-start pt-8">
+    <!-- Main Application Content (Input Form) - Padding adjusted from pt-8 to pt-6 for closer look -->
+    <div class="p-4 flex justify-center items-start pt-6">
         <div id="app-input" class="w-full max-w-lg bg-white rounded-xl p-6 card">
             <h1 class="text-3xl font-bold text-primary-dark mb-2 text-center">Cabinet Rebuild Quote</h1>
             <p class="text-center text-gray-500 mb-8">Enter details and quantities below to generate your printable quote.</p>
@@ -634,13 +625,22 @@ Job requires lead time of 6 weeks."
     </div>
 
     <script>
-        // --- Mobile Menu Toggle Logic ---
+        // --- Mobile Menu Toggle Logic (UPDATED) ---
         document.addEventListener('DOMContentLoaded', () => {
-            const button = document.getElementById('mobile-menu-button');
-            const menu = document.getElementById('mobile-menu');
-            if (button && menu) {
-                button.addEventListener('click', () => {
-                    menu.classList.toggle('hidden');
+            // Updated selectors to match the new HTML structure
+            const menuToggle = document.getElementById('menu-toggle');
+            const menuContent = document.getElementById('menu-content');
+
+            if (menuToggle && menuContent) {
+                menuToggle.addEventListener('click', function() {
+                    const isExpanded = menuContent.classList.contains('hidden');
+                    
+                    // The toggle logic provided by the user
+                    if (isExpanded) {
+                        menuContent.classList.remove('hidden');
+                    } else {
+                        menuContent.classList.add('hidden');
+                    }
                 });
             }
         });
