@@ -14,11 +14,12 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
+                        // Original custom colors kept for main content styling, though header now uses slate/amber
                         'primary-dark': '#1f2937', // Gray-800
                         'accent': '#059669', // Vibrant Emerald Green
-                        'nav-dark': '#0f172a', // Deep Charcoal/Navy (NavBar background)
-                        'nav-text': '#f3f4f6', // Light gray/White for navbar text
-                        'active-yellow': '#f59e0b', // Specific yellow/gold color (f59e0b) - Used for active New Cabinets and hover state
+                        'nav-dark': '#0f172a', 
+                        'nav-text': '#f3f4f6', 
+                        'active-yellow': '#f59e0b', 
                     }
                 }
             }
@@ -28,7 +29,7 @@
         /* Custom styles for better mobile experience */
         body {
             background-color: #f3f4f6;
-            padding-top: 64px; /* Ensure padding at the top to clear the fixed navigation bar */
+            /* Removed padding-top: 80px; to eliminate the empty space above the sticky header. */
         }
         .cabinet-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -41,47 +42,50 @@
 </head>
 <body class="font-sans min-h-screen">
     
-    <!-- TOP NAVIGATION BAR -->
-    <header id="top-nav" class="fixed top-0 left-0 right-0 z-50 bg-nav-dark shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex-shrink-0">
-                    <a href="index.html" class="text-2xl font-bold text-nav-text hover:text-active-yellow transition duration-150">
-                        Neff Enterprises
-                    </a>
-                </div>
-                <nav class="hidden md:flex space-x-6 items-center">
-                    <a href="index.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
-                        Resources
-                    </a>
-                    <!-- This link is styled as active -->
-                    <a href="newCabinets.html" class="bg-active-yellow text-nav-dark font-bold px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition duration-150">
-                        New Cabinets
-                    </a>
-                    <a href="cabinetCostTool.html" class="text-nav-text hover:text-active-yellow font-medium transition duration-150 p-2 rounded-lg">
-                        Rebuild Price Calculator
-                    </a>
-                </nav>
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" class="text-nav-text p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent border border-gray-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+    <!-- Header and Navigation (UPDATED with color swaps) -->
+    <header class="bg-slate-900 text-white shadow-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Company Name / Logo - Now clickable with amber text -->
+            <h1 class="text-3xl font-extrabold tracking-tight">
+                <a href="index.html" class="text-amber-500 hover:text-amber-400 transition duration-150 ease-in-out">
+                    Neff Enterprises
+                </a>
+            </h1>
+
+            <!-- Menu Button (Mobile/Tablet) -->
+            <button id="menu-toggle" class="lg:hidden p-2 rounded-lg hover:bg-slate-700 transition duration-150 ease-in-out" aria-label="Toggle menu">
+                <!-- Hamburger Icon -->
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+
+            <!-- Desktop Menu (Hidden on mobile) -->
+            <nav class="hidden lg:flex space-x-6 text-lg font-medium">
+                <a href="resources.html" class="hover:text-amber-400 transition duration-150 ease-in-out py-2 px-3 rounded-md">Resources</a>
+                <!-- Active Link Styling Applied (Now the amber button) -->
+                <a href="newCabinets.html" class="bg-amber-500 text-slate-900 font-bold py-2 px-3 rounded-lg transition duration-150 ease-in-out hover:bg-amber-400 shadow-md">
+                    New Cabinets
+                </a>
+                <!-- Rebuild Price Calculator -->
+                <a href="cabinetCostTool.html" class="hover:text-amber-400 transition duration-150 ease-in-out py-2 px-3 rounded-md">
+                    Rebuild Price Calculator
+                </a>
+            </nav>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-nav-dark pb-4 px-2 space-y-1 sm:px-3 border-t border-gray-700">
-            <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
-                Resources
-            </a>
-            <!-- Mobile active link -->
-            <a href="newCabinets.html" class="block px-3 py-2 rounded-md text-base font-bold bg-active-yellow text-nav-dark shadow-md">
-                New Cabinets
-            </a>
-            <a href="cabinetCostTool.html" class="block px-3 py-2 rounded-md text-base font-medium text-nav-text hover:bg-gray-700 hover:text-active-yellow transition duration-150">
-                Rebuild Price Calculator
-            </a>
+
+        <!-- Mobile/Collapsible Menu Content -->
+        <div id="menu-content" class="hidden lg:hidden bg-slate-800 border-t border-slate-700">
+            <nav class="flex flex-col p-4 space-y-2">
+                <a href="resources.html" class="block text-white hover:bg-slate-700 rounded-lg p-3 transition duration-150 ease-in-out">Resources</a>
+                <!-- Active Link Styling Applied (Now the amber button) -->
+                <a href="newCabinets.html" class="block bg-amber-500 text-slate-900 font-bold rounded-lg p-3 transition duration-150 ease-in-out hover:bg-amber-400">
+                    New Cabinets
+                </a>
+                <a href="cabinetCostTool.html" class="block text-white hover:bg-slate-700 rounded-lg p-3 transition duration-150 ease-in-out">
+                    Rebuild Price Calculator
+                </a>
+            </nav>
         </div>
     </header>
 
@@ -106,9 +110,9 @@
                     </div>
                     <!-- SRC UPDATED TO: Images/1951Images/1951.jpg -->
                     <img src="Images/1951Images/1951.jpg" 
-                         alt="Image of 1951 Standard Cabinet line" 
-                         class="w-full h-64 object-cover"
-                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/f59e0b/ffffff?text=1951+Standard+Cabinets';">
+                          alt="Image of 1951 Standard Cabinet line" 
+                          class="w-full h-64 object-cover"
+                          onerror="this.onerror=null; this.src='https://placehold.co/600x400/f59e0b/ffffff?text=1951+Standard+Cabinets';">
                     <div class="p-6 space-y-4">
                         <p class="text-gray-700">
                             Our most popular line, offering a perfect balance of quality construction and affordability. Features classic styles with reliable hardware, ideal for rental properties and mid-range remodels. This line is typically <span class="font-bold">installed 3-5 weeks</span> from the time of ordering.
@@ -127,9 +131,9 @@
                     </div>
                     <!-- SRC UPDATED TO: Images/MedallionImages/medallion.jpg -->
                     <img src="Images/MedallionImages/medallion.jpg" 
-                         alt="Image of Medallion Premium Cabinet line" 
-                         class="w-full h-64 object-cover"
-                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/059669/ffffff?text=Medallion+Premium+Cabinets';">
+                          alt="Image of Medallion Premium Cabinet line" 
+                          class="w-full h-64 object-cover"
+                          onerror="this.onerror=null; this.src='https://placehold.co/600x400/059669/ffffff?text=Medallion+Premium+Cabinets';">
                     <div class="p-6 space-y-4">
                         <p class="text-gray-700">
                             The Medallion line represents the best in craftsmanship. Featuring custom finishes, soft-close hardware, and bespoke design options, this line is perfect for high-end residential projects. This premium line is typically <span class="font-bold">installed 6-8 weeks</span> from the time of ordering.
@@ -148,9 +152,9 @@
                     </div>
                     <!-- SRC UPDATED TO: Images/QualityImages/quality.jpg -->
                     <img src="Images/QualityImages/quality.jpg" 
-                         alt="Image of Quality Budget Cabinet line" 
-                         class="w-full h-64 object-cover"
-                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/3b82f6/ffffff?text=Quality+Budget+Cabinets';">
+                          alt="Image of Quality Budget Cabinet line" 
+                          class="w-full h-64 object-cover"
+                          onerror="this.onerror=null; this.src='https://placehold.co/600x400/3b82f6/ffffff?text=Quality+Budget+Cabinets';">
                     <div class="p-6 space-y-4">
                         <p class="text-gray-700">
                             The Quality line offers dependable construction at an unbeatable price point. It’s the ideal solution for large-scale developments or projects requiring maximum cost efficiency without sacrificing essential function. This line is typically <span class="font-bold">installed 3-5 weeks</span> from the time of ordering.
@@ -165,16 +169,21 @@
         </div>
     </main>
     
+    <!-- JavaScript for Menu Toggle (UPDATED) -->
     <script>
-        // --- Mobile Menu Toggle Logic ---
         document.addEventListener('DOMContentLoaded', () => {
-            const button = document.getElementById('mobile-menu-button');
-            const menu = document.getElementById('mobile-menu');
-            if (button && menu) {
-                button.addEventListener('click', () => {
-                    menu.classList.toggle('hidden');
-                    // Optional: Toggle body overflow if you want to lock scrolling when the menu is open
-                    // document.body.classList.toggle('overflow-hidden'); 
+            const button = document.getElementById('menu-toggle');
+            const menuContent = document.getElementById('menu-content');
+
+            if (button && menuContent) {
+                button.addEventListener('click', function() {
+                    const isExpanded = menuContent.classList.contains('hidden');
+                    
+                    if (isExpanded) {
+                        menuContent.classList.remove('hidden');
+                    } else {
+                        menuContent.classList.add('hidden');
+                    }
                 });
             }
         });
