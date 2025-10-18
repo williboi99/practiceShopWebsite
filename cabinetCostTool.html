@@ -110,6 +110,14 @@
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
+            /* Styling for the Cash Discount line item */
+            .is-discount {
+                background-color: #d1fae5 !important; /* Light green for discount */
+                border-left: 4px solid #059669; /* Accent color border */
+                padding-left: 10px !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
             h1, h2, h3 { color: #1f2937 !important; }
         }
     </style>
@@ -604,6 +612,26 @@ Job requires lead time of 6 weeks."
 
             </div>
 
+            <!-- Payment Method Selection (UPDATED: Labels simplified) -->
+            <div class="mt-8 pt-6 border-t border-gray-200 p-4 bg-indigo-50 rounded-xl">
+                <h2 class="text-xl font-bold text-indigo-700 mb-4">Payment Method</h2>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <!-- Invoice/Card (Default) -->
+                    <label for="payment-invoice" class="flex items-center flex-1 p-3 bg-white border border-indigo-300 rounded-lg cursor-pointer transition hover:bg-indigo-100/50">
+                        <input type="radio" id="payment-invoice" name="payment-method" value="Invoice" checked
+                               class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <span class="ml-3 text-base font-semibold text-gray-800">Invoice / Card</span>
+                    </label>
+                    
+                    <!-- Cash (Discount) -->
+                    <label for="payment-cash" class="flex items-center flex-1 p-3 bg-white border border-indigo-300 rounded-lg cursor-pointer transition hover:bg-indigo-100/50">
+                        <input type="radio" id="payment-cash" name="payment-method" value="Cash"
+                               class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <span class="ml-3 text-base font-semibold text-gray-800">Cash</span>
+                    </label>
+                </div>
+            </div>
+
             <!-- Total Display and Print Controls -->
             <div class="mt-8 pt-6 border-t border-gray-200" id="print-controls">
                 <div id="quote-total" class="flex justify-between items-center bg-accent/10 p-4 rounded-xl">
@@ -747,7 +775,7 @@ Job requires lead time of 6 weeks."
             const el = document.getElementById(id);
             if (!el) return isNumber ? 0 : '';
             
-            if (el.type === 'checkbox') {
+            if (el.type === 'checkbox' || el.type === 'radio') {
                 return el.checked;
             }
 
@@ -825,7 +853,7 @@ Job requires lead time of 6 weeks."
             // Calculate costs for all items in the map (Lineal Foot & Qty Accessories)
             ITEM_MAP.forEach(addItem);
             
-            // NEW Lazy Susan Hardware Fee Logic
+            // Lazy Susan Hardware Fee Logic
             const isLazySusanWoodChecked = getValue('checkbox-lazy-susan-wood', false);
             const isLazySusanPlasticChecked = getValue('checkbox-lazy-susan-plastic', false);
 
@@ -928,15 +956,35 @@ Job requires lead time of 6 weeks."
                 total = subtotal;
             }
 
+            // NEW: Payment Method Discount Logic
+            const isCashSelected = getValue('payment-cash', false);
+            let cashDiscount = 0;
+            
+            if (isCashSelected) {
+                // Discount is 3% of the current total (which includes the subtotal + rush fee if applicable)
+                cashDiscount = parseFloat((total * 0.03).toFixed(2)); 
+                total = total - cashDiscount; // Apply discount
+                
+                // Add discount to breakdown (as a negative value item)
+                breakdown.push({
+                    name: 'Cash Payment Discount (3%)',
+                    cost: -cashDiscount, // Store as negative cost
+                    qty: 1,
+                    unit: 'DISCOUNT',
+                    rate: -cashDiscount,
+                    isDiscount: true // New tag for styling/receipt
+                });
+            }
+
             // Update Total Display
             totalCostEl.textContent = `$${total.toFixed(2)}`;
             
             // Re-render the receipt view content
-            renderReceipt(breakdown, subtotal, total, isRushed, rushFee);
+            renderReceipt(breakdown, subtotal, total, isRushed, rushFee, isCashSelected, cashDiscount);
         };
         
         // --- Receipt Rendering Function ---
-        const renderReceipt = (breakdown, subtotal, total, isRushed, rushFee) => {
+        const renderReceipt = (breakdown, subtotal, total, isRushed, rushFee, isCashSelected, cashDiscount) => {
             // NEW FIELDS
             const companyName = getValue('company-name', false);
             const projectManager = getValue('project-manager', false);
@@ -950,12 +998,16 @@ Job requires lead time of 6 weeks."
             // NEW: Get the finished material selection
             const finishedMaterial = getValue('finished-material-select', false);
             
+            // UPDATED: Payment Method display name - simplified
+            const paymentMethod = isCashSelected ? 'Cash' : 'Invoice / Card';
+            
             // Group items into categories for display order
             const linealFootItems = breakdown.filter(item => item.unit === 'ft');
             const pieceItems = breakdown.filter(item => item.unit === 'PC' || item.unit === 'SET'); // Include SET/PC in piece items
             const flatRateItems = breakdown.filter(item => item.unit === 'FLAT' && !item.isRushFee && item.name !== 'Color/Finish Matching Fee');
             const matchFeeItem = breakdown.find(item => item.unit === 'SERVICE');
             const rushFeeItem = breakdown.find(item => item.isRushFee);
+            const cashDiscountItem = breakdown.find(item => item.isDiscount); // Find the new discount item
             
             // Helper function to format currency
             const formatCurrency = (amount) => `$${(amount || 0).toFixed(2)}`;
@@ -964,13 +1016,18 @@ Job requires lead time of 6 weeks."
             const renderSection = (items, title, showRate = true) => {
                 if (items.length === 0) return '';
                 
+                // Filter out discount items from general sections
+                const positiveCostItems = items.filter(item => !item.isDiscount);
+
+                if (positiveCostItems.length === 0) return '';
+                
                 let html = `
                     <div class="mb-6">
                         <h3 class="receipt-section-header text-lg font-bold text-primary-dark">${title}</h3>
                         <div class="space-y-2">
                 `;
                 
-                items.forEach(item => {
+                positiveCostItems.forEach(item => {
                     // Display rate correctly for PC/SET/ft items
                     let rateDisplay;
                     if (item.unit === 'FLAT') {
@@ -1021,6 +1078,7 @@ Job requires lead time of 6 weeks."
                                 <p><span class="font-bold">Box Material:</span> ${materialUsed || 'TBD'}</p>
                                 <p><span class="font-bold">Finished Material:</span> ${finishedMaterial || 'TBD'}</p>
                                 <p class="text-red-600 font-bold">${isRushed ? 'RUSHED ORDER (4-Day)' : 'Standard Lead Time'}</p>
+                                <p class="font-bold text-indigo-700"><span class="font-bold">Payment Method:</span> ${paymentMethod}</p> 
                             </div>
                         </div>
                     </header>
@@ -1054,6 +1112,15 @@ Job requires lead time of 6 weeks."
                             </div>
                         ` : ''}
 
+                        <!-- Cash Discount Line Item (NEW) -->
+                        ${cashDiscountItem ? `
+                            <div class="flex justify-between items-center text-green-700 font-bold p-3 bg-green-50 border-b border-green-300 is-discount">
+                                <span>${cashDiscountItem.name}</span>
+                                <span class="price-display">${formatCurrency(cashDiscountItem.cost)}</span>
+                            </div>
+                        ` : ''}
+
+
                         <!-- Grand Total Bar -->
                         <div class="receipt-total-bar flex justify-between items-center text-2xl font-extrabold text-accent p-4 mt-2 rounded-lg">
                             <span>GRAND TOTAL:</span>
@@ -1070,6 +1137,9 @@ Job requires lead time of 6 weeks."
                             <li>A 50% non-refundable deposit is required to begin work.</li>
                             <li>Final payment is due upon completion and prior to installation.</li>
                             <li>Lead times are subject to change. Rushed orders are subject to a 50% fee.</li>
+                            ${cashDiscountItem ? `
+                            <li>The **Cash Payment Discount** of ${formatCurrency(cashDiscountItem.cost).replace('-', '')} is valid only if the full payment is made in cash.</li>
+                            ` : ''}
                         </ul>
                     </div>
 
@@ -1106,7 +1176,8 @@ Job requires lead time of 6 weeks."
             
             // Attach event listeners to all relevant inputs for real-time calculation
             inputElements.forEach(input => {
-                input.addEventListener(input.type === 'checkbox' || input.tagName === 'SELECT' ? 'change' : 'input', calculateTotal); 
+                // Attach 'change' listener for checkboxes, radio buttons, and select tags, 'input' for text/number fields
+                input.addEventListener(input.type === 'checkbox' || input.type === 'radio' || input.tagName === 'SELECT' ? 'change' : 'input', calculateTotal); 
             });
             // Also attach listener to the new Lazy Susan checkboxes
             document.getElementById('checkbox-lazy-susan-wood').addEventListener('change', calculateTotal);
