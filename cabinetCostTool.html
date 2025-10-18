@@ -166,8 +166,8 @@
         </div>
     </header>
 
-    <!-- Main Application Content (Input Form) - Added mt-16 to clear the sticky header after removing body padding -->
-    <div class="p-4 flex justify-center items-start mt-16">
+    <!-- Main Application Content (Input Form) - Margin updated to mt-4 -->
+    <div class="p-4 flex justify-center items-start mt-4">
         <div id="app-input" class="w-full max-w-lg bg-white rounded-xl p-6 card">
             <h1 class="text-3xl font-bold text-primary-dark mb-2 text-center">Cabinet Rebuild Quote</h1>
             <p class="text-center text-gray-500 mb-8">Enter details and quantities below to generate your printable quote.</p>
@@ -486,9 +486,21 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
                 
-                <!-- Input: 1-1/4" Scribe (8/ft) -->
+                <!-- NEW: Input: Batten (36") -->
                 <div class="input-group">
-                    <label for="input-mid-scribe" class="block text-lg font-medium text-gray-700 mb-1">1-1/4" Scribe (8/ft)</label>
+                    <label for="input-batten" class="block text-lg font-medium text-gray-700 mb-1">Batten (36")</label>
+                    <div class="flex items-center">
+                        <input type="number" id="input-batten" data-unit="PC" placeholder="0" min="0" step="1"
+                               class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
+                        <span id="display-batten" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
+                            $20 / PC
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Input: 1-1/4" Scribe (8ft) -->
+                <div class="input-group">
+                    <label for="input-mid-scribe" class="block text-lg font-medium text-gray-700 mb-1">1-1/4" Scribe (8ft)</label>
                     <div class="flex items-center">
                         <input type="number" id="input-mid-scribe" data-unit="PC" placeholder="0" min="0" step="1"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
@@ -701,6 +713,8 @@ Job requires lead time of 6 weeks."
             fillers: 50,
             matchFee: 150,
             scribe: 35,
+            // NEW PRICE: Batten (36")
+            batten: 20, 
             midScribe: 50,
             outsideCornerScribe: 55,
             quarterRoundScribe: 55,
@@ -764,7 +778,9 @@ Job requires lead time of 6 weeks."
             { id: 'input-toekick', priceKey: 'toekick', name: 'Toekick (8ft)', unit: 'PC', displayId: 'display-toekick' },
             { id: 'input-fillers', priceKey: 'fillers', name: 'Fillers', unit: 'PC', displayId: 'display-fillers' },
             { id: 'input-scribe', priceKey: 'scribe', name: 'Scribe (8ft)', unit: 'PC', displayId: 'display-scribe' },
-            { id: 'input-mid-scribe', priceKey: 'midScribe', name: '1-1/4" Scribe (8/ft)', unit: 'PC', displayId: 'display-mid-scribe' },
+            // NEW MAP ITEM
+            { id: 'input-batten', priceKey: 'batten', name: 'Batten (36")', unit: 'PC', displayId: 'display-batten' }, 
+            { id: 'input-mid-scribe', priceKey: 'midScribe', name: '1-1/4" Scribe (8ft)', unit: 'PC', displayId: 'display-mid-scribe' },
             { id: 'input-outside-scribe', priceKey: 'outsideCornerScribe', name: 'Outside Corner Scribe (8ft)', unit: 'PC', displayId: 'display-outside-scribe' },
             { id: 'input-quarter-scribe', priceKey: 'quarterRoundScribe', name: 'Quarter-Round Scribe (8ft)', unit: 'PC', displayId: 'display-quarter-scribe' },
             { id: 'input-glides-set', priceKey: 'glidesSet', name: 'New Sets of Glides', unit: 'SET', displayId: 'display-glides-set' }, 
@@ -956,18 +972,29 @@ Job requires lead time of 6 weeks."
                 total = subtotal;
             }
 
-            // NEW: Payment Method Discount Logic
+            // NEW: Payment Method Discount Logic (UPDATED FOR ROUNDING)
             const isCashSelected = getValue('payment-cash', false);
             let cashDiscount = 0;
             
             if (isCashSelected) {
-                // Discount is 3% of the current total (which includes the subtotal + rush fee if applicable)
-                cashDiscount = parseFloat((total * 0.03).toFixed(2)); 
-                total = total - cashDiscount; // Apply discount
+                // Store the current total (which includes subtotal + rush fee) before applying the cash logic.
+                const totalPreDiscount = total; 
+                
+                // 1. Calculate Total after an initial 3% reduction (T_interim = T_pre * 0.97)
+                const totalAfter3Percent = totalPreDiscount * 0.97;
+                
+                // 2. Round the result down to the nearest $10 mark (T_final = floor(T_interim / 10) * 10)
+                const finalRoundedTotal = Math.floor(totalAfter3Percent / 10) * 10;
+                
+                // 3. Calculate the total reduction (the discount) by comparing the original total (T_pre) to the final rounded total (T_final)
+                cashDiscount = parseFloat((totalPreDiscount - finalRoundedTotal).toFixed(2));
+                
+                // 4. Update the main 'total' variable to the final rounded value
+                total = finalRoundedTotal;
                 
                 // Add discount to breakdown (as a negative value item)
                 breakdown.push({
-                    name: 'Cash Payment Discount (3%)',
+                    name: 'Cash Payment Discount (3% + Round-down to Nearest $10)',
                     cost: -cashDiscount, // Store as negative cost
                     qty: 1,
                     unit: 'DISCOUNT',
@@ -1138,7 +1165,7 @@ Job requires lead time of 6 weeks."
                             <li>Final payment is due upon completion and prior to installation.</li>
                             <li>Lead times are subject to change. Rushed orders are subject to a 50% fee.</li>
                             ${cashDiscountItem ? `
-                            <li>The **Cash Payment Discount** of ${formatCurrency(cashDiscountItem.cost).replace('-', '')} is valid only if the full payment is made in cash.</li>
+                            <li>The **Cash Payment Discount** of ${formatCurrency(cashDiscountItem.cost).replace('-', '')} (3% reduction and round-down) is valid only if the full payment is made in cash.</li>
                             ` : ''}
                         </ul>
                     </div>
