@@ -92,8 +92,12 @@
                 print-color-adjust: exact;
             }
             .receipt-disclaimer-box {
-                background-color: #fef2f2 !important;
-                border-color: #fecaca !important;
+                 background-color: #fafafa !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            /* Force inputs/spans to print prices correctly */
+            .price-display {
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
@@ -102,11 +106,6 @@
                 background-color: #fef2f2 !important; /* Light red */
                 border-left: 4px solid #ef4444; /* Red border */
                 padding-left: 10px !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            /* Force inputs/spans to print prices correctly */
-            .price-display {
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
@@ -1087,14 +1086,16 @@ Job requires lead time of 6 weeks."
                 return html;
             };
 
-            // NEW HEADER STRUCTURE
+            // UPDATED RECEIPT STRUCTURE: Job Details moved right under the main header.
             const receiptHTML = `
                 <div class="p-8 max-w-2xl mx-auto bg-white shadow-xl min-h-screen">
                     <header class="text-center mb-8">
-                        <!-- Company Contact Information (From User Request) -->
+                        <!-- Company Contact Information (UPDATED TO MATCH SCREENSHOT) -->
                         <h1 class="text-3xl font-extrabold text-primary-dark mb-1">Neff Enterprises Inc.</h1>
-                        <p class="text-sm text-gray-700">P.O. Box 2522, Gilbert, AZ 85299-2522</p>
-                        <p class="text-sm text-gray-700 mb-4">ROC 120032 | Phone: 480-688-7978</p>
+                        <p class="text-sm text-gray-700">P.O. Box 2522</p>
+                        <p class="text-sm text-gray-700">Gilbert, AZ 85299-2522</p>
+                        <p class="text-sm text-gray-700">ROC 120032</p>
+                        <p class="text-sm text-gray-700 mb-4">480-688-7978</p>
                         
                         <!-- Document Title -->
                         <p class="text-xl font-semibold text-accent border-b-2 border-accent pb-3 mb-6">Cabinet Rebuild Estimate</p>
@@ -1103,7 +1104,7 @@ Job requires lead time of 6 weeks."
                         <h2 class="text-xl font-bold text-primary-dark mb-4 text-left border-b-2 border-gray-200 pb-2">JOB DETAILS</h2>
                         
                         <!-- Job Details Grid -->
-                        <div class="grid grid-cols-2 gap-4 text-left text-sm receipt-info-box p-4 rounded-lg">
+                        <div class="grid grid-cols-2 gap-4 text-left text-sm receipt-info-box p-4 rounded-lg mb-8">
                             <div>
                                 <p><span class="font-bold">Contractor:</span> ${companyName || 'TBD'}</p>
                                 <p><span class="font-bold">Project Manager:</span> ${projectManager || 'TBD'}</p>
@@ -1121,7 +1122,7 @@ Job requires lead time of 6 weeks."
                         </div>
                     </header>
                     
-                    <!-- Job Notes in Receipt -->
+                    <!-- Job Notes in Receipt (Moved down to be after job details block) -->
                     ${jobNotes ? `
                         <div class="mb-6 p-4 border border-gray-300 rounded-lg bg-gray-50">
                             <h3 class="font-bold text-primary-dark mb-2 border-b pb-1">Job Notes</h3>
@@ -1166,7 +1167,7 @@ Job requires lead time of 6 weeks."
                         </div>
                     </div>
                     
-                    <!-- Signatures -->
+                    <!-- Signatures (Kept as is, fulfilling the request for a spot to date and sign) -->
                     <div class="mt-16 pt-4 border-t border-gray-300">
                         <div class="grid grid-cols-2 gap-8">
                             <div>
