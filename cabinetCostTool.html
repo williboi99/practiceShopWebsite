@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cabinetry Quote Calculator - Print Ready</title>
+    <title>Cabinetry Quote Calculator - Print Ready (Refined)</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -16,8 +16,6 @@
                     colors: {
                         'primary-dark': '#1f2937', // Gray-800
                         'accent': '#059669', // Vibrant Emerald Green
-                        // The previous custom nav colors (nav-dark, nav-text, active-yellow) are no longer strictly needed for the navigation, 
-                        // but are kept in the config just in case they are used elsewhere in the application content.
                         'nav-dark': '#0f172a', 
                         'nav-text': '#f3f4f6',
                         'active-yellow': '#f59e0b',
@@ -31,7 +29,6 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3ff6;
-            /* REMOVED: padding-top: 64px; to eliminate whitespace above the sticky header */
             padding-top: 0px; 
         }
         .card {
@@ -59,7 +56,7 @@
                 display: none !important;
             }
             body { 
-                padding-top: 0; /* Remove top padding when printing */
+                padding-top: 0; 
                 background-color: white;
             }
             /* Make the receipt fill the page */
@@ -72,47 +69,49 @@
                 box-shadow: none !important;
                 background-color: white !important;
                 font-family: 'Inter', sans-serif;
-                font-size: 10pt; /* Smaller font for better fit on paper */
+                font-size: 10pt; 
+            }
+            /* Style to match the screenshot's receipt line items */
+            .receipt-line-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                padding: 4px 0;
+                border-bottom: 1px dashed #e5e7eb; /* Light dash for separation */
             }
             .receipt-section-header {
-                border-bottom: 2px solid #059669;
+                font-size: 1.1rem; /* Slightly larger than line items */
+                font-weight: 700;
+                color: #1f2937;
+                border-bottom: 3px solid #059669; /* Thick green line */
                 padding-bottom: 5px;
                 margin-bottom: 15px;
             }
             /* Force colors to print */
             .receipt-total-bar {
                 background-color: #ecfdf5 !important; /* light green */
-                border: 1px solid #a7f3d0;
+                border: 2px solid #059669 !important; /* Stronger green border */
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
-            .receipt-info-box {
-                 background-color: #fafafa !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .receipt-disclaimer-box {
-                 background-color: #fafafa !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            /* Force inputs/spans to print prices correctly */
+            /* Ensure text for prices prints black */
             .price-display {
+                color: #1f2937 !important; 
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
-            /* Styling for the Rush Fee line item */
+            /* RUSH Fee styling */
             .is-rush-fee {
-                background-color: #fef2f2 !important; /* Light red */
-                border-left: 4px solid #ef4444; /* Red border */
+                background-color: #fef2f2 !important; 
+                border-left: 4px solid #ef4444; 
                 padding-left: 10px !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
-            /* Styling for the Cash Discount line item */
+            /* Discount styling */
             .is-discount {
-                background-color: #d1fae5 !important; /* Light green for discount */
-                border-left: 4px solid #059669; /* Accent color border */
+                background-color: #d1fae5 !important; 
+                border-left: 4px solid #059669; 
                 padding-left: 10px !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
@@ -123,7 +122,7 @@
 </head>
 <body class="font-sans min-h-screen">
     
-    <!-- Header and Navigation (UPDATED) -->
+    <!-- Header and Navigation -->
     <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <!-- Company Name / Logo - Text color changed to amber -->
@@ -664,17 +663,14 @@ Job requires lead time of 6 weeks."
     </div>
 
     <script>
-        // --- Mobile Menu Toggle Logic (UPDATED) ---
+        // --- Mobile Menu Toggle Logic ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Updated selectors to match the new HTML structure
             const menuToggle = document.getElementById('menu-toggle');
             const menuContent = document.getElementById('menu-content');
 
             if (menuToggle && menuContent) {
                 menuToggle.addEventListener('click', function() {
                     const isExpanded = menuContent.classList.contains('hidden');
-                    
-                    // The toggle logic provided by the user
                     if (isExpanded) {
                         menuContent.classList.remove('hidden');
                     } else {
@@ -685,7 +681,6 @@ Job requires lead time of 6 weeks."
         });
 
         // --- DOM Elements ---
-        // This selector ensures all new inputs are included
         const inputElements = document.querySelectorAll('#app-input input, #app-input select, #app-input textarea'); 
         const totalCostEl = document.getElementById('total-cost');
         const printBtn = document.getElementById('print-quote-btn');
@@ -693,96 +688,54 @@ Job requires lead time of 6 weeks."
         const receiptContainer = document.getElementById('print-receipt');
         const matchFeeStatusEl = document.getElementById('match-fee-status');
         const materialSelect = document.getElementById('material-select');
+        const finishedMaterialSelect = document.getElementById('finished-material-select');
 
-        // --- Price Constants Definitions (Updated Glides Price and Lazy Susan Structure) ---
+        // --- Price Constants Definitions ---
         const DEFAULT_PRICES = {
-            base: 90,
-            halfShelf: 18,
-            baseInstall: 155,
-            fullHeight: 180,
-            fullShelf: 36,
-            fullHeightInstall: 310,
-            baseEuropean: 195,
-            baseEuropeanInstall: 280,
-            fullHeightEuropean: 285,
-            fullHeightEuropeanInstall: 435,
-            baseSkins: 85,
-            fullSkins: 170,
-            toekick: 30,
-            fillers: 50,
-            matchFee: 150,
-            scribe: 35,
-            // NEW PRICE: Batten (36")
-            batten: 20, 
-            midScribe: 50,
-            outsideCornerScribe: 55,
-            quarterRoundScribe: 55,
-            glidesSet: 25, 
-            lazySusanWood: 500,     // NEW PRICE
-            lazySusanPlastic: 200   // NEW PRICE
+            base: 90, halfShelf: 18, baseInstall: 155, fullHeight: 180, fullShelf: 36, fullHeightInstall: 310,
+            baseEuropean: 195, baseEuropeanInstall: 280, fullHeightEuropean: 285, fullHeightEuropeanInstall: 435,
+            baseSkins: 85, fullSkins: 170, toekick: 30, fillers: 50, matchFee: 150, scribe: 35,
+            batten: 20, midScribe: 50, outsideCornerScribe: 55, quarterRoundScribe: 55, glidesSet: 25, 
+            lazySusanWood: 500, lazySusanPlastic: 200
         };
 
         const PLYWOOD_OVERRIDE_PRICES = {
-            // Standard Plywood (raw interior)
-            base: 145,
-            halfShelf: 29,
-            baseInstall: 210,
-            fullHeight: 288,
-            fullShelf: 58,
-            fullHeightInstall: 420,
-            // European Styles
-            baseEuropean: 312,
-            baseEuropeanInstall: 397,
-            fullHeightEuropean: 456,
-            fullHeightEuropeanInstall: 606
+            base: 145, halfShelf: 29, baseInstall: 210, fullHeight: 288, fullShelf: 58, fullHeightInstall: 420,
+            baseEuropean: 312, baseEuropeanInstall: 397, fullHeightEuropean: 456, fullHeightEuropeanInstall: 606
         };
         
-        // NEW PRICING FOR STAINED INTERIOR PLYWOOD
         const PLYWOOD_STAINED_PRICES = {
-            // Standard Styles
-            base: 185,
-            halfShelf: 37,
-            baseInstall: 250,
-            fullHeight: 367,
-            fullShelf: 74,
-            fullHeightInstall: 500,
-            // European Styles
-            baseEuropean: 398,
-            baseEuropeanInstall: 483,
-            fullHeightEuropean: 581,
-            fullHeightEuropeanInstall: 731
+            base: 185, halfShelf: 37, baseInstall: 250, fullHeight: 367, fullShelf: 74, fullHeightInstall: 500,
+            baseEuropean: 398, baseEuropeanInstall: 483, fullHeightEuropean: 581, fullHeightEuropeanInstall: 731
         };
 
         let CURRENT_PRICES = {...DEFAULT_PRICES}; 
 
         // Map linking input IDs to price keys and display IDs
         const ITEM_MAP = [
-            // Standard Lineal Foot Items (dynamically priced)
-            { id: 'input-base', priceKey: 'base', name: 'Base (Rebuild)', unit: 'ft', displayId: 'display-base' },
-            { id: 'input-half-shelf', priceKey: 'halfShelf', name: 'Half-Depth Shelving', unit: 'ft', displayId: 'display-half-shelf' },
-            { id: 'input-base-install', priceKey: 'baseInstall', name: 'Base w/ Installation', unit: 'ft', displayId: 'display-base-install' },
-            { id: 'input-full-height', priceKey: 'fullHeight', name: 'Full Height (Rebuild)', unit: 'ft', displayId: 'display-full-height' },
-            { id: 'input-full-shelf', priceKey: 'fullShelf', name: 'Full-Depth Shelving', unit: 'ft', displayId: 'display-full-shelf' },
-            { id: 'input-full-height-install', priceKey: 'fullHeightInstall', name: 'Full Height w/ Installation', unit: 'ft', displayId: 'display-full-height-install' },
+            // Lineal Foot Items
+            { id: 'input-base', priceKey: 'base', name: 'Base (Rebuild)', unit: 'ft', isLineal: true, displayId: 'display-base' },
+            { id: 'input-half-shelf', priceKey: 'halfShelf', name: 'Half-Depth Shelving', unit: 'ft', isLineal: true, displayId: 'display-half-shelf' },
+            { id: 'input-base-install', priceKey: 'baseInstall', name: 'Base w/ Installation', unit: 'ft', isLineal: true, displayId: 'display-base-install' },
+            { id: 'input-full-height', priceKey: 'fullHeight', name: 'Full Height (Rebuild)', unit: 'ft', isLineal: true, displayId: 'display-full-height' },
+            { id: 'input-full-shelf', priceKey: 'fullShelf', name: 'Full-Depth Shelving', unit: 'ft', isLineal: true, displayId: 'display-full-shelf' },
+            { id: 'input-full-height-install', priceKey: 'fullHeightInstall', name: 'Full Height w/ Installation', unit: 'ft', isLineal: true, displayId: 'display-full-height-install' },
+            { id: 'input-base-european', priceKey: 'baseEuropean', name: 'Base European (Faceless)', unit: 'ft', isLineal: true, displayId: 'display-base-european' },
+            { id: 'input-base-european-install', priceKey: 'baseEuropeanInstall', name: 'Base European w/ Install', unit: 'ft', isLineal: true, displayId: 'display-base-european-install' },
+            { id: 'input-full-height-european', priceKey: 'fullHeightEuropean', name: 'Full Height European (Faceless)', unit: 'ft', isLineal: true, displayId: 'display-full-height-european' },
+            { id: 'input-full-height-european-install', priceKey: 'fullHeightEuropeanInstall', name: 'Full Height European w/ Install', unit: 'ft', isLineal: true, displayId: 'display-full-height-european-install' },
             
-            // European Styles (dynamically priced)
-            { id: 'input-base-european', priceKey: 'baseEuropean', name: 'Base European (Faceless)', unit: 'ft', displayId: 'display-base-european' },
-            { id: 'input-base-european-install', priceKey: 'baseEuropeanInstall', name: 'Base European w/ Install', unit: 'ft', displayId: 'display-base-european-install' },
-            { id: 'input-full-height-european', priceKey: 'fullHeightEuropean', name: 'Full Height European (Faceless)', unit: 'ft', displayId: 'display-full-height-european' },
-            { id: 'input-full-height-european-install', priceKey: 'fullHeightEuropeanInstall', name: 'Full Height European w/ Install', unit: 'ft', displayId: 'display-full-height-european-install' },
-            
-            // Accessory Items (static price)
-            { id: 'input-base-skins', priceKey: 'baseSkins', name: 'Base/Wall Skins', unit: 'PC', displayId: 'display-base-skins' },
-            { id: 'input-full-skins', priceKey: 'fullSkins', name: 'Full Height Skin / Back Panel', unit: 'PC', displayId: 'display-full-skins' },
-            { id: 'input-toekick', priceKey: 'toekick', name: 'Toekick (8ft)', unit: 'PC', displayId: 'display-toekick' },
-            { id: 'input-fillers', priceKey: 'fillers', name: 'Fillers', unit: 'PC', displayId: 'display-fillers' },
-            { id: 'input-scribe', priceKey: 'scribe', name: 'Scribe (8ft)', unit: 'PC', displayId: 'display-scribe' },
-            // NEW MAP ITEM
-            { id: 'input-batten', priceKey: 'batten', name: 'Batten (36")', unit: 'PC', displayId: 'display-batten' }, 
-            { id: 'input-mid-scribe', priceKey: 'midScribe', name: '1-1/4" Scribe (8ft)', unit: 'PC', displayId: 'display-mid-scribe' },
-            { id: 'input-outside-scribe', priceKey: 'outsideCornerScribe', name: 'Outside Corner Scribe (8ft)', unit: 'PC', displayId: 'display-outside-scribe' },
-            { id: 'input-quarter-scribe', priceKey: 'quarterRoundScribe', name: 'Quarter-Round Scribe (8ft)', unit: 'PC', displayId: 'display-quarter-scribe' },
-            { id: 'input-glides-set', priceKey: 'glidesSet', name: 'New Sets of Glides', unit: 'SET', displayId: 'display-glides-set' }, 
+            // Accessory Items
+            { id: 'input-base-skins', priceKey: 'baseSkins', name: 'Base/Wall Skins', unit: 'PC', isLineal: false, displayId: 'display-base-skins' },
+            { id: 'input-full-skins', priceKey: 'fullSkins', name: 'Full Height Skin / Back Panel', unit: 'PC', isLineal: false, displayId: 'display-full-skins' },
+            { id: 'input-toekick', priceKey: 'toekick', name: 'Toekick (8ft)', unit: 'PC', isLineal: false, displayId: 'display-toekick' },
+            { id: 'input-fillers', priceKey: 'fillers', name: 'Fillers', unit: 'PC', isLineal: false, displayId: 'display-fillers' },
+            { id: 'input-scribe', priceKey: 'scribe', name: 'Scribe (8ft)', unit: 'PC', isLineal: false, displayId: 'display-scribe' },
+            { id: 'input-batten', priceKey: 'batten', name: 'Batten (36")', unit: 'PC', isLineal: false, displayId: 'display-batten' }, 
+            { id: 'input-mid-scribe', priceKey: 'midScribe', name: '1-1/4" Scribe (8ft)', unit: 'PC', isLineal: false, displayId: 'display-mid-scribe' },
+            { id: 'input-outside-scribe', priceKey: 'outsideCornerScribe', name: 'Outside Corner Scribe (8ft)', unit: 'PC', isLineal: false, displayId: 'display-outside-scribe' },
+            { id: 'input-quarter-scribe', priceKey: 'quarterRoundScribe', name: 'Quarter-Round Scribe (8ft)', unit: 'PC', isLineal: false, displayId: 'display-quarter-scribe' },
+            { id: 'input-glides-set', priceKey: 'glidesSet', name: 'New Sets of Glides', unit: 'SET', isLineal: false, displayId: 'display-glides-set' }, 
         ];
 
         // --- Utility Functions ---
@@ -802,19 +755,19 @@ Job requires lead time of 6 weeks."
             return el.value || '';
         };
 
+        const formatCurrency = (amount) => `$${(amount || 0).toFixed(2)}`;
+        
         // --- Dynamic Pricing and Display Updates ---
         const updatePricesDisplay = () => {
             ITEM_MAP.forEach(item => {
                 const spanEl = document.getElementById(item.displayId);
                 if (spanEl && item.unit) {
                     const price = CURRENT_PRICES[item.priceKey];
-                    // Ensure price is defined and a number before trying to fix it.
                     if (typeof price === 'number') {
                         spanEl.textContent = `$${price.toFixed(0)} / ${item.unit}`;
                     }
                 }
             });
-            // NEW: Update the Lazy Susan price displays
             const woodDisplay = document.getElementById('display-lazy-susan-wood');
             if(woodDisplay) {
                 woodDisplay.textContent = `$${CURRENT_PRICES.lazySusanWood.toFixed(0)}`; 
@@ -823,19 +776,16 @@ Job requires lead time of 6 weeks."
             if(plasticDisplay) {
                 plasticDisplay.textContent = `$${CURRENT_PRICES.lazySusanPlastic.toFixed(0)}`; 
             }
-            calculateTotal(); // Recalculate everything after prices change
+            calculateTotal(); 
         };
 
         const applyMaterialPricing = () => {
             const selectedMaterial = materialSelect.value;
             if (selectedMaterial === 'Plywood') {
-                // Apply Plywood-specific overrides to the default prices
                 CURRENT_PRICES = {...DEFAULT_PRICES, ...PLYWOOD_OVERRIDE_PRICES};
             } else if (selectedMaterial === 'Plywood (Stained Interior)') {
-                // Apply NEW Stained Plywood overrides
                 CURRENT_PRICES = {...DEFAULT_PRICES, ...PLYWOOD_STAINED_PRICES};
             } else {
-                // Use default prices for all other selections (Maple, White, Almond, Particle Board)
                 CURRENT_PRICES = {...DEFAULT_PRICES};
             }
             updatePricesDisplay();
@@ -843,14 +793,14 @@ Job requires lead time of 6 weeks."
 
         // --- Calculation & Receipt Generation Logic ---
         const calculateTotal = () => {
-            let subtotal = 0; // Cost before rush fee
-            let total = 0; // Final cost after rush fee
+            let subtotal = 0; 
+            let total = 0; 
             let breakdown = [];
             
             // Helper function for adding itemized costs
             const addItem = (item) => {
                 const qty = getValue(item.id);
-                const rate = CURRENT_PRICES[item.priceKey]; // Use CURRENT_PRICES
+                const rate = CURRENT_PRICES[item.priceKey]; 
                 
                 if (qty > 0 && typeof rate === 'number') {
                     const cost = parseFloat((qty * rate).toFixed(2));
@@ -860,12 +810,12 @@ Job requires lead time of 6 weeks."
                         cost: cost, 
                         qty: qty, 
                         unit: item.unit, 
-                        rate: rate 
+                        rate: rate,
+                        isLineal: item.isLineal
                     });
                 }
             };
             
-            // Calculate costs for all items in the map (Lineal Foot & Qty Accessories)
             ITEM_MAP.forEach(addItem);
             
             // Lazy Susan Hardware Fee Logic
@@ -877,11 +827,7 @@ Job requires lead time of 6 weeks."
                 subtotal += cost;
                 breakdown.push({
                     name: 'New Lazy Susan Hardware (Wood)',
-                    cost: cost,
-                    qty: 1,
-                    unit: 'PC',
-                    rate: cost,
-                    note: 'Flat rate for wood hardware replacement.'
+                    cost: cost, qty: 1, unit: 'PC', rate: cost, note: 'Flat rate for wood hardware replacement.', isLineal: false 
                 });
             }
             if (isLazySusanPlasticChecked) {
@@ -889,11 +835,7 @@ Job requires lead time of 6 weeks."
                 subtotal += cost;
                 breakdown.push({
                     name: 'New Lazy Susan Hardware (Plastic)',
-                    cost: cost,
-                    qty: 1,
-                    unit: 'PC',
-                    rate: cost,
-                    note: 'Flat rate for plastic hardware replacement.'
+                    cost: cost, qty: 1, unit: 'PC', rate: cost, note: 'Flat rate for plastic hardware replacement.', isLineal: false
                 });
             }
 
@@ -919,7 +861,8 @@ Job requires lead time of 6 weeks."
                     rate: CURRENT_PRICES.matchFee,
                     note: (isStainChecked ? 'Stain, ' : '') + 
                           (isPaintChecked ? 'Paint, ' : '') + 
-                          (isLacquerChecked ? 'Lacquer' : '')
+                          (isLacquerChecked ? 'Lacquer' : ''),
+                    isLineal: false
                 });
                 matchFeeStatusEl.textContent = `Matching fee applied: ${matchFeeCount} x $150 = $${matchFeeCost.toFixed(2)}`;
                 matchFeeStatusEl.classList.remove('hidden');
@@ -936,7 +879,8 @@ Job requires lead time of 6 weeks."
                     cost: faceframeRepair,
                     qty: 1,
                     unit: 'FLAT',
-                    rate: faceframeRepair
+                    rate: faceframeRepair,
+                    isLineal: false
                 });
             }
 
@@ -949,7 +893,8 @@ Job requires lead time of 6 weeks."
                     cost: miscCustom,
                     qty: 1,
                     unit: 'FLAT',
-                    rate: miscCustom
+                    rate: miscCustom,
+                    isLineal: false
                 });
             }
 
@@ -971,35 +916,25 @@ Job requires lead time of 6 weeks."
                 total = subtotal;
             }
 
-            // NEW: Payment Method Discount Logic (UPDATED FOR ROUNDING)
+            // Payment Method Discount Logic (UPDATED FOR ROUNDING)
             const isCashSelected = getValue('payment-cash', false);
             let cashDiscount = 0;
             
             if (isCashSelected) {
-                // Store the current total (which includes subtotal + rush fee) before applying the cash logic.
                 const totalPreDiscount = total; 
-                
-                // 1. Calculate Total after an initial 3% reduction (T_interim = T_pre * 0.97)
                 const totalAfter3Percent = totalPreDiscount * 0.97;
-                
-                // 2. Round the result down to the nearest $10 mark (T_final = floor(T_interim / 10) * 10)
                 const finalRoundedTotal = Math.floor(totalAfter3Percent / 10) * 10;
-                
-                // 3. Calculate the total reduction (the discount) by comparing the original total (T_pre) to the final rounded total (T_final)
                 cashDiscount = parseFloat((totalPreDiscount - finalRoundedTotal).toFixed(2));
-                
-                // 4. Update the main 'total' variable to the final rounded value
                 total = finalRoundedTotal;
                 
                 // Add discount to breakdown (as a negative value item)
                 breakdown.push({
-                    // UPDATED: Removed the calculation logic from the name for printing
                     name: 'Cash Payment Discount',
-                    cost: -cashDiscount, // Store as negative cost
+                    cost: -cashDiscount, 
                     qty: 1,
                     unit: 'DISCOUNT',
                     rate: -cashDiscount,
-                    isDiscount: true // New tag for styling/receipt
+                    isDiscount: true 
                 });
             }
 
@@ -1010,166 +945,171 @@ Job requires lead time of 6 weeks."
             renderReceipt(breakdown, subtotal, total, isRushed, rushFee, isCashSelected, cashDiscount);
         };
         
-        // --- Receipt Rendering Function ---
+        // --- Receipt Rendering Function (HEAVILY MODIFIED TO MATCH SCREENSHOT) ---
         const renderReceipt = (breakdown, subtotal, total, isRushed, rushFee, isCashSelected, cashDiscount) => {
-            // NEW FIELDS
             const companyName = getValue('company-name', false);
             const projectManager = getValue('project-manager', false);
-            
             const jobName = getValue('job-name', false);
             const jobAddress = getValue('job-address', false);
             const clientPhone = getValue('client-phone', false);
             const quoteDate = getValue('job-date', false);
-            const jobNotes = getValue('job-notes', false);
             const materialUsed = materialSelect.value;
-            // NEW: Get the finished material selection
-            const finishedMaterial = getValue('finished-material-select', false);
+            const finishedMaterial = finishedMaterialSelect.value;
             
-            // UPDATED: Payment Method display name - simplified
-            const paymentMethod = isCashSelected ? 'Cash' : 'Invoice / Card';
-            
-            // Group items into categories for display order
-            const linealFootItems = breakdown.filter(item => item.unit === 'ft');
-            const pieceItems = breakdown.filter(item => item.unit === 'PC' || item.unit === 'SET'); // Include SET/PC in piece items
-            const flatRateItems = breakdown.filter(item => item.unit === 'FLAT' && !item.isRushFee && item.name !== 'Color/Finish Matching Fee');
-            const matchFeeItem = breakdown.find(item => item.unit === 'SERVICE');
-            const rushFeeItem = breakdown.find(item => item.isRushFee);
-            const cashDiscountItem = breakdown.find(item => item.isDiscount); // Find the new discount item
-            
-            // Helper function to format currency
-            const formatCurrency = (amount) => `$${(amount || 0).toFixed(2)}`;
+            // Determine lead time status
+            const leadTime = isRushed ? '<span class="text-red-600 font-bold">RUSHED ORDER (4-Day)</span>' : 'Standard Lead Time';
+            // Determine finished material display
+            const finishedMaterialDisplay = (finishedMaterial && finishedMaterial.toLowerCase() !== 'almond' && finishedMaterial.toLowerCase() !== 'hardrock') 
+                                            ? finishedMaterial : 'MDF';
             
             // Helper function to render a breakdown section
-            const renderSection = (items, title, showRate = true) => {
-                if (items.length === 0) return '';
-                
-                // Filter out discount items from general sections
-                const positiveCostItems = items.filter(item => !item.isDiscount);
+            const renderSectionItems = (items) => {
+                let html = '';
+                items.forEach(item => {
+                    if (item.cost === 0 && !item.isRushFee && !item.isDiscount) return; // Skip zero-cost items (except fees/discounts)
+                    if (item.isRushFee || item.isDiscount) return; // Fees/discounts handled separately
 
-                if (positiveCostItems.length === 0) return '';
-                
-                let html = `
-                    <div class="mb-6">
-                        <h3 class="receipt-section-header text-lg font-bold text-primary-dark">${title}</h3>
-                        <div class="space-y-2">
-                `;
-                
-                positiveCostItems.forEach(item => {
-                    // Display rate correctly for PC/SET/ft items
+                    // Determine quantity display format
+                    let qtyDisplay;
                     let rateDisplay;
-                    if (item.unit === 'FLAT') {
-                        rateDisplay = 'FLAT RATE';
+                    if (item.unit === 'ft') {
+                        // Example: 3.75 ft @ $90.00 / ft
+                        qtyDisplay = `${item.qty.toFixed(2).replace(/\.00$/, '')} ${item.unit} @ ${formatCurrency(item.rate)} / ${item.unit}`;
+                    } else if (item.unit === 'PC' || item.unit === 'SET') {
+                        // Example: 1 PC @ $30.00 / PC
+                        qtyDisplay = `${item.qty} ${item.unit} @ ${formatCurrency(item.rate)} / ${item.unit}`;
                     } else if (item.unit === 'SERVICE') {
-                        rateDisplay = formatCurrency(item.rate) + ' / SERVICE';
+                        // Example: 3 SERVICE @ $150.00 / SERVICE (for matching fee)
+                        qtyDisplay = `${item.qty} SERVICE @ ${formatCurrency(item.rate)} / SERVICE`;
+                    } else if (item.unit === 'FLAT') {
+                        // Example: Custom Flat Rate Description
+                        qtyDisplay = item.rate === item.cost ? 'Custom Flat Rate' : formatCurrency(item.rate);
                     } else {
-                        rateDisplay = formatCurrency(item.rate) + ' / ' + item.unit;
+                        qtyDisplay = item.qty;
                     }
+
+                    // For the screenshot look, we use the item name as the bold line, and the quantity/rate info below.
+                    // For the accessories section, the screenshot shows QTY/RATE on the same line as the name
+                    // Let's create two specific render styles.
                     
-                    const noteDisplay = item.note ? `<p class="text-xs text-gray-500 italic ml-4">(${item.note})</p>` : '';
-                    
-                    html += `
-                        <div class="flex justify-between items-start p-2 border-b border-gray-100 ${item.isRushFee ? 'is-rush-fee' : ''}">
-                            <div class="flex-1">
-                                <p class="font-medium text-primary-dark">${item.name}</p>
-                                <p class="text-sm text-gray-600">${item.qty} ${item.unit} @ ${rateDisplay}</p>
-                                ${noteDisplay}
+                    if (item.isLineal) {
+                        // Style for Lineal items (Name, then Qty/Rate below)
+                        html += `
+                            <div class="receipt-line-item">
+                                <div class="flex-1 mr-4">
+                                    <p class="font-medium text-primary-dark">${item.name}</p>
+                                    <p class="text-xs text-gray-600">${qtyDisplay}</p>
+                                </div>
+                                <span class="font-bold price-display">${formatCurrency(item.cost)}</span>
                             </div>
-                            <span class="font-bold text-lg text-primary-dark price-display">${formatCurrency(item.cost)}</span>
-                        </div>
-                    `;
+                        `;
+                    } else {
+                        // Style for Hardware/Accessories/Flat Rate (Qty/Rate on the first line, then cost)
+                        html += `
+                            <div class="receipt-line-item">
+                                <div class="flex-1 mr-4">
+                                    <p class="font-medium text-primary-dark">
+                                        ${item.name}
+                                        <span class="text-xs text-gray-600 font-normal ml-2">${qtyDisplay}</span>
+                                    </p>
+                                </div>
+                                <span class="font-bold price-display">${formatCurrency(item.cost)}</span>
+                            </div>
+                        `;
+                    }
                 });
-                
-                html += `
-                        </div>
-                    </div>
-                `;
                 return html;
             };
 
-            // UPDATED RECEIPT STRUCTURE: Job Details moved right under the main header.
+            // 1. Separate Breakdown into Lineal and Accessories
+            const linealItems = breakdown.filter(item => item.isLineal && item.cost > 0);
+            
+            // Accessories, including lazy susans, fees, and flat custom work.
+            const accessoryItems = breakdown.filter(item => !item.isLineal && item.cost > 0 && !item.isRushFee && !item.isDiscount);
+
+            // 2. Find Fees
+            const rushFeeItem = breakdown.find(item => item.isRushFee);
+            const cashDiscountItem = breakdown.find(item => item.isDiscount); 
+            
             const receiptHTML = `
                 <div class="p-8 max-w-2xl mx-auto bg-white shadow-xl min-h-screen">
-                    <header class="text-center mb-8">
-                        <!-- Company Contact Information (UPDATED TO MATCH SCREENSHOT) -->
-                        <h1 class="text-3xl font-extrabold text-primary-dark mb-1">Neff Enterprises Inc.</h1>
-                        <p class="text-sm text-gray-700">P.O. Box 2522</p>
-                        <p class="text-sm text-gray-700">Gilbert, AZ 85299-2522</p>
-                        <p class="text-sm text-gray-700">ROC 120032</p>
-                        <p class="text-sm text-gray-700 mb-4">480-688-7978</p>
-                        
-                        <!-- Document Title -->
-                        <p class="text-xl font-semibold text-accent border-b-2 border-accent pb-3 mb-6">Cabinet Rebuild Estimate</p>
-
-                        <!-- Job Details Section Header -->
-                        <h2 class="text-xl font-bold text-primary-dark mb-4 text-left border-b-2 border-gray-200 pb-2">JOB DETAILS</h2>
-                        
-                        <!-- Job Details Grid -->
-                        <div class="grid grid-cols-2 gap-4 text-left text-sm receipt-info-box p-4 rounded-lg mb-8">
-                            <div>
-                                <p><span class="font-bold">Contractor:</span> ${companyName || 'TBD'}</p>
-                                <p><span class="font-bold">Project Manager:</span> ${projectManager || 'TBD'}</p>
-                                <p><span class="font-bold">Job Name/Number:</span> ${jobName || 'TBD'}</p>
-                                <p><span class="font-bold">Address:</span> ${jobAddress || 'TBD'}</p>
-                            </div>
-                            <div>
-                                <p><span class="font-bold">Manager Phone:</span> ${clientPhone || 'TBD'}</p>
-                                <p><span class="font-bold">Quote Date:</span> ${quoteDate || 'TBD'}</p>
-                                <p><span class="font-bold">Box Material:</span> ${materialUsed || 'TBD'}</p>
-                                <p><span class="font-bold">Finished Material:</span> ${finishedMaterial || 'TBD'}</p>
-                                <p class="text-red-600 font-bold"><span class="font-bold">Status:</span> ${isRushed ? 'RUSHED ORDER (4-Day)' : 'Standard Lead Time'}</p>
-                                <p class="font-bold text-indigo-700"><span class="font-bold">Payment Method:</span> ${paymentMethod}</p> 
-                            </div>
-                        </div>
+                    <header class="text-center mb-6">
+                        <!-- Company Contact Information (Matching Screenshot Format) -->
+                        <h1 class="text-2xl font-extrabold text-primary-dark mb-1">NEFF ENTERPRISES</h1>
+                        <p class="text-base font-semibold text-primary-dark border-b-2 border-gray-200 pb-3 mb-6">Cabinet Rebuild Estimate</p>
                     </header>
                     
-                    <!-- Job Notes in Receipt (Moved down to be after job details block) -->
-                    ${jobNotes ? `
-                        <div class="mb-6 p-4 border border-gray-300 rounded-lg bg-gray-50">
-                            <h3 class="font-bold text-primary-dark mb-2 border-b pb-1">Job Notes</h3>
-                            <p class="text-sm text-gray-700">${jobNotes}</p>
+                    <!-- Job Details Grid (Matching Screenshot Layout) -->
+                    <div class="grid grid-cols-2 gap-y-1 gap-x-6 text-left text-sm mb-6">
+                        <div>
+                            <p><span class="font-bold">Company:</span> ${companyName || 'TBD'}</p>
+                            <p><span class="font-bold">Project Manager:</span> ${projectManager || 'TBD'}</p>
+                            <p><span class="font-bold">Job Name:</span> ${jobName || 'TBD'}</p>
+                            <p><span class="font-bold">Address:</span> ${jobAddress || 'TBD'}</p>
+                        </div>
+                        <div>
+                            <p><span class="font-bold">Project Mgr Phone:</span> ${clientPhone || 'TBD'}</p>
+                            <p><span class="font-bold">Quote Date:</span> ${quoteDate || 'TBD'}</p>
+                            <p><span class="font-bold">Box Material:</span> ${materialUsed || 'Hardrock Maple'}</p>
+                            <p><span class="font-bold">Finished Material:</span> ${finishedMaterialDisplay || 'MDF'}</p>
+                            <p><span class="font-bold">Lead Time:</span> ${leadTime}</p>
+                        </div>
+                    </div>
+
+                    <!-- Lineal Foot Items (Cabinetry & Shelving) -->
+                    ${linealItems.length > 0 ? `
+                        <div class="mb-6">
+                            <h3 class="receipt-section-header">Cabinetry & Shelving (Lineal Feet)</h3>
+                            <div class="space-y-1">
+                                ${renderSectionItems(linealItems)}
+                            </div>
                         </div>
                     ` : ''}
 
-                    <!-- Breakdown Sections -->
-                    ${renderSection(linealFootItems, 'Cabinetry & Shelving (Lineal Feet)', true)}
-                    ${renderSection(pieceItems, 'Staining and Accessories', true)}
-                    ${matchFeeItem ? renderSection([matchFeeItem], 'Color/Finish Matching Fee', true) : ''}
-                    ${renderSection(flatRateItems, 'Custom & Flat Rate Items', false)}
+                    <!-- Accessory Items (Hardware & Accessory Pieces) -->
+                    ${accessoryItems.length > 0 ? `
+                        <div class="mb-6">
+                            <h3 class="receipt-section-header">Hardware & Accessory Pieces</h3>
+                            <div class="space-y-1">
+                                ${renderSectionItems(accessoryItems)}
+                            </div>
+                        </div>
+                    ` : ''}
                     
-                    <!-- Summary and Total -->
-                    <div class="mt-8">
-                        <div class="flex justify-between items-center text-xl font-semibold text-primary-dark p-3 border-t border-b border-gray-300">
-                            <span>Subtotal</span>
-                            <span class="price-display">${formatCurrency(subtotal)}</span>
-                        </div>
-                        
-                        <!-- Rush Fee Line Item -->
-                        ${rushFeeItem ? `
-                            <div class="flex justify-between items-center text-red-600 font-bold p-3 receipt-disclaimer-box border-b border-gray-300 is-rush-fee">
-                                <span>${rushFeeItem.name} (50% of Subtotal)</span>
-                                <span class="price-display">${formatCurrency(rushFee)}</span>
-                            </div>
-                        ` : ''}
-
-                        <!-- Cash Discount Line Item (NEW) -->
-                        ${cashDiscountItem ? `
-                            <div class="flex justify-between items-center text-green-700 font-bold p-3 bg-green-50 border-b border-green-300 is-discount">
-                                <span>${cashDiscountItem.name}</span>
-                                <span class="price-display">${formatCurrency(cashDiscountItem.cost)}</span>
-                            </div>
-                        ` : ''}
-
-
-                        <!-- Grand Total Bar -->
-                        <div class="receipt-total-bar flex justify-between items-center text-2xl font-extrabold text-accent p-4 mt-2 rounded-lg">
-                            <span>GRAND TOTAL:</span>
-                            <span id="receipt-grand-total" class="price-display">${formatCurrency(total)}</span>
-                        </div>
+                    <!-- Subtotal -->
+                    <div class="flex justify-between items-center text-xl font-bold text-primary-dark p-2 border-t border-b border-gray-300">
+                        <span>Subtotal</span>
+                        <span class="font-bold price-display">${formatCurrency(subtotal)}</span>
                     </div>
-                    
-                    <!-- Signatures (Kept as is, fulfilling the request for a spot to date and sign) -->
-                    <div class="mt-16 pt-4 border-t border-gray-300">
-                        <div class="grid grid-cols-2 gap-8">
+
+                    <!-- Rush Fee Line Item (If applicable) -->
+                    ${rushFeeItem ? `
+                        <div class="flex justify-between items-center text-red-600 font-bold p-2 is-rush-fee">
+                            <span>RUSH FEE (50% of Subtotal)</span>
+                            <span class="price-display">${formatCurrency(rushFee)}</span>
+                        </div>
+                    ` : ''}
+
+                    <!-- Cash Discount Line Item (If applicable) -->
+                    ${cashDiscountItem ? `
+                        <div class="flex justify-between items-center text-green-700 font-bold p-2 is-discount">
+                            <span>Cash Payment Discount</span>
+                            <span class="price-display">${formatCurrency(cashDiscountItem.cost)}</span>
+                        </div>
+                    ` : ''}
+
+                    <!-- Grand Total Bar -->
+                    <div class="receipt-total-bar flex justify-between items-center text-2xl font-extrabold text-accent p-3 mt-4 rounded-lg">
+                        <span>GRAND TOTAL:</span>
+                        <span id="receipt-grand-total" class="price-display text-2xl">${formatCurrency(total)}</span>
+                    </div>
+
+                    <!-- SIGNATURES & TERMS (Below total, no explicit "Disclaimer" section) -->
+                    <div class="mt-16 pt-4">
+                        <p class="text-sm text-gray-700 italic text-center mb-8">
+                            This quote is subject to the terms and conditions outlined above.
+                        </p>
+                        <div class="grid grid-cols-2 gap-10">
                             <div>
                                 <p class="border-b border-black w-full h-10"></p>
                                 <span class="block text-center text-gray-600 text-sm italic">Client Signature</span>
@@ -1179,10 +1119,7 @@ Job requires lead time of 6 weeks."
                                 <span class="block text-center text-gray-600 text-sm italic">Printed Name</span>
                             </div>
                         </div>
-                        <p class="border-b border-black w-full max-w-sm mx-auto h-10 mt-8"></p>
-                        <span class="block text-center text-gray-600 text-sm italic">Date</span>
                     </div>
-
                 </div>
             `;
             receiptContainer.innerHTML = receiptHTML;
@@ -1201,7 +1138,6 @@ Job requires lead time of 6 weeks."
             
             // Attach event listeners to all relevant inputs for real-time calculation
             inputElements.forEach(input => {
-                // Attach 'change' listener for checkboxes, radio buttons, and select tags, 'input' for text/number fields
                 input.addEventListener(input.type === 'checkbox' || input.type === 'radio' || input.tagName === 'SELECT' ? 'change' : 'input', calculateTotal); 
             });
             // Also attach listener to the new Lazy Susan checkboxes
