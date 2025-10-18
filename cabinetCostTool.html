@@ -30,7 +30,7 @@
         /* Custom styles for better mobile experience and printing */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
+            background-color: #f3ff6;
             /* REMOVED: padding-top: 64px; to eliminate whitespace above the sticky header */
             padding-top: 0px; 
         }
@@ -994,7 +994,8 @@ Job requires lead time of 6 weeks."
                 
                 // Add discount to breakdown (as a negative value item)
                 breakdown.push({
-                    name: 'Cash Payment Discount (3% + Round-down to Nearest $10)',
+                    // UPDATED: Removed the calculation logic from the name for printing
+                    name: 'Cash Payment Discount',
                     cost: -cashDiscount, // Store as negative cost
                     qty: 1,
                     unit: 'DISCOUNT',
@@ -1155,23 +1156,8 @@ Job requires lead time of 6 weeks."
                         </div>
                     </div>
                     
-                    <!-- Disclaimer -->
-                    <div class="mt-8 receipt-disclaimer-box p-4 rounded-lg border border-red-300">
-                        <h4 class="font-bold text-red-700 mb-2">DISCLAIMER & CONDITIONS</h4>
-                        <ul class="text-xs text-gray-700 list-disc list-inside space-y-1">
-                            <li>This is an estimate and is subject to change based on final measurements and material availability.</li>
-                            <li>Pricing is based on the selected **Box Material** (e.g., Plywood). Changing the material may alter the cost.</li>
-                            <li>A 50% non-refundable deposit is required to begin work.</li>
-                            <li>Final payment is due upon completion and prior to installation.</li>
-                            <li>Lead times are subject to change. Rushed orders are subject to a 50% fee.</li>
-                            ${cashDiscountItem ? `
-                            <li>The **Cash Payment Discount** of ${formatCurrency(cashDiscountItem.cost).replace('-', '')} (3% reduction and round-down) is valid only if the full payment is made in cash.</li>
-                            ` : ''}
-                        </ul>
-                    </div>
-
                     <!-- Signatures -->
-                    <div class="mt-10 pt-4 border-t border-gray-300">
+                    <div class="mt-16 pt-4 border-t border-gray-300">
                         <div class="grid grid-cols-2 gap-8">
                             <div>
                                 <p class="border-b border-black w-full h-10"></p>
@@ -1184,7 +1170,6 @@ Job requires lead time of 6 weeks."
                         </div>
                     </div>
 
-                    <p class="mt-10 text-center text-sm text-gray-600 border-t pt-4">This quote is subject to the terms and conditions outlined above.</p>
                 </div>
             `;
             receiptContainer.innerHTML = receiptHTML;
