@@ -1104,16 +1104,26 @@ Job requires lead time of 6 weeks."
                         <span id="receipt-grand-total" class="price-display text-2xl">${formatCurrency(total)}</span>
                     </div>
 
-                    <!-- SIGNATURES & TERMS (Below total, no explicit "Disclaimer" section) -->
+                    <!-- SIGNATURES & TERMS (Updated for Signature and Date lines) -->
                     <div class="mt-16 pt-4">
                         <p class="text-sm text-gray-700 italic text-center mb-8">
                             This quote is subject to the terms and conditions outlined above.
                         </p>
-                        <div class="grid grid-cols-2 gap-10">
+                        
+                        <!-- Row 1: Signature and Date -->
+                        <div class="grid grid-cols-2 gap-10 mb-8">
                             <div>
                                 <p class="border-b border-black w-full h-10"></p>
                                 <span class="block text-center text-gray-600 text-sm italic">Client Signature</span>
                             </div>
+                            <div>
+                                <p class="border-b border-black w-full h-10"></p>
+                                <span class="block text-center text-gray-600 text-sm italic">Date</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Printed Name (Full Width) -->
+                        <div class="grid grid-cols-1 gap-10 mt-4">
                             <div>
                                 <p class="border-b border-black w-full h-10"></p>
                                 <span class="block text-center text-gray-600 text-sm italic">Printed Name</span>
