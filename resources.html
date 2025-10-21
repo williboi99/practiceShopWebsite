@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neff Enterprises Tool Suite - Resources</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    
+<script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -69,7 +69,7 @@
             border-width: 2px;
             
             /* 2. Keep the dark fill and white text for high contrast (Using primary-dark) */
-            background-color: #1f2937; 
+            background-color: '#1f2937'; 
             color: #ffffff; 
             
             /* 3. Add a more obvious outer shadow */
@@ -82,42 +82,37 @@
 </head>
 <body class="font-sans min-h-screen">
     
-    <!-- TOP NAVIGATION BAR (UPDATED) -->
-    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+    
+<header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <!-- Company Name / Logo - Updated to just use Amber Text -->
-            <h1 class="text-3xl font-extrabold tracking-tight">
+            
+<h1 class="text-3xl font-extrabold tracking-tight">
                 <a href="index.html" class="text-amber-500 hover:text-amber-400 transition duration-150 ease-in-out">
                     Neff Enterprises
                 </a>
             </h1>
-
-            <!-- Menu Button (Mobile/Tablet) -->
-            <button id="menu-toggle" class="lg:hidden p-2 rounded-lg hover:bg-slate-700 transition duration-150 ease-in-out" aria-label="Toggle menu">
-                <!-- Hamburger Icon (inline SVG for aesthetics and reliability) -->
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            
+<button id="menu-toggle" class="lg:hidden p-2 rounded-lg hover:bg-slate-700 transition duration-150 ease-in-out" aria-label="Toggle menu">
+                
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                 </svg>
             </button>
-
-            <!-- Desktop Menu (Hidden on mobile) -->
-            <nav class="hidden lg:flex space-x-6 text-lg font-medium">
-                <!-- ACTIVE LINK STYLING APPLIED HERE -->
-                <!-- UPDATED: Added hover:bg-amber-400 for the "light up" effect -->
-                <a href="resources.html" class="bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold transition duration-150 ease-in-out py-2 px-3 rounded-md">Resources</a>
+            
+<nav class="hidden lg:flex space-x-6 text-lg font-medium">
+                
+<a href="resources.html" class="bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold transition duration-150 ease-in-out py-2 px-3 rounded-md">Resources</a>
                 <a href="newCabinets.html" class="hover:text-amber-400 transition duration-150 ease-in-out py-2 px-3 rounded-md">New Cabinets</a>
                 <a href="cabinetCostTool.html" class="hover:text-amber-400 transition duration-150 ease-in-out py-2 px-3 rounded-md">
                     Rebuild Price Calculator
                 </a>
             </nav>
         </div>
-
-        <!-- Mobile/Collapsible Menu Content -->
-        <div id="menu-content" class="hidden lg:hidden bg-slate-800 border-t border-slate-700">
+        
+<div id="menu-content" class="hidden lg:hidden bg-slate-800 border-t border-slate-700">
             <nav class="flex flex-col p-4 space-y-2">
-                <!-- ACTIVE LINK STYLING APPLIED HERE -->
-                <!-- UPDATED: Added hover:bg-amber-400 for the "light up" effect on mobile -->
-                <a href="resources.html" class="block bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-lg p-3 transition duration-150 ease-in-out font-semibold">Resources</a>
+                
+<a href="resources.html" class="block bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-lg p-3 transition duration-150 ease-in-out font-semibold">Resources</a>
                 <a href="newCabinets.html" class="block text-white hover:bg-slate-700 rounded-lg p-3 transition duration-150 ease-in-out">New Cabinets</a>
                 <a href="cabinetCostTool.html" class="block text-white hover:bg-slate-700 rounded-lg p-3 transition duration-150 ease-in-out">
                     Rebuild Price Calculator
@@ -126,49 +121,112 @@
         </div>
     </header>
 
-    <!-- MAIN TOOL AREA: Contains Collapsible Sections (Padding-Top adjusted to pt-16 to clear the fixed header) -->
-    <div class="p-4 flex justify-center items-start pt-16">
+    
+<div class="p-4 flex justify-center items-start pt-16">
         <div class="w-full max-w-4xl space-y-6">
-            <!-- 1. EURO CABINET CUT LIST GENERATOR (Collapsible) -->
-            <div class="bg-white rounded-xl shadow-xl">
-                <!-- Header (Clickable to Toggle) -->
-                <div id="cut-list-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
-                    <h1 class="text-2xl font-bold text-primary-dark">Euro Cabinet Cut List Generator</h1>
-                    <!-- Down Arrow Icon -->
-                    <svg id="cut-list-icon" class="w-6 h-6 text-gray-700 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            
+            
+<div class="bg-white rounded-xl shadow-xl">
+                
+<div id="visualizer-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
+                    <h1 class="text-2xl font-bold text-primary-dark">Cabinetry Visualizer</h1>
+                    
+<svg id="visualizer-icon" class="w-6 h-6 text-gray-700 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </div>
                 
-                <!-- Content (Initially Hidden) -->
-                <div id="cut-list-content" class="hidden p-6">
-                    <!-- Text removed: "Calculate precise dimensions for your frameless (Euro) cabinet components." -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <!-- Input Panel -->
-                        <div class="space-y-6">
+                
+<div id="visualizer-content" class="hidden p-6">
+                    <p class="text-gray-700 mb-6">Upload your kitchen photo, a reference for the cabinet door style, and your desired color to visualize your new cabinetry!</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
+<div class="space-y-6">
+                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Your Preferences</h2>
+                            
+                            
+<div class="input-group">
+                                <label for="kitchen-image-upload" class="block text-lg font-medium text-gray-700 mb-1">Upload Kitchen Photo</label>
+                                
+<input type="file" id="kitchen-image-upload" accept="image/*" capture="environment" class="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-accent file:text-white hover:file:bg-green-700">
+                                <p class="text-sm text-gray-500 mt-1">Choose a clear photo of your current kitchen, or use your camera now.</p>
+                            </div>
+
+                            
+<div class="input-group">
+                                <label for="door-style-upload" class="block text-lg font-medium text-gray-700 mb-1">Upload Cabinet Door Style Reference</label>
+                                
+<input type="file" id="door-style-upload" accept="image/*" capture="environment" class="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-accent file:text-white hover:file:bg-green-700">
+                                <p class="text-sm text-gray-500 mt-1">Choose a photo of your desired cabinet door style, or use your camera.</p>
+                            </div>
+
+                            
+<div class="input-group">
+                                <label for="color-reference-input" class="block text-lg font-medium text-gray-700 mb-1">Color Reference</label>
+                                
+<input type="file" id="color-image-upload" accept="image/*" capture="environment" class="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-accent file:text-white hover:file:bg-green-700 mb-2">
+                                <p class="text-sm text-gray-500 mt-1 mb-2">Choose an image with your desired color (or use your camera), OR describe it below:</p>
+                                <textarea id="color-text-description" rows="3" placeholder="e.g., 'a deep matte navy blue', 'light sage green', 'classic off-white with a hint of warmth'" class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-lg"></textarea>
+                            </div>
+                            
+                            <button id="generate-visual-button" class="w-full bg-accent hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg text-xl transition duration-150 ease-in-out shadow-lg">
+                                Generate Kitchen Visualization
+                            </button>
+                        </div>
+
+                        
+<div class="space-y-4">
+                            <h2 class="text-xl font-semibold text-accent border-b pb-2">Your New Kitchen Preview</h2>
+                            <div id="visualizer-output" class="bg-gray-100 p-4 rounded-lg border border-gray-200 flex justify-center items-center min-h-[300px]">
+                                <p id="visualizer-placeholder" class="text-gray-500 text-center">Upload images and describe your color, then click "Generate" to see your new kitchen!</p>
+                                <img id="generated-kitchen-image" src="" alt="Generated Kitchen Visualization" class="hidden max-w-full h-auto rounded-lg shadow-md">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+<div class="bg-white rounded-xl shadow-xl">
+                
+<div id="cut-list-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
+                    <h1 class="text-2xl font-bold text-primary-dark">Euro Cabinet Cut List Generator</h1>
+                    
+<svg id="cut-list-icon" class="w-6 h-6 text-gray-700 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+                
+                
+<div id="cut-list-content" class="hidden p-6">
+                    
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        
+<div class="space-y-6">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Cabinet Specifications</h2>
-                            <!-- Material Thickness Selector -->
-                            <div class="input-group mb-4">
+                            
+<div class="input-group mb-4">
                                 <label for="material-thickness" class="block text-lg font-medium text-gray-700 mb-1">Material Thickness (T)</label>
                                 <select id="material-thickness" class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
                                     <option value="0.75" selected>3/4" (0.75 in)</option>
                                     <option value="0.625">5/8" (0.625 in)</option>
                                 </select>
-                                <!-- Text removed: "This is critical for calculating box width reductions." -->
-                            </div>
-                            <!-- Input Fields: Height, Face Height, Depth, Width -->
-                            <div class="grid grid-cols-2 gap-4">
+                                
+</div>
+                            
+<div class="grid grid-cols-2 gap-4">
                                 <div class="input-group">
                                     <label for="box-height" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Height (A)</label>
-                                    <!-- Value removed -->
-                                    <input type="number" id="box-height" min="0" step="0.01" placeholder="34.5"
+                                    
+<input type="number" id="box-height" min="0" step="0.01" placeholder="34.5"
                                                 class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                     <p class="text-sm text-gray-500 mt-1">Overall height of the box.</p>
                                 </div>
                                 <div class="input-group">
                                     <label for="face-height" class="block text-lg font-medium text-gray-700 mb-1">Face Height (B)</label>
-                                    <!-- Value removed -->
-                                    <input type="number" id="face-height" min="0" step="0.01" placeholder="30.5"
+                                    
+<input type="number" id="face-height" min="0" step="0.01" placeholder="30.5"
                                                 class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                     <p class="text-sm text-gray-500 mt-1">Height of the face/door/drawer.</p>
                                 </div>
@@ -176,22 +234,22 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="input-group">
                                     <label for="box-depth" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Depth (C)</label>
-                                    <!-- Value removed -->
-                                    <input type="number" id="box-depth" min="0" step="0.01" placeholder="24.0"
+                                    
+<input type="number" id="box-depth" min="0" step="0.01" placeholder="24.0"
                                                 class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                     <p class="text-sm text-gray-500 mt-1">Standard 24 or 21 inches.</p>
                                 </div>
                                 <div class="input-group">
                                     <label for="box-width" class="block text-lg font-medium text-gray-700 mb-1">Cabinet Width (D)</label>
-                                    <!-- Value removed -->
-                                    <input type="number" id="box-width" min="0" step="0.01" placeholder="36.0"
+                                    
+<input type="number" id="box-width" min="0" step="0.01" placeholder="36.0"
                                                 class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                     <p class="text-sm text-gray-500 mt-1">Overall width (e.g., 36 inches).</p>
                                 </div>
                             </div>
                             
-                            <!-- Configuration Selector (New Section) -->
-                            <div class="configuration-group border-t pt-6 space-y-2">
+                            
+<div class="configuration-group border-t pt-6 space-y-2">
                                 <label class="block text-xl font-semibold text-accent mb-2">Cabinet Configuration</label>
                                 
                                 <label class="custom-radio-label">
@@ -201,8 +259,8 @@
                                 
                                 <label class="custom-radio-label">
                                     <input type="radio" name="cabinet-type" value="full_door" id="config-full-door">
-                                    <!-- Text updated per request -->
-                                    <span class="ml-3 text-lg font-medium text-gray-800">Full Height Doors / Sink Base</span>
+                                    
+<span class="ml-3 text-lg font-medium text-gray-800">Full Height Doors / Sink Base</span>
                                 </label>
                                 
                                 <label class="custom-radio-label">
@@ -211,30 +269,30 @@
                                 </label>
                             </div>
                         </div>
-                        <!-- Output Panel -->
-                        <div class="space-y-4">
+                        
+<div class="space-y-4">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Calculated Cut List</h2>
                             
-                            <!-- Cut List Results -->
-                            <div id="results-container" class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                                <!-- Sides -->
-                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-accent">
+                            
+<div id="results-container" class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                
+<div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-accent">
                                     <h3 class="text-lg font-bold text-primary-dark">Sides (2x)</h3>
                                     <p class="text-2xl font-extrabold text-accent" id="cut-side-dims">0" x 0"</p>
                                 </div>
-                                <!-- Bottom (1x) -->
-                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-blue-500">
+                                
+<div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-blue-500">
                                     <h3 class="text-lg font-bold text-primary-dark">Bottom (1x)</h3>
                                     <p class="text-2xl font-extrabold text-blue-500" id="cut-bottom-dims-actual">0" x 0"</p>
                                 </div>
                                 
-                                <!-- Stretchers (Nx) -->
-                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-indigo-500">
+                                
+<div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-indigo-500">
                                     <h3 class="text-lg font-bold text-primary-dark" id="stretcher-count-title">Stretchers (5x)</h3>
                                     <p class="text-2xl font-extrabold text-indigo-500" id="cut-stretcher-dims">0" x 0"</p>
                                 </div>
-                                <!-- Back Panel -->
-                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-red-500">
+                                
+<div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-red-500">
                                     <h3 class="text-lg font-bold text-primary-dark">Back Panel (1x)</h3>
                                     <p class="text-2xl font-extrabold text-red-500" id="cut-back-dims">0" x 0.00"</p>
                                 </div>
@@ -243,73 +301,73 @@
                     </div>
                     
                     <div class="mt-8 pt-4 border-t border-gray-200">
-                        <!-- Text removed: "All dimensions are in inches (in). Width is always listed first, followed by height/depth." -->
-                        <p class="text-sm text-gray-500 text-center"></p>
+                        
+<p class="text-sm text-gray-500 text-center"></p>
                     </div>
                 </div>
             </div>
             
-            <!-- 2. DRAWER BOX CUT LIST GENERATOR -->
-            <div class="bg-white rounded-xl shadow-xl">
-                <!-- Header (Clickable to Toggle) -->
-                <div id="drawer-box-cut-list-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
+            
+<div class="bg-white rounded-xl shadow-xl">
+                
+<div id="drawer-box-cut-list-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
                     <h1 class="text-2xl font-bold text-primary-dark">Drawer Box Cut List Generator</h1>
-                    <!-- Down Arrow Icon -->
-                    <svg id="drawer-box-cut-list-icon" class="w-6 h-6 text-gray-700 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    
+<svg id="drawer-box-cut-list-icon" class="w-6 h-6 text-gray-700 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </div>
                 
-                <!-- Content (Initially Hidden) -->
-                <div id="drawer-box-cut-list-content" class="hidden p-6">
+                
+<div id="drawer-box-cut-list-content" class="hidden p-6">
                     <p class="text-lg text-red-600 font-semibold text-center bg-red-100 p-3 rounded-lg mb-6 shadow-inner">
                         Be sure to dado a 1/4" x 1/4" slit in the edge pieces to slide the 1/4" bottom.
                     </p>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <!-- Input Panel -->
-                        <div class="space-y-4">
+                        
+<div class="space-y-4">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Drawer Box Dimensions (in)</h2>
                             <div class="input-group">
                                 <label for="drawer-box-width" class="block text-lg font-medium text-gray-700 mb-1">Overall Width</label>
-                                <!-- Value removed -->
-                                <input type="number" id="drawer-box-width" min="0" step="0.01" placeholder="18.0"
+                                
+<input type="number" id="drawer-box-width" min="0" step="0.01" placeholder="18.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">External width of the finished drawer box.</p>
                             </div>
                             <div class="input-group">
                                 <label for="drawer-box-depth" class="block text-lg font-medium text-gray-700 mb-1">Overall Depth (Length)</label>
-                                <!-- Value removed -->
-                                <input type="number" id="drawer-box-depth" min="0" step="0.01" placeholder="21.0"
+                                
+<input type="number" id="drawer-box-depth" min="0" step="0.01" placeholder="21.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">External depth/length of the finished drawer box.</p>
                             </div>
                             <div class="input-group">
                                 <label for="drawer-box-height" class="block text-lg font-medium text-gray-700 mb-1">Overall Height</label>
-                                <!-- Value removed -->
-                                <input type="number" id="drawer-box-height" min="0" step="0.01" placeholder="6.0"
+                                
+<input type="number" id="drawer-box-height" min="0" step="0.01" placeholder="6.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">External height of the finished drawer box.</p>
                             </div>
                         </div>
-                        <!-- Output Panel -->
-                        <div class="space-y-4">
+                        
+<div class="space-y-4">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Drawer Box Cut List</h2>
                             
-                            <!-- Cut List Results -->
-                            <div class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                                <!-- Sides (2x) -->
-                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-accent">
+                            
+<div class="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                
+<div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-accent">
                                     <h3 class="text-lg font-bold text-primary-dark">Sides (2x)</h3>
                                     <p class="text-2xl font-extrabold text-accent" id="drawer-side-dims">0" x 0"</p>
                                 </div>
-                                <!-- Front & Back (2x) -->
-                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-blue-500">
+                                
+<div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-blue-500">
                                     <h3 class="text-lg font-bold text-primary-dark">Front & Back (2x)</h3>
                                     <p class="text-2xl font-extrabold text-blue-500" id="drawer-front-back-dims">0" x 0"</p>
                                 </div>
                                 
-                                <!-- 1/4" Bottom (1x) -->
-                                <div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-indigo-500">
+                                
+<div class="bg-white p-3 rounded-lg shadow-md border-l-4 border-indigo-500">
                                     <h3 class="text-lg font-bold text-primary-dark">1/4" Bottom (1x)</h3>
                                     <p class="text-2xl font-extrabold text-indigo-500" id="drawer-bottom-dims">0" x 0"</p>
                                 </div>
@@ -319,41 +377,41 @@
                 </div>
             </div>
             
-            <!-- 3. DRAWER REBUILD COST CALCULATOR (Collapsible Section - Now #3) -->
-            <div class="bg-white rounded-xl shadow-xl">
-                <!-- Header (Clickable to Toggle) -->
-                <div id="drawer-cost-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
+            
+<div class="bg-white rounded-xl shadow-xl">
+                
+<div id="drawer-cost-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
                     <h1 class="text-2xl font-bold text-primary-dark">Drawer Rebuild Cost Calculator</h1>
-                    <!-- Down Arrow Icon -->
-                    <svg id="drawer-cost-icon" class="w-6 h-6 text-gray-700 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    
+<svg id="drawer-cost-icon" class="w-6 h-6 text-gray-700 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </div>
                 
-                <!-- Content (Initially Hidden) -->
-                <div id="drawer-cost-content" class="hidden p-6">
-                    <!-- Text removed: "Calculate the estimated cost for rebuilding a single drawer box." -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Inputs -->
-                        <div class="space-y-4">
+                
+<div id="drawer-cost-content" class="hidden p-6">
+                    
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+<div class="space-y-4">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Drawer Specifications (in)</h2>
                             <div class="input-group">
                                 <label for="drawer-width" class="block text-lg font-medium text-gray-700 mb-1">Drawer Width</label>
-                                <!-- Value removed -->
-                                <input type="number" id="drawer-width" min="0" step="0.1" placeholder="18.0"
+                                
+<input type="number" id="drawer-width" min="0" step="0.1" placeholder="18.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">Width of the drawer box (in).</p>
                             </div>
                             <div class="input-group">
                                 <label for="drawer-depth" class="block text-lg font-medium text-gray-700 mb-1">Drawer Depth (or Length)</label>
-                                <!-- Value removed -->
-                                <input type="number" id="drawer-depth" min="0" step="0.1" placeholder="21.0"
+                                
+<input type="number" id="drawer-depth" min="0" step="0.1" placeholder="21.0"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
                                 <p class="text-sm text-gray-500 mt-1">Depth/Length of the drawer box (in).</p>
                             </div>
                             
-                            <!-- Checkbox for Glides (UPDATED in previous step) -->
-                            <div class="input-group pt-4 border-t border-gray-200">
+                            
+<div class="input-group pt-4 border-t border-gray-200">
                                 <label class="flex items-center space-x-3">
                                     <input type="checkbox" id="drawer-new-glides" 
                                            class="form-checkbox h-5 w-5 text-accent rounded focus:ring-accent border-gray-300">
@@ -362,8 +420,8 @@
                             </div>
                         </div>
                         
-                        <!-- Output -->
-                        <div class="space-y-4">
+                        
+<div class="space-y-4">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Calculated Cost</h2>
                             <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                                 <h3 class="text-lg font-bold text-primary-dark">Estimated Cost</h3>
@@ -374,38 +432,38 @@
                 </div>
             </div>
             
-            <!-- 4. FACEFRAME REPAIR COST CALCULATOR (Collapsible Section) -->
-            <div class="bg-white rounded-xl shadow-xl">
-                <!-- Header (Clickable to Toggle) -->
-                <div id="faceframe-repair-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
+            
+<div class="bg-white rounded-xl shadow-xl">
+                
+<div id="faceframe-repair-header" class="p-6 cursor-pointer flex justify-between items-center bg-gray-100 rounded-t-xl hover:bg-gray-200 transition duration-150">
                     <h1 class="text-2xl font-bold text-primary-dark">Faceframe Repair Cost Calculator</h1>
-                    <!-- Down Arrow Icon -->
-                    <svg id="faceframe-repair-icon" class="w-6 h-6 text-gray-700 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    
+<svg id="faceframe-repair-icon" class="w-6 h-6 text-gray-700 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </div>
                 
-                <!-- Content (Initially Hidden) -->
-                <div id="faceframe-repair-content" class="hidden p-6">
+                
+<div id="faceframe-repair-content" class="hidden p-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Inputs -->
-                        <div class="space-y-4">
+                        
+<div class="space-y-4">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Repair Details</h2>
-                            <!-- 1. How many sections of face are damaged -->
-                            <div class="input-group">
+                            
+<div class="input-group">
                                 <label for="faceframe-sections" class="block text-lg font-medium text-gray-700 mb-1">Sections Damaged</label>
-                                <!-- Value removed -->
-                                <input type="number" id="faceframe-sections" min="0" step="1" placeholder="1"
+                                
+<input type="number" id="faceframe-sections" min="0" step="1" placeholder="1"
                                             class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-xl">
-                                <!-- Text "(max 10)" removed -->
-                                <p class="text-sm text-gray-500 mt-1">Number of distinct sections (stiles/rails) requiring repair.</p>
+                                
+<p class="text-sm text-gray-500 mt-1">Number of distinct sections (stiles/rails) requiring repair.</p>
                             </div>
-                            <!-- Dynamic Damage Level Selectors will go here (NOW IN A RESPONSIVE 2-COLUMN GRID) -->
-                            <div id="damage-level-container" class="pt-4 border-t border-gray-200">
-                                <!-- Selectors generated by JavaScript -->
-                            </div>
-                            <!-- 2. Whole faceframe checkbox (Price text removed) -->
-                            <div class="input-group pt-4">
+                            
+<div id="damage-level-container" class="pt-4 border-t border-gray-200">
+                                
+</div>
+                            
+<div class="input-group pt-4">
                                 <label class="flex items-center space-x-3">
                                     <input type="checkbox" id="faceframe-remade" class="form-checkbox h-5 w-5 text-accent rounded focus:ring-accent border-gray-300">
                                     <span class="text-lg font-medium text-gray-700">
@@ -416,8 +474,8 @@
                             </div>
                         </div>
                         
-                        <!-- Output -->
-                        <div class="space-y-4">
+                        
+<div class="space-y-4">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Estimated Total</h2>
                             <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                                 <h3 class="text-lg font-bold text-primary-dark">Estimated Repair Cost</h3>
@@ -428,8 +486,8 @@
                 </div>
             </div>
             
-            <!-- Global Footer Note (REMOVED) -->
-        </div>
+            
+</div>
     </div>
     <script>
         /**
@@ -674,10 +732,10 @@
                     <select id="damage-level-${index}" 
                             class="faceframe-damage-level-selector block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-base transition duration-150">
                         <option value="touch-up" data-cost="20" selected>Simple touch-up (marker/putty)</option>
-                        <!-- UPDATED TEXT HERE -->
-                        <option value="small-break" data-cost="50">Small break (epoxy / glue+clamp)</option>
-                        <!-- COST UPDATED FROM 70 TO 100 -->
-                        <option value="replaced" data-cost="100">Needs replaced</option>
+                        
+<option value="small-break" data-cost="50">Small break (epoxy / glue+clamp)</option>
+                        
+<option value="replaced" data-cost="100">Needs replaced</option>
                     </select>
                 </div>
             `;
@@ -754,64 +812,203 @@
             }
             costEl.textContent = `$${totalCost.toFixed(2)}`;
         };
-        
-        // --- Event Listener Setup ---
-        const cutListInputs = [
-            'material-thickness', 'box-height', 'face-height', 'box-depth', 'box-width',
-            'config-door-drawer', 'config-full-door', 'config-drawer-bank' 
-        ];
-        
-        const drawerBoxCutListInputs = [
-            'drawer-box-width', 'drawer-box-depth', 'drawer-box-height'
-        ];
-        
-        const drawerCostInputs = [
-            'drawer-width', 
-            'drawer-depth',
-            'drawer-new-glides' // NEW INPUT
-        ];
-        
-        // Add listeners to cut list inputs
-        cutListInputs.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-                el.addEventListener('input', calculateCutList);
-                el.addEventListener('change', calculateCutList); // for select and radio changes
+
+
+        // --- New Helper Functions for Image Generation ---
+
+        // Helper to read file to base64
+        const fileToBase64 = (file) => new Promise((resolve, reject) => {
+            if (!file) {
+                return resolve(null); // Resolve to null if no file is provided
             }
+            const reader = new FileReader();
+            reader.onload = () => {
+                // Resolve only the base64 data part (remove "data:image/png;base64,")
+                const base64String = reader.result.split(',')[1];
+                resolve({
+                    data: base64String,
+                    mimeType: file.type
+                });
+            };
+            reader.onerror = (error) => reject(error);
+            reader.readAsDataURL(file);
         });
 
-        // Add listeners to NEW Drawer Box Cut List inputs
-        drawerBoxCutListInputs.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-                el.addEventListener('input', calculateDrawerBoxCutList);
-                el.addEventListener('change', calculateDrawerBoxCutList);
+        // Implementation of exponential backoff for retries
+        const fetchWithRetry = async (url, options, maxRetries = 5) => {
+            let lastError;
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) {
+                        return response;
+                    }
+                    // For non-OK responses (like 429, 500, etc.), we might retry
+                    if (response.status === 429 || response.status >= 500) {
+                        lastError = new Error(`HTTP error ${response.status}: ${response.statusText}`);
+                        const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        continue; // Retry
+                    } else {
+                        // For other errors (4xx), don't retry, just throw
+                        const errorBody = await response.text();
+                        throw new Error(`API error ${response.status}: ${errorBody}`);
+                    }
+                } catch (error) {
+                    lastError = error;
+                    // Only delay if it was a network error or explicitly marked for retry logic
+                    if (error.name !== 'AbortError' && i < maxRetries - 1) { 
+                        const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    }
+                    continue; // Retry or break if max retries reached
+                }
             }
-        });
-        
-        // Add listeners to drawer cost inputs (checking element type for better event handling)
-        drawerCostInputs.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-                // Use 'change' for checkbox/select elements, and 'input' for text/number fields
-                const eventType = (el.type === 'checkbox' || el.tagName === 'SELECT') ? 'change' : 'input';
-                el.addEventListener(eventType, calculateDrawerCost);
-            }
-        });
-        
-        // Faceframe Repair Listeners
-        const faceframeSectionInput = document.getElementById('faceframe-sections');
-        const faceframeRemadeCheckbox = document.getElementById('faceframe-remade');
+            throw lastError || new Error("API call failed after maximum retries.");
+        };
 
-        if (faceframeSectionInput) {
-            // When the number of sections changes, re-render the selectors and recalculate
-            faceframeSectionInput.addEventListener('input', renderDamageLevelSelectors);
-        }
-        
-        if (faceframeRemadeCheckbox) {
-            // When the checkbox changes, just recalculate
-            faceframeRemadeCheckbox.addEventListener('change', calculateFaceframeCost);
-        }
+
+        // --- Refactored New Cabinetry Visualizer Logic ---
+        const handleVisualizeClick = async () => {
+            const kitchenImageInput = document.getElementById('kitchen-image-upload');
+            const doorStyleInput = document.getElementById('door-style-upload');
+            const colorImageInput = document.getElementById('color-image-upload');
+            const colorTextDescription = document.getElementById('color-text-description').value.trim();
+
+            const generatedKitchenImage = document.getElementById('generated-kitchen-image');
+            const visualizerPlaceholder = document.getElementById('visualizer-placeholder');
+            const visualizerOutput = document.getElementById('visualizer-output');
+            const generateButton = document.getElementById('generate-visual-button');
+
+            // **CRITICAL FIX: Null checks from previous error are retained.**
+            if (!generatedKitchenImage || !visualizerPlaceholder || !visualizerOutput || !generateButton) {
+                console.error("Critical visualization DOM elements not found.");
+                return;
+            }
+            
+            // UI Feedback: Start Loading
+            generateButton.disabled = true;
+            generateButton.textContent = 'Generating... Please wait.';
+            visualizerPlaceholder.classList.remove('hidden');
+            visualizerPlaceholder.textContent = 'Reading files...';
+            generatedKitchenImage.classList.add('hidden');
+            generatedKitchenImage.src = ''; // Clear previous image
+
+            // --- 1. Input Validation ---
+            const kitchenImageFile = kitchenImageInput.files[0];
+            const doorStyleFile = doorStyleInput.files[0];
+            const colorImageFile = colorImageInput.files[0];
+
+            if (!kitchenImageFile || !doorStyleFile || (!colorImageFile && !colorTextDescription)) {
+                visualizerPlaceholder.textContent = 'ERROR: Please upload a Kitchen Photo, a Door Style Reference, AND a Color Reference (image or text description).';
+                generateButton.disabled = false;
+                generateButton.textContent = 'Generate Kitchen Visualization';
+                return;
+            }
+
+            // --- 2. File to Base64 Conversion (Asynchronously) ---
+            try {
+                visualizerPlaceholder.textContent = 'Uploading and processing images...';
+                
+                const kitchenBase64 = await fileToBase64(kitchenImageFile);
+                const doorStyleBase64 = await fileToBase64(doorStyleFile);
+                const colorBase64 = await fileToBase64(colorImageFile); // Can be null
+
+                if (!kitchenBase64 || !doorStyleBase64) {
+                     // This should not happen if file validation passed, but good for safety
+                     throw new Error("Failed to read required image files."); 
+                }
+
+                // --- 3. Construct API Payload ---
+                
+                const userQuery = `Remodel the primary kitchen image by changing the cabinet doors and color. 
+                Use the second image as a style reference for the new cabinet doors (e.g., shaker, raised panel). 
+                The third image (if provided) or the text description dictates the new cabinet color. 
+                Cabinet Color Description: "${colorTextDescription || 'Use the color from the third image.'}".
+                Output a photorealistic visualization of the remodeled kitchen. Only change the cabinets.`;
+
+                const contents = [];
+                
+                // Add the primary kitchen image (Base Image)
+                contents.push({
+                    inlineData: {
+                        mimeType: kitchenBase64.mimeType,
+                        data: kitchenBase64.data
+                    }
+                });
+                
+                // Add the door style reference image
+                contents.push({
+                    inlineData: {
+                        mimeType: doorStyleBase64.mimeType,
+                        data: doorStyleBase64.data
+                    }
+                });
+                
+                // Add the optional color reference image
+                if (colorBase64) {
+                    contents.push({
+                        inlineData: {
+                            mimeType: colorBase64.mimeType,
+                            data: colorBase64.data
+                        }
+                    }
+                    );
+                }
+                
+                // Add the final text prompt
+                contents.push({ text: userQuery });
+                
+                const payload = {
+                    contents: [{ role: "user", parts: contents }],
+                    generationConfig: {
+                        responseModalities: ['TEXT', 'IMAGE']
+                    },
+                };
+                
+                const apiKey = ""; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
+
+                visualizerPlaceholder.textContent = 'Generating visualization (this may take up to 30 seconds)...';
+
+                // --- 4. Call the Gemini API with Retry ---
+                const response = await fetchWithRetry(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                const base64Part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+                const base64Data = base64Part?.inlineData?.data;
+
+                // --- 5. Display Result ---
+                if (base64Data) {
+                    const imageUrl = `data:${base64Part.inlineData.mimeType};base64,${base64Data}`;
+                    generatedKitchenImage.src = imageUrl;
+                    visualizerPlaceholder.classList.add('hidden');
+                    generatedKitchenImage.classList.remove('hidden');
+                } else {
+                    // Handle case where API response is missing image data
+                    const errorMessage = result?.candidates?.[0]?.content?.parts?.[0]?.text || 'Image generation failed: No image data returned. Check the console for API response details.';
+                    visualizerPlaceholder.textContent = `ERROR: ${errorMessage}`;
+                    visualizerPlaceholder.classList.remove('hidden');
+                    generatedKitchenImage.classList.add('hidden');
+                }
+                
+            } catch (error) {
+                console.error('API or File Reading Error:', error);
+                visualizerPlaceholder.textContent = `CRITICAL ERROR: ${error.message}. Please check your inputs and try again.`;
+                visualizerPlaceholder.classList.remove('hidden');
+                generatedKitchenImage.classList.add('hidden');
+            } finally {
+                // UI Feedback: Stop Loading
+                generateButton.disabled = false;
+                generateButton.textContent = 'Generate Kitchen Visualization';
+            }
+        };
+
 
         // --- Mobile Menu Toggle Logic (UPDATED) ---
         const setupMobileMenu = () => {
@@ -831,6 +1028,9 @@
             setupMobileMenu(); // Setup the new mobile menu toggle
             
             // --- Toggle Listeners ---
+            document.getElementById('visualizer-header')?.addEventListener('click', () => {
+                toggleSection('visualizer-header', 'visualizer-content', 'visualizer-icon');
+            });
             document.getElementById('cut-list-header')?.addEventListener('click', () => {
                 toggleSection('cut-list-header', 'cut-list-content', 'cut-list-icon');
             });
@@ -845,6 +1045,37 @@
             document.getElementById('faceframe-repair-header')?.addEventListener('click', () => {
                 toggleSection('faceframe-repair-header', 'faceframe-repair-content', 'faceframe-repair-icon');
             });
+
+            // Listener for the new visualizer button
+            document.getElementById('generate-visual-button')?.addEventListener('click', handleVisualizeClick);
+
+
+            // Listeners for calculating cut lists and costs
+            const cutListInputs = ['material-thickness', 'box-height', 'face-height', 'box-depth', 'box-width'];
+            cutListInputs.forEach(id => {
+                document.getElementById(id)?.addEventListener('input', calculateCutList);
+            });
+            document.querySelectorAll('input[name="cabinet-type"]').forEach(radio => {
+                radio.addEventListener('change', calculateCutList);
+            });
+            
+            const drawerBoxInputs = ['drawer-box-width', 'drawer-box-depth', 'drawer-box-height'];
+            drawerBoxInputs.forEach(id => {
+                document.getElementById(id)?.addEventListener('input', calculateDrawerBoxCutList);
+            });
+
+            const drawerCostInputs = ['drawer-width', 'drawer-depth', 'drawer-new-glides'];
+            drawerCostInputs.forEach(id => {
+                document.getElementById(id)?.addEventListener('input', calculateDrawerCost);
+                document.getElementById(id)?.addEventListener('change', calculateDrawerCost);
+            });
+
+            document.getElementById('faceframe-sections')?.addEventListener('input', () => {
+                renderDamageLevelSelectors();
+                calculateFaceframeCost();
+            });
+            document.getElementById('faceframe-remade')?.addEventListener('change', calculateFaceframeCost);
+
 
             // Initial calculation to populate fields on load
             // Note: Calculations will run, but inputs will be blank as requested.
