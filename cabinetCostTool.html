@@ -230,7 +230,7 @@ Job requires lead time of 6 weeks."
                         </label>
                     </div>
                     <p class="text-sm text-red-700 italic font-medium -mt-1 p-2 bg-red-100 rounded-md">
-                        Depending on the condition of the job, we can have it complete within 4 business days at an extra 50% cost.
+                        Depending on the condition of the job, we can have it complete within 4 business days at an extra 50% cost. <span class="font-bold">This fee applies only to the core cabinetry lineal-foot items.</span>
                     </p>
                 </div>
             </div>
@@ -713,7 +713,7 @@ Job requires lead time of 6 weeks."
 
         // Map linking input IDs to price keys and display IDs
         const ITEM_MAP = [
-            // Lineal Foot Items
+            // Lineal Foot Items (These are the 'Cabinetry & Shelving' items, subject to RUSH fee)
             { id: 'input-base', priceKey: 'base', name: 'Base (Rebuild)', unit: 'ft', isLineal: true, displayId: 'display-base' },
             { id: 'input-half-shelf', priceKey: 'halfShelf', name: 'Half-Depth Shelving', unit: 'ft', isLineal: true, displayId: 'display-half-shelf' },
             { id: 'input-base-install', priceKey: 'baseInstall', name: 'Base w/ Installation', unit: 'ft', isLineal: true, displayId: 'display-base-install' },
@@ -725,7 +725,7 @@ Job requires lead time of 6 weeks."
             { id: 'input-full-height-european', priceKey: 'fullHeightEuropean', name: 'Full Height European (Faceless)', unit: 'ft', isLineal: true, displayId: 'display-full-height-european' },
             { id: 'input-full-height-european-install', priceKey: 'fullHeightEuropeanInstall', name: 'Full Height European w/ Install', unit: 'ft', isLineal: true, displayId: 'display-full-height-european-install' },
             
-            // Accessory Items
+            // Accessory Items (Not subject to RUSH fee)
             { id: 'input-base-skins', priceKey: 'baseSkins', name: 'Base/Wall Skins', unit: 'PC', isLineal: false, displayId: 'display-base-skins' },
             { id: 'input-full-skins', priceKey: 'fullSkins', name: 'Full Height Skin / Back Panel', unit: 'PC', isLineal: false, displayId: 'display-full-skins' },
             { id: 'input-toekick', priceKey: 'toekick', name: 'Toekick (8ft)', unit: 'PC', isLineal: false, displayId: 'display-toekick' },
@@ -794,6 +794,7 @@ Job requires lead time of 6 weeks."
         // --- Calculation & Receipt Generation Logic ---
         const calculateTotal = () => {
             let subtotal = 0; 
+            let rushableSubtotal = 0; // NEW: Tracks only 'Cabinetry & Shelving' (Lineal items) for RUSH fee calculation
             let total = 0; 
             let breakdown = [];
             
@@ -805,6 +806,12 @@ Job requires lead time of 6 weeks."
                 if (qty > 0 && typeof rate === 'number') {
                     const cost = parseFloat((qty * rate).toFixed(2));
                     subtotal += cost;
+                    
+                    // Add to rushable subtotal if it is a lineal item (core cabinetry)
+                    if (item.isLineal) {
+                        rushableSubtotal += cost;
+                    }
+
                     breakdown.push({
                         name: item.name, 
                         cost: cost, 
@@ -818,7 +825,7 @@ Job requires lead time of 6 weeks."
             
             ITEM_MAP.forEach(addItem);
             
-            // Lazy Susan Hardware Fee Logic
+            // Lazy Susan Hardware Fee Logic (Adds to subtotal, not rushableSubtotal)
             const isLazySusanWoodChecked = getValue('checkbox-lazy-susan-wood', false);
             const isLazySusanPlasticChecked = getValue('checkbox-lazy-susan-plastic', false);
 
@@ -840,7 +847,7 @@ Job requires lead time of 6 weeks."
             }
 
 
-            // Match Fee Logic
+            // Match Fee Logic (Adds to subtotal, not rushableSubtotal)
             const isStainChecked = getValue('checkbox-stain-match', false);
             const isPaintChecked = getValue('checkbox-paint-match', false);
             const isLacquerChecked = getValue('checkbox-lacquer-match', false);
@@ -870,7 +877,7 @@ Job requires lead time of 6 weeks."
                 matchFeeStatusEl.classList.add('hidden');
             }
 
-            // Custom Flat Rate Costs (Faceframe Repair, Misc)
+            // Custom Flat Rate Costs (Faceframe Repair, Misc) (Adds to subtotal, not rushableSubtotal)
             const faceframeRepair = getValue('input-faceframe-repair');
             if (faceframeRepair > 0) {
                 subtotal += faceframeRepair;
@@ -898,14 +905,19 @@ Job requires lead time of 6 weeks."
                 });
             }
 
-            // Rush Fee Logic
+            // Rush Fee Logic (UPDATED to use rushableSubtotal)
             const isRushed = getValue('checkbox-rushed', false);
             let rushFee = 0;
             if (isRushed) {
-                rushFee = parseFloat((subtotal * 0.50).toFixed(2)); // 50% extra
+                // Calculate rush fee based ONLY on the rushableSubtotal
+                rushFee = parseFloat((rushableSubtotal * 0.50).toFixed(2)); // 50% extra
+                
+                // Total is subtotal (all items) + rush fee (on lineal items only)
                 total = subtotal + rushFee;
+                
+                // Add rush fee to breakdown, referencing the base amount
                 breakdown.push({
-                    name: 'RUSH FEE (4-Day Completion)',
+                    name: `RUSH FEE (50% of Cabinetry Subtotal: ${formatCurrency(rushableSubtotal)})`, 
                     cost: rushFee,
                     qty: 1,
                     unit: 'FLAT',
@@ -941,12 +953,12 @@ Job requires lead time of 6 weeks."
             // Update Total Display
             totalCostEl.textContent = `$${total.toFixed(2)}`;
             
-            // Re-render the receipt view content
-            renderReceipt(breakdown, subtotal, total, isRushed, rushFee, isCashSelected, cashDiscount);
+            // Re-render the receipt view content (passing rushableSubtotal)
+            renderReceipt(breakdown, subtotal, total, isRushed, rushFee, isCashSelected, cashDiscount, rushableSubtotal);
         };
         
         // --- Receipt Rendering Function (HEAVILY MODIFIED TO MATCH SCREENSHOT) ---
-        const renderReceipt = (breakdown, subtotal, total, isRushed, rushFee, isCashSelected, cashDiscount) => {
+        const renderReceipt = (breakdown, subtotal, total, isRushed, rushFee, isCashSelected, cashDiscount, rushableSubtotal) => {
             const companyName = getValue('company-name', false);
             const projectManager = getValue('project-manager', false);
             const jobName = getValue('job-name', false);
@@ -1078,14 +1090,14 @@ Job requires lead time of 6 weeks."
                     
                     <!-- Subtotal -->
                     <div class="flex justify-between items-center text-xl font-bold text-primary-dark p-2 border-t border-b border-gray-300">
-                        <span>Subtotal</span>
+                        <span>Subtotal (Before Fees/Discounts)</span>
                         <span class="font-bold price-display">${formatCurrency(subtotal)}</span>
                     </div>
 
                     <!-- Rush Fee Line Item (If applicable) -->
                     ${rushFeeItem ? `
                         <div class="flex justify-between items-center text-red-600 font-bold p-2 is-rush-fee">
-                            <span>RUSH FEE (50% of Subtotal)</span>
+                            <span>RUSH FEE (50% of Cabinetry Lineal Items: ${formatCurrency(rushableSubtotal)})</span>
                             <span class="price-display">${formatCurrency(rushFee)}</span>
                         </div>
                     ` : ''}
