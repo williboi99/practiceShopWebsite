@@ -549,17 +549,26 @@ Job requires lead time of 6 weeks."
                     <h3 class="block text-lg font-bold text-gray-700 mb-2">
                         New Lazy Susan Hardware
                     </h3>
-                    <p class="text-sm text-gray-500 mb-4">Replacement hardware for lazy susans.</p>
+                    
+                    <!-- Description and 'None' Radio Button -->
+                    <p class="text-sm text-gray-500 mb-4 flex items-center justify-between sm:justify-start">
+                        Replacement hardware for lazy susans.
+                        <label for="radio-lazy-susan-none" class="ml-4 flex items-center text-gray-700 font-semibold cursor-pointer">
+                            <input type="radio" id="radio-lazy-susan-none" name="lazy-susan" value="none" checked
+                                   class="h-5 w-5 text-gray-600 border-gray-300 rounded-full focus:ring-gray-500 mr-2" onchange="calculateTotal()">
+                            None
+                        </label>
+                    </p>
                     
                     <div class="flex flex-col sm:flex-row gap-4">
                         
-                        <!-- Wood Option Card -->
+                        <!-- Wood Option Card (RADIO BUTTON) -->
                         <div class="flex-1 p-4 bg-yellow-50 rounded-lg border-2 border-yellow-200 shadow-sm transition hover:shadow-md">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    <input type="checkbox" id="checkbox-lazy-susan-wood"
-                                           class="h-6 w-6 text-yellow-600 border-gray-300 rounded focus:ring-yellow-500" onchange="calculateTotal()">
-                                    <label for="checkbox-lazy-susan-wood" class="ml-3 block text-base font-bold text-gray-800">
+                                    <input type="radio" id="radio-lazy-susan-wood" name="lazy-susan" value="wood"
+                                           class="h-6 w-6 text-yellow-600 border-gray-300 rounded-full focus:ring-yellow-500" onchange="calculateTotal()">
+                                    <label for="radio-lazy-susan-wood" class="ml-3 block text-base font-bold text-gray-800">
                                         Premium Wood Hardware
                                     </label>
                                 </div>
@@ -567,13 +576,13 @@ Job requires lead time of 6 weeks."
                             </div>
                         </div>
 
-                        <!-- Plastic Option Card -->
+                        <!-- Plastic Option Card (RADIO BUTTON) -->
                         <div class="flex-1 p-4 bg-blue-50 rounded-lg border-2 border-blue-200 shadow-sm transition hover:shadow-md">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    <input type="checkbox" id="checkbox-lazy-susan-plastic"
-                                           class="h-6 w-6 text-blue-600 border-gray-300 rounded focus:ring-blue-500" onchange="calculateTotal()">
-                                    <label for="checkbox-lazy-susan-plastic" class="ml-3 block text-base font-bold text-gray-800">
+                                    <input type="radio" id="radio-lazy-susan-plastic" name="lazy-susan" value="plastic"
+                                           class="h-6 w-6 text-blue-600 border-gray-300 rounded-full focus:ring-blue-500" onchange="calculateTotal()">
+                                    <label for="radio-lazy-susan-plastic" class="ml-3 block text-base font-bold text-gray-800">
                                         Standard Plastic Hardware
                                     </label>
                                 </div>
@@ -794,7 +803,7 @@ Job requires lead time of 6 weeks."
         // --- Calculation & Receipt Generation Logic ---
         const calculateTotal = () => {
             let subtotal = 0; 
-            let rushableSubtotal = 0; // NEW: Tracks only 'Cabinetry & Shelving' (Lineal items) for RUSH fee calculation
+            let rushableSubtotal = 0; // Tracks only 'Cabinetry & Shelving' (Lineal items) for RUSH fee calculation
             let total = 0; 
             let breakdown = [];
             
@@ -825,19 +834,19 @@ Job requires lead time of 6 weeks."
             
             ITEM_MAP.forEach(addItem);
             
-            // Lazy Susan Hardware Fee Logic (Adds to subtotal, not rushableSubtotal)
-            const isLazySusanWoodChecked = getValue('checkbox-lazy-susan-wood', false);
-            const isLazySusanPlasticChecked = getValue('checkbox-lazy-susan-plastic', false);
+            // Lazy Susan Hardware Fee Logic (Uses RADIO buttons now)
+            // Only check for wood or plastic selection. If 'none' is selected, both will be false, and cost will be 0.
+            const isLazySusanWoodSelected = getValue('radio-lazy-susan-wood', false);
+            const isLazySusanPlasticSelected = getValue('radio-lazy-susan-plastic', false);
 
-            if (isLazySusanWoodChecked) {
+            if (isLazySusanWoodSelected) {
                 const cost = CURRENT_PRICES.lazySusanWood;
                 subtotal += cost;
                 breakdown.push({
                     name: 'New Lazy Susan Hardware (Wood)',
                     cost: cost, qty: 1, unit: 'PC', rate: cost, note: 'Flat rate for wood hardware replacement.', isLineal: false 
                 });
-            }
-            if (isLazySusanPlasticChecked) {
+            } else if (isLazySusanPlasticSelected) {
                 const cost = CURRENT_PRICES.lazySusanPlastic;
                 subtotal += cost;
                 breakdown.push({
@@ -1043,12 +1052,19 @@ Job requires lead time of 6 weeks."
             const rushFeeItem = breakdown.find(item => item.isRushFee);
             const cashDiscountItem = breakdown.find(item => item.isDiscount); 
             
-            // --- UPDATED: Removed shadow-xl class from the receipt container div ---
             const receiptHTML = `
                 <div class="p-8 max-w-2xl mx-auto bg-white min-h-screen"> 
                     <header class="text-center mb-6">
-                        <!-- Company Contact Information (Matching Screenshot Format) -->
-                        <h1 class="text-2xl font-extrabold text-primary-dark mb-1">NEFF ENTERPRISES</h1>
+                        <!-- Company Contact Information (NEW - Based on uploaded image) -->
+                        <h1 class="text-2xl font-extrabold text-primary-dark mb-4">Neff Enterprises Inc.</h1>
+                        <div class="text-sm font-medium text-primary-dark mb-6">
+                            <p>P.O. Box 2522</p>
+                            <p>Gilbert, AZ 85299-2522</p>
+                            <p>ROC 120032</p>
+                            <p>480-688-7978</p>
+                        </div>
+                        
+                        <!-- Header Line Below Contact -->
                         <p class="text-base font-semibold text-primary-dark border-b-2 border-gray-200 pb-3 mb-6">Cabinet Rebuild Estimate</p>
                     </header>
                     
@@ -1161,11 +1177,9 @@ Job requires lead time of 6 weeks."
             
             // Attach event listeners to all relevant inputs for real-time calculation
             inputElements.forEach(input => {
+                // Input listener for text/number/date, change listener for select/checkbox/radio
                 input.addEventListener(input.type === 'checkbox' || input.type === 'radio' || input.tagName === 'SELECT' ? 'change' : 'input', calculateTotal); 
             });
-            // Also attach listener to the new Lazy Susan checkboxes
-            document.getElementById('checkbox-lazy-susan-wood').addEventListener('change', calculateTotal);
-            document.getElementById('checkbox-lazy-susan-plastic').addEventListener('change', calculateTotal);
 
             // Add button functionality
             printBtn.addEventListener('click', () => {
