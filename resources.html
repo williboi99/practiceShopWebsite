@@ -145,28 +145,97 @@
 <div class="space-y-6">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Your Preferences</h2>
                             
-                            
-<div class="input-group">
-                                <label for="kitchen-image-upload" class="block text-lg font-medium text-gray-700 mb-1">Upload Kitchen Photo</label>
+                            <!-- 1. KITCHEN PHOTO UPLOAD/CAMERA INPUT -->
+                            <div class="input-group">
+                                <label class="block text-lg font-medium text-gray-700 mb-2">Upload Kitchen Photo</label>
                                 
-<input type="file" id="kitchen-image-upload" accept="image/*" capture="environment" class="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-accent file:text-white hover:file:bg-green-700">
-                                <p class="text-sm text-gray-500 mt-1">Choose a clear photo of your current kitchen, or use your camera now.</p>
+                                <div class="flex space-x-3">
+                                    <!-- Hidden Input -->
+                                    <input type="file" id="kitchen-image-input" accept="image/*" class="hidden" onchange="handleFileChange(this)">
+                                    
+                                    <!-- Take Photo Button (Camera Symbol) -->
+                                    <button type="button" 
+                                            onclick="document.getElementById('kitchen-image-input').setAttribute('capture', 'environment'); document.getElementById('kitchen-image-input').click();" 
+                                            class="p-3 bg-accent hover:bg-green-700 text-white rounded-lg transition duration-150 shadow-md flex-shrink-0 flex items-center justify-center w-1/4" 
+                                            title="Take Photo">
+                                        <!-- Camera Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                                            <circle cx="12" cy="13" r="3"/>
+                                        </svg>
+                                    </button>
+                                    
+                                    <!-- Choose File Button -->
+                                    <button type="button" 
+                                            onclick="document.getElementById('kitchen-image-input').removeAttribute('capture'); document.getElementById('kitchen-image-input').click();" 
+                                            class="flex-grow bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-150 shadow-sm">
+                                        Choose File
+                                    </button>
+                                </div>
+                                
+                                <p class="text-sm text-gray-500 mt-1" id="kitchen-file-name">No file selected.</p>
                             </div>
 
-                            
-<div class="input-group">
-                                <label for="door-style-upload" class="block text-lg font-medium text-gray-700 mb-1">Upload Cabinet Door Style Reference</label>
+                            <!-- 2. DOOR STYLE UPLOAD/CAMERA INPUT -->
+                            <div class="input-group">
+                                <label class="block text-lg font-medium text-gray-700 mb-2">Upload Cabinet Door Style Reference</label>
                                 
-<input type="file" id="door-style-upload" accept="image/*" capture="environment" class="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-accent file:text-white hover:file:bg-green-700">
-                                <p class="text-sm text-gray-500 mt-1">Choose a photo of your desired cabinet door style, or use your camera.</p>
+                                <div class="flex space-x-3">
+                                    <!-- Hidden Input -->
+                                    <input type="file" id="door-style-input" accept="image/*" class="hidden" onchange="handleFileChange(this)">
+                                    
+                                    <!-- Take Photo Button (Camera Symbol) -->
+                                    <button type="button" 
+                                            onclick="document.getElementById('door-style-input').setAttribute('capture', 'environment'); document.getElementById('door-style-input').click();" 
+                                            class="p-3 bg-accent hover:bg-green-700 text-white rounded-lg transition duration-150 shadow-md flex-shrink-0 flex items-center justify-center w-1/4" 
+                                            title="Take Photo">
+                                        <!-- Camera Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                                            <circle cx="12" cy="13" r="3"/>
+                                        </svg>
+                                    </button>
+                                    
+                                    <!-- Choose File Button -->
+                                    <button type="button" 
+                                            onclick="document.getElementById('door-style-input').removeAttribute('capture'); document.getElementById('door-style-input').click();" 
+                                            class="flex-grow bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-150 shadow-sm">
+                                        Choose File
+                                    </button>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-1" id="door-file-name">No file selected.</p>
                             </div>
 
-                            
-<div class="input-group">
-                                <label for="color-reference-input" class="block text-lg font-medium text-gray-700 mb-1">Color Reference</label>
+                            <!-- 3. COLOR REFERENCE UPLOAD/CAMERA INPUT -->
+                            <div class="input-group">
+                                <label class="block text-lg font-medium text-gray-700 mb-2">Color Reference (Image or Text)</label>
                                 
-<input type="file" id="color-image-upload" accept="image/*" capture="environment" class="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-accent file:text-white hover:file:bg-green-700 mb-2">
-                                <p class="text-sm text-gray-500 mt-1 mb-2">Choose an image with your desired color (or use your camera), OR describe it below:</p>
+                                <div class="flex space-x-3 mb-2">
+                                    <!-- Hidden Input -->
+                                    <input type="file" id="color-image-input" accept="image/*" class="hidden" onchange="handleFileChange(this)">
+                                    
+                                    <!-- Take Photo Button (Camera Symbol) -->
+                                    <button type="button" 
+                                            onclick="document.getElementById('color-image-input').setAttribute('capture', 'environment'); document.getElementById('color-image-input').click();" 
+                                            class="p-3 bg-accent hover:bg-green-700 text-white rounded-lg transition duration-150 shadow-md flex-shrink-0 flex items-center justify-center w-1/4" 
+                                            title="Take Photo">
+                                        <!-- Camera Icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                                            <circle cx="12" cy="13" r="3"/>
+                                        </svg>
+                                    </button>
+                                    
+                                    <!-- Choose File Button -->
+                                    <button type="button" 
+                                            onclick="document.getElementById('color-image-input').removeAttribute('capture'); document.getElementById('color-image-input').click();" 
+                                            class="flex-grow bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-150 shadow-sm">
+                                        Choose File
+                                    </button>
+                                </div>
+                                
+                                <p class="text-sm text-gray-500 mt-1 mb-2" id="color-file-name">No color image selected, use text description below.</p>
+                                
                                 <textarea id="color-text-description" rows="3" placeholder="e.g., 'a deep matte navy blue', 'light sage green', 'classic off-white with a hint of warmth'" class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-lg"></textarea>
                             </div>
                             
@@ -490,6 +559,28 @@
 </div>
     </div>
     <script>
+        /**
+         * Function to display the selected file name for visual confirmation.
+         */
+        const handleFileChange = (inputElement) => {
+            const fileNameId = inputElement.id.replace('-input', '-file-name');
+            const fileNameElement = document.getElementById(fileNameId);
+            
+            if (fileNameElement) {
+                if (inputElement.files && inputElement.files.length > 0) {
+                    fileNameElement.textContent = `Selected: ${inputElement.files[0].name}`;
+                    fileNameElement.classList.remove('text-gray-500');
+                    fileNameElement.classList.add('text-green-600', 'font-medium');
+                } else {
+                    // Reset to default if the input is cleared
+                    const isColorInput = inputElement.id.includes('color');
+                    fileNameElement.textContent = isColorInput ? 'No color image selected, use text description below.' : 'No file selected.';
+                    fileNameElement.classList.remove('text-green-600', 'font-medium');
+                    fileNameElement.classList.add('text-gray-500');
+                }
+            }
+        };
+
         /**
          * Helper function to convert decimal inches to a mixed fraction string (e.g., 34.9375 -> "34 15/16").
          * Rounds to the nearest specified denominator (default 16th of an inch).
@@ -870,9 +961,10 @@
 
         // --- Refactored New Cabinetry Visualizer Logic ---
         const handleVisualizeClick = async () => {
-            const kitchenImageInput = document.getElementById('kitchen-image-upload');
-            const doorStyleInput = document.getElementById('door-style-upload');
-            const colorImageInput = document.getElementById('color-image-upload');
+            // Updated IDs to match the new hidden inputs
+            const kitchenImageInput = document.getElementById('kitchen-image-input');
+            const doorStyleInput = document.getElementById('door-style-input');
+            const colorImageInput = document.getElementById('color-image-input');
             const colorTextDescription = document.getElementById('color-text-description').value.trim();
 
             const generatedKitchenImage = document.getElementById('generated-kitchen-image');
@@ -880,7 +972,7 @@
             const visualizerOutput = document.getElementById('visualizer-output');
             const generateButton = document.getElementById('generate-visual-button');
 
-            // **CRITICAL FIX: Null checks from previous error are retained.**
+            
             if (!generatedKitchenImage || !visualizerPlaceholder || !visualizerOutput || !generateButton) {
                 console.error("Critical visualization DOM elements not found.");
                 return;
@@ -900,7 +992,7 @@
             const colorImageFile = colorImageInput.files[0];
 
             if (!kitchenImageFile || !doorStyleFile || (!colorImageFile && !colorTextDescription)) {
-                visualizerPlaceholder.textContent = 'ERROR: Please upload a Kitchen Photo, a Door Style Reference, AND a Color Reference (image or text description).';
+                visualizerPlaceholder.textContent = 'ERROR: Please provide a Kitchen Photo, a Door Style Reference, AND a Color Reference (image or text description).';
                 generateButton.disabled = false;
                 generateButton.textContent = 'Generate Kitchen Visualization';
                 return;
