@@ -224,7 +224,7 @@ Job requires lead time of 6 weeks."
                     <!-- RUSHED Checkbox -->
                     <div class="flex items-start mb-2">
                         <input type="checkbox" id="checkbox-rushed" 
-                               class="mt-1 h-5 w-5 text-red-600 border-gray-300 rounded focus:ring-red-500">
+                               class="mt-1 h-5 w-5 text-red-600 border-gray-300 rounded focus:ring-red-500" onchange="calculateTotal()">
                         <label for="checkbox-rushed" class="ml-3 block text-lg font-bold text-red-600">
                             RUSHED
                         </label>
@@ -282,9 +282,15 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- Input: Base with Installation -->
+                <!-- Input: Base with Installation - MODIFIED -->
                 <div class="input-group">
-                    <label for="input-base-install" class="block text-lg font-medium text-gray-700 mb-1">Base with Installation</label>
+                    <div class="flex items-center justify-between mb-1">
+                        <label for="input-base-install" class="block text-lg font-medium text-gray-700">Base with Installation</label>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="check-base-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="calculateTotal()">
+                            <label for="check-base-install" class="ml-1 text-sm font-medium text-gray-600 select-none">Under Countertops</label>
+                        </div>
+                    </div>
                     <div class="flex items-center">
                         <input type="number" id="input-base-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
@@ -318,9 +324,15 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- Input: Full Height with Installation -->
+                <!-- Input: Full Height with Installation - MODIFIED -->
                 <div class="input-group">
-                    <label for="input-full-height-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height with Installation</label>
+                    <div class="flex items-center justify-between mb-1">
+                        <label for="input-full-height-install" class="block text-lg font-medium text-gray-700">Full Height with Installation</label>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="check-full-height-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="calculateTotal()">
+                            <label for="check-full-height-install" class="ml-1 text-sm font-medium text-gray-600 select-none">Under Countertops</label>
+                        </div>
+                    </div>
                     <div class="flex items-center">
                         <input type="number" id="input-full-height-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
@@ -347,9 +359,15 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- Input: Base European w/ Install -->
+                <!-- Input: Base European w/ Install - MODIFIED -->
                 <div class="input-group">
-                    <label for="input-base-european-install" class="block text-lg font-medium text-gray-700 mb-1">Base European w/ Install</label>
+                    <div class="flex items-center justify-between mb-1">
+                        <label for="input-base-european-install" class="block text-lg font-medium text-gray-700">Base European w/ Install</label>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="check-base-european-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="calculateTotal()">
+                            <label for="check-base-european-install" class="ml-1 text-sm font-medium text-gray-600 select-none">Under Countertops</label>
+                        </div>
+                    </div>
                     <div class="flex items-center">
                         <input type="number" id="input-base-european-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
@@ -371,9 +389,15 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
 
-                <!-- Input: Full Height European w/ Install -->
+                <!-- Input: Full Height European w/ Install - MODIFIED -->
                 <div class="input-group">
-                    <label for="input-full-height-european-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height European w/ Install</label>
+                    <div class="flex items-center justify-between mb-1">
+                        <label for="input-full-height-european-install" class="block text-lg font-medium text-gray-700">Full Height European w/ Install</label>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="check-full-height-european-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="calculateTotal()">
+                            <label for="check-full-height-european-install" class="ml-1 text-sm font-medium text-gray-600 select-none">Under Countertops</label>
+                        </div>
+                    </div>
                     <div class="flex items-center">
                         <input type="number" id="input-full-height-european-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
@@ -391,16 +415,16 @@ Job requires lead time of 6 weeks."
                     <p class="text-sm font-semibold text-gray-800">Select required matching services (<span class="font-bold">$150 per service</span>):</p>
                     <div class="grid grid-cols-3 gap-2">
                         <div class="flex items-center">
-                            <input type="checkbox" id="checkbox-stain-match" class="h-5 w-5 text-accent border-gray-300 rounded focus:ring-accent/70">
-                            <label for="checkbox-stain-match" class="ml-2 text-sm font-medium text-gray-700">Stain</label>
+                            <input type="checkbox" id="checkbox-stain-match" class="h-5 w-5 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="calculateTotal()">
+                            <label for="checkbox-stain-match" class="ml-2 text-sm font-medium text-gray-700 select-none">Stain</label>
                         </div>
                         <div class="flex items-center">
-                            <input type="checkbox" id="checkbox-paint-match" class="h-5 w-5 text-accent border-gray-300 rounded focus:ring-accent/70">
-                            <label for="checkbox-paint-match" class="ml-2 text-sm font-medium text-gray-700">Paint</label>
+                            <input type="checkbox" id="checkbox-paint-match" class="h-5 w-5 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="calculateTotal()">
+                            <label for="checkbox-paint-match" class="ml-2 text-sm font-medium text-gray-700 select-none">Paint</label>
                         </div>
                         <div class="flex items-center">
-                            <input type="checkbox" id="checkbox-lacquer-match" class="h-5 w-5 text-accent border-gray-300 rounded focus:ring-accent/70">
-                            <label for="checkbox-lacquer-match" class="ml-2 text-sm font-medium text-gray-700">Lacquer</label>
+                            <input type="checkbox" id="checkbox-lacquer-match" class="h-5 w-5 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="calculateTotal()">
+                            <label for="checkbox-lacquer-match" class="ml-2 text-sm font-medium text-gray-700 select-none">Lacquer</label>
                         </div>
                     </div>
                     <p id="match-fee-status" class="text-center font-bold text-red-600 text-sm pt-2 border-t border-emerald-300 hidden"></p>
@@ -410,7 +434,7 @@ Job requires lead time of 6 weeks."
                 <div class="input-group p-4 bg-gray-50 rounded-lg border border-gray-200">
                     <label for="finished-material-select" class="block text-sm font-medium text-gray-700 font-bold">Finished Material</label>
                     <select id="finished-material-select"
-                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm">
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm" onchange="calculateTotal()">
                         <option value="Maple">Maple</option>
                         <option value="Oak">Oak</option>
                         <option value="Cherry">Cherry</option>
@@ -553,7 +577,7 @@ Job requires lead time of 6 weeks."
                     <!-- Description and 'None' Radio Button -->
                     <p class="text-sm text-gray-500 mb-4 flex items-center justify-between sm:justify-start">
                         Replacement hardware for lazy susans.
-                        <label for="radio-lazy-susan-none" class="ml-4 flex items-center text-gray-700 font-semibold cursor-pointer">
+                        <label for="radio-lazy-susan-none" class="ml-4 flex items-center text-gray-700 font-semibold cursor-pointer select-none">
                             <input type="radio" id="radio-lazy-susan-none" name="lazy-susan" value="none" checked
                                    class="h-5 w-5 text-gray-600 border-gray-300 rounded-full focus:ring-gray-500 mr-2" onchange="calculateTotal()">
                             None
@@ -568,7 +592,7 @@ Job requires lead time of 6 weeks."
                                 <div class="flex items-center">
                                     <input type="radio" id="radio-lazy-susan-wood" name="lazy-susan" value="wood"
                                            class="h-6 w-6 text-yellow-600 border-gray-300 rounded-full focus:ring-yellow-500" onchange="calculateTotal()">
-                                    <label for="radio-lazy-susan-wood" class="ml-3 block text-base font-bold text-gray-800">
+                                    <label for="radio-lazy-susan-wood" class="ml-3 block text-base font-bold text-gray-800 select-none">
                                         Premium Wood Hardware
                                     </label>
                                 </div>
@@ -582,7 +606,7 @@ Job requires lead time of 6 weeks."
                                 <div class="flex items-center">
                                     <input type="radio" id="radio-lazy-susan-plastic" name="lazy-susan" value="plastic"
                                            class="h-6 w-6 text-blue-600 border-gray-300 rounded-full focus:ring-blue-500" onchange="calculateTotal()">
-                                    <label for="radio-lazy-susan-plastic" class="ml-3 block text-base font-bold text-gray-800">
+                                    <label for="radio-lazy-susan-plastic" class="ml-3 block text-base font-bold text-gray-800 select-none">
                                         Standard Plastic Hardware
                                     </label>
                                 </div>
@@ -636,16 +660,16 @@ Job requires lead time of 6 weeks."
                 <h2 class="text-xl font-bold text-indigo-700 mb-4">Payment Method</h2>
                 <div class="flex flex-col sm:flex-row gap-4">
                     <!-- Invoice/Card (Default) -->
-                    <label for="payment-invoice" class="flex items-center flex-1 p-3 bg-white border border-indigo-300 rounded-lg cursor-pointer transition hover:bg-indigo-100/50">
+                    <label for="payment-invoice" class="flex items-center flex-1 p-3 bg-white border border-indigo-300 rounded-lg cursor-pointer transition hover:bg-indigo-100/50 select-none">
                         <input type="radio" id="payment-invoice" name="payment-method" value="Invoice" checked
-                               class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                               class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" onchange="calculateTotal()">
                         <span class="ml-3 text-base font-semibold text-gray-800">Invoice / Card</span>
                     </label>
                     
                     <!-- Cash (Discount) -->
-                    <label for="payment-cash" class="flex items-center flex-1 p-3 bg-white border border-indigo-300 rounded-lg cursor-pointer transition hover:bg-indigo-100/50">
+                    <label for="payment-cash" class="flex items-center flex-1 p-3 bg-white border border-indigo-300 rounded-lg cursor-pointer transition hover:bg-indigo-100/50 select-none">
                         <input type="radio" id="payment-cash" name="payment-method" value="Cash"
-                               class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                               class="h-5 w-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" onchange="calculateTotal()">
                         <span class="ml-3 text-base font-semibold text-gray-800">Cash</span>
                     </label>
                 </div>
@@ -700,6 +724,8 @@ Job requires lead time of 6 weeks."
         const finishedMaterialSelect = document.getElementById('finished-material-select');
 
         // --- Price Constants Definitions ---
+        const UNDER_COUNTERTOP_ADJUSTMENT = 25; // Constant for the new $25 fee
+        
         const DEFAULT_PRICES = {
             base: 90, halfShelf: 18, baseInstall: 155, fullHeight: 180, fullShelf: 36, fullHeightInstall: 310,
             baseEuropean: 195, baseEuropeanInstall: 280, fullHeightEuropean: 285, fullHeightEuropeanInstall: 435,
@@ -725,14 +751,30 @@ Job requires lead time of 6 weeks."
             // Lineal Foot Items (These are the 'Cabinetry & Shelving' items, subject to RUSH fee)
             { id: 'input-base', priceKey: 'base', name: 'Base (Rebuild)', unit: 'ft', isLineal: true, displayId: 'display-base' },
             { id: 'input-half-shelf', priceKey: 'halfShelf', name: 'Half-Depth Shelving', unit: 'ft', isLineal: true, displayId: 'display-half-shelf' },
-            { id: 'input-base-install', priceKey: 'baseInstall', name: 'Base w/ Installation', unit: 'ft', isLineal: true, displayId: 'display-base-install' },
+            // UPDATED: Added checkboxId for Under Countertops fee
+            { 
+                id: 'input-base-install', priceKey: 'baseInstall', name: 'Base w/ Installation', unit: 'ft', 
+                isLineal: true, displayId: 'display-base-install', checkboxId: 'check-base-install' 
+            },
             { id: 'input-full-height', priceKey: 'fullHeight', name: 'Full Height (Rebuild)', unit: 'ft', isLineal: true, displayId: 'display-full-height' },
             { id: 'input-full-shelf', priceKey: 'fullShelf', name: 'Full-Depth Shelving', unit: 'ft', isLineal: true, displayId: 'display-full-shelf' },
-            { id: 'input-full-height-install', priceKey: 'fullHeightInstall', name: 'Full Height w/ Installation', unit: 'ft', isLineal: true, displayId: 'display-full-height-install' },
+            // UPDATED: Added checkboxId for Under Countertops fee
+            { 
+                id: 'input-full-height-install', priceKey: 'fullHeightInstall', name: 'Full Height w/ Installation', unit: 'ft', 
+                isLineal: true, displayId: 'display-full-height-install', checkboxId: 'check-full-height-install' 
+            },
             { id: 'input-base-european', priceKey: 'baseEuropean', name: 'Base European (Faceless)', unit: 'ft', isLineal: true, displayId: 'display-base-european' },
-            { id: 'input-base-european-install', priceKey: 'baseEuropeanInstall', name: 'Base European w/ Install', unit: 'ft', isLineal: true, displayId: 'display-base-european-install' },
+            // UPDATED: Added checkboxId for Under Countertops fee
+            { 
+                id: 'input-base-european-install', priceKey: 'baseEuropeanInstall', name: 'Base European w/ Install', unit: 'ft', 
+                isLineal: true, displayId: 'display-base-european-install', checkboxId: 'check-base-european-install' 
+            },
             { id: 'input-full-height-european', priceKey: 'fullHeightEuropean', name: 'Full Height European (Faceless)', unit: 'ft', isLineal: true, displayId: 'display-full-height-european' },
-            { id: 'input-full-height-european-install', priceKey: 'fullHeightEuropeanInstall', name: 'Full Height European w/ Install', unit: 'ft', isLineal: true, displayId: 'display-full-height-european-install' },
+            // UPDATED: Added checkboxId for Under Countertops fee
+            { 
+                id: 'input-full-height-european-install', priceKey: 'fullHeightEuropeanInstall', name: 'Full Height European w/ Install', unit: 'ft', 
+                isLineal: true, displayId: 'display-full-height-european-install', checkboxId: 'check-full-height-european-install' 
+            },
             
             // Accessory Items (Not subject to RUSH fee)
             { id: 'input-base-skins', priceKey: 'baseSkins', name: 'Base/Wall Skins', unit: 'PC', isLineal: false, displayId: 'display-base-skins' },
@@ -771,6 +813,7 @@ Job requires lead time of 6 weeks."
             ITEM_MAP.forEach(item => {
                 const spanEl = document.getElementById(item.displayId);
                 if (spanEl && item.unit) {
+                    // Check if a fixed price exists in CURRENT_PRICES (unadjusted base rate)
                     const price = CURRENT_PRICES[item.priceKey];
                     if (typeof price === 'number') {
                         spanEl.textContent = `$${price.toFixed(0)} / ${item.unit}`;
@@ -810,9 +853,18 @@ Job requires lead time of 6 weeks."
             // Helper function for adding itemized costs
             const addItem = (item) => {
                 const qty = getValue(item.id);
-                const rate = CURRENT_PRICES[item.priceKey]; 
+                // Start with the base rate from CURRENT_PRICES
+                let rate = CURRENT_PRICES[item.priceKey]; 
                 
                 if (qty > 0 && typeof rate === 'number') {
+                    let adjustment = 0;
+                    
+                    // Logic for Under Countertops Checkbox Adjustment
+                    if (item.checkboxId && getValue(item.checkboxId, false)) {
+                        adjustment = UNDER_COUNTERTOP_ADJUSTMENT;
+                        rate += adjustment; // Add $25 to the rate per unit
+                    }
+
                     const cost = parseFloat((qty * rate).toFixed(2));
                     subtotal += cost;
                     
@@ -826,8 +878,9 @@ Job requires lead time of 6 weeks."
                         cost: cost, 
                         qty: qty, 
                         unit: item.unit, 
-                        rate: rate,
-                        isLineal: item.isLineal
+                        rate: rate, // Store the adjusted rate for the receipt
+                        isLineal: item.isLineal,
+                        isUnderCountertops: adjustment > 0 // Tag for receipt description
                     });
                 }
             };
@@ -835,7 +888,6 @@ Job requires lead time of 6 weeks."
             ITEM_MAP.forEach(addItem);
             
             // Lazy Susan Hardware Fee Logic (Uses RADIO buttons now)
-            // Only check for wood or plastic selection. If 'none' is selected, both will be false, and cost will be 0.
             const isLazySusanWoodSelected = getValue('radio-lazy-susan-wood', false);
             const isLazySusanPlasticSelected = getValue('radio-lazy-susan-plastic', false);
 
@@ -992,7 +1044,7 @@ Job requires lead time of 6 weeks."
 
                     // Determine quantity display format
                     let qtyDisplay;
-                    let rateDisplay;
+                    
                     if (item.unit === 'ft') {
                         // Example: 3.75 ft @ $90.00 / ft
                         qtyDisplay = `${item.qty.toFixed(2).replace(/\.00$/, '')} ${item.unit} @ ${formatCurrency(item.rate)} / ${item.unit}`;
@@ -1009,16 +1061,16 @@ Job requires lead time of 6 weeks."
                         qtyDisplay = item.qty;
                     }
 
-                    // For the screenshot look, we use the item name as the bold line, and the quantity/rate info below.
-                    // For the accessories section, the screenshot shows QTY/RATE on the same line as the name
-                    // Let's create two specific render styles.
                     
                     if (item.isLineal) {
                         // Style for Lineal items (Name, then Qty/Rate below)
                         html += `
                             <div class="receipt-line-item">
                                 <div class="flex-1 mr-4">
-                                    <p class="font-medium text-primary-dark">${item.name}</p>
+                                    <p class="font-medium text-primary-dark">
+                                        ${item.name}
+                                        ${item.isUnderCountertops ? '<span class="text-xs font-semibold text-accent ml-2">(+ Under Countertops Fee)</span>' : ''}
+                                    </p>
                                     <p class="text-xs text-gray-600">${qtyDisplay}</p>
                                 </div>
                                 <span class="font-bold price-display">${formatCurrency(item.cost)}</span>
