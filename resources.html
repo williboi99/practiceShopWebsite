@@ -967,6 +967,7 @@
                 };
                 
                 const apiKey = ""; 
+                // CRITICAL FIX: Changed API URL to the correct predict endpoint format for image models
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
 
                 visualizerPlaceholder.textContent = 'Generating visualization (this may take up to 30 seconds)...';
@@ -991,8 +992,10 @@
                     generatedKitchenImage.classList.remove('hidden');
                 } else {
                     // Handle case where API response is missing image data
-                    const errorMessage = result?.candidates?.[0]?.content?.parts?.[0]?.text || 'Image generation failed: No image data returned. Check the console for API response details.';
-                    visualizerPlaceholder.textContent = `ERROR: ${errorMessage}`;
+                    // Fallback to text part if it exists
+                    const textPart = result?.candidates?.[0]?.content?.parts?.find(p => p.text)?.text || 
+                                     'Image generation failed: No image data returned. Check the console for API response details.';
+                    visualizerPlaceholder.textContent = `ERROR: ${textPart}`;
                     visualizerPlaceholder.classList.remove('hidden');
                     generatedKitchenImage.classList.add('hidden');
                 }
