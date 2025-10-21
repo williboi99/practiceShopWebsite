@@ -175,7 +175,7 @@
                                     </button>
                                 </div>
                                 
-                                <p class="text-sm text-gray-500 mt-1" id="kitchen-file-name">No file selected.</p>
+                                <p class="text-sm text-gray-500 mt-1" id="kitchen-image-file-name">No file selected.</p>
                             </div>
 
                             <!-- 2. DOOR STYLE UPLOAD/CAMERA INPUT -->
@@ -205,7 +205,7 @@
                                         Choose File
                                     </button>
                                 </div>
-                                <p class="text-sm text-gray-500 mt-1" id="door-file-name">No file selected.</p>
+                                <p class="text-sm text-gray-500 mt-1" id="door-style-file-name">No file selected.</p>
                             </div>
 
                             <!-- 3. COLOR REFERENCE UPLOAD/CAMERA INPUT -->
@@ -236,7 +236,7 @@
                                     </button>
                                 </div>
                                 
-                                <p class="text-sm text-gray-500 mt-1 mb-2" id="color-file-name">No color image selected, use text description below.</p>
+                                <p class="text-sm text-gray-500 mt-1 mb-2" id="color-image-file-name">No color image selected, use text description below.</p>
                                 
                                 <textarea id="color-text-description" rows="3" placeholder="e.g., 'a deep matte navy blue', 'light sage green', 'classic off-white with a hint of warmth'" class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-lg"></textarea>
                             </div>
@@ -567,29 +567,47 @@
 
         /**
          * Function to display the selected file name for visual confirmation.
+         * Added more robust UI feedback.
          */
         const handleFileChange = (inputElement) => {
-            console.log(`File change detected for: ${inputElement.id}`);
+            // Determine the ID of the corresponding file name display element
+            // This logic uses the input ID (e.g., 'kitchen-image-input') and replaces '-input' with '-file-name'
             const fileNameId = inputElement.id.replace('-input', '-file-name');
             const fileNameElement = document.getElementById(fileNameId);
             
+            // Check if the input element has files and if the display element exists
             if (fileNameElement) {
                 if (inputElement.files && inputElement.files.length > 0) {
-                    // **UI FIX**: Ensure strong visual feedback and display of file name
-                    fileNameElement.textContent = `Selected: ${inputElement.files[0].name}`;
-                    fileNameElement.classList.remove('text-gray-500', 'text-red-500');
-                    fileNameElement.classList.add('text-green-600', 'font-medium');
-                    console.log(`Updated UI for ${fileNameId} with file: ${inputElement.files[0].name}`);
+                    const fileName = inputElement.files[0].name;
+                    
+                    // --- Success State UI Update ---
+                    fileNameElement.textContent = `Selected: ${fileName}`;
+                    // Use specific green color class for strong visual success feedback
+                    fileNameElement.classList.remove('text-gray-500', 'text-red-500', 'text-sm');
+                    fileNameElement.classList.add('text-green-600', 'font-medium', 'text-base'); 
+                    
+                    // Add a brief opacity transition to confirm the change visually
+                    fileNameElement.style.transition = 'opacity 0.2s';
+                    fileNameElement.style.opacity = '0.5';
+                    setTimeout(() => { fileNameElement.style.opacity = '1'; }, 50);
+
                 } else {
-                    // Reset to default if the input is cleared
+                    // --- Reset State UI Update ---
                     const isColorInput = inputElement.id.includes('color');
-                    fileNameElement.textContent = isColorInput ? 'No color image selected, use text description below.' : 'No file selected.';
-                    fileNameElement.classList.remove('text-green-600', 'font-medium');
-                    fileNameElement.classList.add('text-gray-500');
-                    console.log(`Reset UI for ${fileNameId}`);
+                    const defaultText = isColorInput 
+                        ? 'No color image selected, use text description below.' 
+                        : 'No file selected.';
+
+                    fileNameElement.textContent = defaultText;
+                    fileNameElement.classList.remove('text-green-600', 'font-medium', 'text-base', 'text-red-500');
+                    fileNameElement.classList.add('text-gray-500', 'text-sm');
+                    
+                    // Ensure transition is removed on reset
+                    fileNameElement.style.transition = 'none';
+                    fileNameElement.style.opacity = '1';
                 }
             } else {
-                console.error(`Could not find UI element with ID: ${fileNameId}`);
+                console.error(`Missing element for file name display: ${fileNameId}`);
             }
         };
 
