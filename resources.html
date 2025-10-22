@@ -186,11 +186,11 @@
                                 <p class="text-sm text-gray-500 mt-1" id="kitchen-image-file-name">No file selected.</p>
                             </div>
 
-                            <!-- 2. DOOR STYLE UPLOAD/CAMERA INPUT -->
+                            <!-- 2. DOOR STYLE UPLOAD/CAMERA INPUT (UPDATED) -->
                             <div class="input-group">
-                                <label class="block text-lg font-medium text-gray-700 mb-2">Upload Cabinet Door Style Reference</label>
+                                <label class="block text-lg font-medium text-gray-700 mb-2">Cabinet Door Style Reference (Image or Text)</label>
                                 
-                                <div class="flex space-x-3">
+                                <div class="flex space-x-3 mb-2">
                                     <!-- Hidden Input -->
                                     <input type="file" id="door-style-input" accept="image/*" class="hidden" onchange="handleFileChange(this)">
                                     
@@ -213,7 +213,11 @@
                                         Choose File
                                     </button>
                                 </div>
-                                <p class="text-sm text-gray-500 mt-1" id="door-style-file-name">No file selected.</p>
+                                
+                                <p class="text-sm text-gray-500 mt-1 mb-2" id="door-style-image-file-name">No door style image selected, use text description below.</p>
+                                
+                                <!-- NEW TEXT DESCRIPTION FOR DOOR STYLE -->
+                                <textarea id="door-style-text-description" rows="3" placeholder="e.g., 'traditional shaker style', 'modern slab door with integrated handle', 'beadboard cottage style'" class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-lg"></textarea>
                             </div>
 
                             <!-- 3. COLOR REFERENCE UPLOAD/CAMERA INPUT -->
@@ -614,9 +618,15 @@
             } else {
                 // --- Reset State UI Update ---
                 const isColorInput = inputElement.id.includes('color');
-                const defaultText = isColorInput 
-                    ? 'No color image selected, use text description below.' 
-                    : 'No file selected.';
+                const isDoorStyleInput = inputElement.id.includes('door-style'); // NEW Check for door style
+                
+                let defaultText = 'No file selected.';
+
+                if (isColorInput) {
+                    defaultText = 'No color image selected, use text description below.';
+                } else if (isDoorStyleInput) { 
+                    defaultText = 'No door style image selected, use text description below.';
+                }
 
                 fileNameElement.textContent = defaultText;
                 fileNameElement.classList.remove('text-green-600', 'font-medium', 'text-base', 'text-red-500', 'font-semibold');
@@ -1043,6 +1053,7 @@
             // Updated IDs to match the new hidden inputs
             const kitchenImageInput = document.getElementById('kitchen-image-input');
             const doorStyleInput = document.getElementById('door-style-input');
+            const doorStyleTextDescription = document.getElementById('door-style-text-description').value.trim(); // NEW
             const colorImageInput = document.getElementById('color-image-input');
             const colorTextDescription = document.getElementById('color-text-description').value.trim();
 
@@ -1077,21 +1088,26 @@
                 return;
             }
 
-            if (!kitchenImageFile || !doorStyleFile || (!colorImageFile && !colorTextDescription)) {
-                visualizerPlaceholder.textContent = 'ERROR: Please provide a Kitchen Photo, a Door Style Reference, AND a Color Reference (image or text description). Ensure files are under 5MB.';
+            // UPDATED VALIDATION LOGIC: Check for Kitchen Photo + (Door Style Image OR Text) + (Color Image OR Text)
+            if (!kitchenImageFile || (!doorStyleFile && !doorStyleTextDescription) || (!colorImageFile && !colorTextDescription)) {
+                visualizerPlaceholder.textContent = 'ERROR: Please provide a Kitchen Photo, a Door Style Reference (image or text), AND a Color Reference (image or text). Ensure files are under 5MB.';
                 generateButton.disabled = false;
                 generateButton.textContent = 'Generate Kitchen Visualization';
                 return;
             }
 
             // --- 2. File to Base64 Conversion (Asynchronously) ---
-            let kitchenBase64, doorStyleBase64, colorBase64 = null;
+            let kitchenBase64, doorStyleBase64 = null, colorBase64 = null;
 
             try {
                 visualizerPlaceholder.textContent = 'Uploading and processing images...';
                 
                 kitchenBase64 = await fileToBase64(kitchenImageFile);
-                doorStyleBase64 = await fileToBase64(doorStyleFile);
+                
+                // Only process door style image if a file was selected
+                if (doorStyleFile) { 
+                    doorStyleBase64 = await fileToBase64(doorStyleFile);
+                }
                 
                 // Only process color image if a file was selected
                 if (colorImageFile) {
@@ -1102,10 +1118,15 @@
                 if (!kitchenBase64 || !kitchenBase64.data || kitchenBase64.data.length === 0) {
                     throw new Error("Failed to process Kitchen Photo. File data is missing or empty.");
                 }
-                if (!doorStyleBase64 || !doorStyleBase64.data || doorStyleBase64.data.length === 0) {
-                    throw new Error("Failed to process Door Style Reference. File data is missing or empty.");
-                }
                 
+                // If an image was selected but failed to convert, throw error for door style reference (unless text is present)
+                if (doorStyleFile && (!doorStyleBase64 || !doorStyleBase64.data || doorStyleBase64.data.length === 0)) {
+                    if (!doorStyleTextDescription) {
+                        throw new Error("Failed to process Door Style Image, and no text description was provided.");
+                    }
+                    doorStyleBase64 = null; // Clear failed base64 to prevent adding it to parts
+                }
+
                 // If an optional color image was selected, but conversion failed, warn and ignore it.
                 if (colorImageFile && (!colorBase64 || !colorBase64.data || colorBase64.data.length === 0)) {
                      console.warn("Color image selected but failed to convert to Base64 (data was empty). Proceeding with text description only.");
@@ -1116,16 +1137,28 @@
 
                 // --- 3. Construct API Payload ---
                 
-                const userQuery = `Remodel the primary kitchen image by changing the cabinet doors and color. 
-                Use the second image as a style reference for the new cabinet doors (e.g., shaker, raised panel). 
-                The third image (if provided) or the text description dictates the new cabinet color. 
-                Cabinet Color Description: "${colorTextDescription || 'Use the color from the third image.'}".
+                // Determine the prompt components based on provided inputs and the image order in 'parts'
+                const styleInput = doorStyleBase64 
+                    ? "the second uploaded image" 
+                    : `the text description: "${doorStyleTextDescription}"`;
+                    
+                // If doorStyleBase64 is present, color image is the 3rd. If not, color image is the 2nd.
+                const colorImagePosition = doorStyleBase64 ? "third" : "second"; 
+                
+                const colorInput = colorBase64 
+                    ? `the ${colorImagePosition} uploaded image` 
+                    : `the text description: "${colorTextDescription}"`;
+
+                // The text prompt should be last in the parts array.
+                const userQuery = `Remodel the primary kitchen image (first image) by changing the cabinet doors and color. 
+                Use the door style defined by ${styleInput}. 
+                Use the new cabinet color defined by ${colorInput}.
                 Output a photorealistic visualization of the remodeled kitchen. Only change the cabinets.`;
 
                 // The parts array will hold the images and the final prompt
                 const parts = [];
                 
-                // Add the primary kitchen image (Base Image)
+                // 1. Add the primary kitchen image (Base Image)
                 parts.push({
                     inlineData: {
                         mimeType: kitchenBase64.mimeType,
@@ -1133,15 +1166,18 @@
                     }
                 });
                 
-                // Add the door style reference image
-                parts.push({
-                    inlineData: {
-                        mimeType: doorStyleBase64.mimeType,
-                        data: doorStyleBase64.data
+                // 2. Add the door style reference image (ONLY if successfully converted/provided)
+                if (doorStyleBase64) {
+                    parts.push({
+                        inlineData: {
+                            mimeType: doorStyleBase64.mimeType,
+                            data: doorStyleBase64.data
+                        }
                     }
-                });
+                    );
+                }
                 
-                // Add the optional color reference image (only if successfully converted)
+                // 3. Add the optional color reference image (only if successfully converted)
                 if (colorBase64) {
                     parts.push({
                         inlineData: {
@@ -1152,15 +1188,15 @@
                     );
                 }
                 
-                // Add the final text prompt
+                // 4. Add the final text prompt
                 parts.push({ text: userQuery });
 
-                // CRITICAL: Final check before sending - the parts array MUST have at least 3 elements (2 images + 1 text)
-                if (parts.length < 3) {
-                     throw new Error(`Internal Error: Payload assembly failed. Only found ${parts.length} parts.`);
+                // CRITICAL: Validation check for minimum parts (1 kitchen image + at least 1 text prompt)
+                if (parts.length < 2) { 
+                     throw new Error(`Internal Error: Payload assembly failed. Found only ${parts.length} parts (must have at least Kitchen Image + Text Prompt).`);
                 }
                 
-                console.log("Final payload parts count:", parts.length); // Final check log
+                console.log("Final payload parts count:", parts.length);
                 
                 // This payload structure is what the API expects
                 const payload = {
