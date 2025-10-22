@@ -1101,8 +1101,7 @@
                 };
                 
                 // CRITICAL FIX: Use the actual key constant
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
-
+const CLOUD_FUNCTION_URL = "https://us-central1-gen-lang-client-0380151024.cloudfunctions.net/gemini-visualizer-proxy";
                 visualizerPlaceholder.textContent = 'Generating visualization (this may take up to 30 seconds)...';
 
                 // --- 5. Call the Gemini API with Retry ---
