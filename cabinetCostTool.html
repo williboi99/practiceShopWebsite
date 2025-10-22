@@ -28,7 +28,7 @@
         /* Custom styles for better mobile experience and printing */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3ff6;
+            background-color: #f3f4f6;
             padding-top: 0px; 
         }
         .card {
@@ -291,7 +291,7 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center justify-between mb-1">
                             <label for="input-base-install" class="block text-lg font-medium text-gray-700">Base with Installation</label>
                             <div class="flex items-center">
-                                <input type="checkbox" id="check-base-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="calculateTotal()">
+                                <input type="checkbox" id="check-base-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="updatePricesDisplay()">
                                 <label for="check-base-install" class="ml-1 text-sm font-medium text-gray-600 select-none">Under Countertops</label>
                             </div>
                         </div>
@@ -333,7 +333,7 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center justify-between mb-1">
                             <label for="input-full-height-install" class="block text-lg font-medium text-gray-700">Full Height with Installation</label>
                             <div class="flex items-center">
-                                <input type="checkbox" id="check-full-height-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="calculateTotal()">
+                                <input type="checkbox" id="check-full-height-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="updatePricesDisplay()">
                                 <label for="check-full-height-install" class="ml-1 text-sm font-medium text-gray-600 select-none">Under Countertops</label>
                             </div>
                         </div>
@@ -368,7 +368,7 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center justify-between mb-1">
                             <label for="input-base-european-install" class="block text-lg font-medium text-gray-700">Base European w/ Install</label>
                             <div class="flex items-center">
-                                <input type="checkbox" id="check-base-european-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="calculateTotal()">
+                                <input type="checkbox" id="check-base-european-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="updatePricesDisplay()">
                                 <label for="check-base-european-install" class="ml-1 text-sm font-medium text-gray-600 select-none">Under Countertops</label>
                             </div>
                         </div>
@@ -398,7 +398,7 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center justify-between mb-1">
                             <label for="input-full-height-european-install" class="block text-lg font-medium text-gray-700">Full Height European w/ Install</label>
                             <div class="flex items-center">
-                                <input type="checkbox" id="check-full-height-european-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="calculateTotal()">
+                                <input type="checkbox" id="check-full-height-european-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="updatePricesDisplay()">
                                 <label for="check-full-height-european-install" class="ml-1 text-sm font-medium text-gray-600 select-none">Under Countertops</label>
                             </div>
                         </div>
@@ -817,7 +817,7 @@ Job requires lead time of 6 weeks."
             return el.value || '';
         };
 
-        const formatCurrency = (amount) => `$${(amount || 0).toFixed(2)}`;
+        const formatCurrency = (amount) => `${(amount || 0).toFixed(2)}`;
         
         // --- Dynamic Pricing and Display Updates ---
         const updatePricesDisplay = () => {
@@ -825,19 +825,23 @@ Job requires lead time of 6 weeks."
                 const spanEl = document.getElementById(item.displayId);
                 if (spanEl && item.unit) {
                     // Check if a fixed price exists in CURRENT_PRICES (unadjusted base rate)
-                    const price = CURRENT_PRICES[item.priceKey];
+                    let price = CURRENT_PRICES[item.priceKey];
                     if (typeof price === 'number') {
-                        spanEl.textContent = `$${price.toFixed(0)} / ${item.unit}`;
+                        // If this item has an "Under Countertops" checkbox, check if it's selected
+                        if (item.checkboxId && getValue(item.checkboxId, false)) {
+                            price += UNDER_COUNTERTOP_ADJUSTMENT;
+                        }
+                        spanEl.textContent = `${price.toFixed(0)} / ${item.unit}`;
                     }
                 }
             });
             const woodDisplay = document.getElementById('display-lazy-susan-wood');
             if(woodDisplay) {
-                woodDisplay.textContent = `$${CURRENT_PRICES.lazySusanWood.toFixed(0)}`; 
+                woodDisplay.textContent = `${CURRENT_PRICES.lazySusanWood.toFixed(0)}`; 
             }
             const plasticDisplay = document.getElementById('display-lazy-susan-plastic');
             if(plasticDisplay) {
-                plasticDisplay.textContent = `$${CURRENT_PRICES.lazySusanPlastic.toFixed(0)}`; 
+                plasticDisplay.textContent = `${CURRENT_PRICES.lazySusanPlastic.toFixed(0)}`; 
             }
             calculateTotal(); 
         };
@@ -943,7 +947,7 @@ Job requires lead time of 6 weeks."
                           (isLacquerChecked ? 'Lacquer' : ''),
                     isLineal: false
                 });
-                matchFeeStatusEl.textContent = `Matching fee applied: ${matchFeeCount} x $150 = $${matchFeeCost.toFixed(2)}`;
+                matchFeeStatusEl.textContent = `Matching fee applied: ${matchFeeCount} x $150 = ${matchFeeCost.toFixed(2)}`;
                 matchFeeStatusEl.classList.remove('hidden');
             } else {
                 matchFeeStatusEl.classList.add('hidden');
@@ -1023,7 +1027,7 @@ Job requires lead time of 6 weeks."
             }
 
             // Update Total Display
-            totalCostEl.textContent = `$${total.toFixed(2)}`;
+            totalCostEl.textContent = `${total.toFixed(2)}`;
             
             // Re-render the receipt view content (passing rushableSubtotal)
             renderReceipt(breakdown, subtotal, total, isRushed, rushFee, isCashSelected, cashDiscount, rushableSubtotal);
