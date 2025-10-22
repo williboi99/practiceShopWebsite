@@ -562,7 +562,7 @@
     </div>
     <script>
         // --- Hardcoded API Key for Visualizer ---
-        const GEMINI_API_KEY = 'AIzaSyAJEfrkGEaeYn14Zwil7dHnPQuEZfOqsg4';
+        // REMOVED GEMINI_API_KEY. Using Cloud Function Proxy URL instead for security.
 
 
         /**
@@ -991,9 +991,10 @@
 
         // --- Refactored New Cabinetry Visualizer Logic ---
         const handleVisualizeClick = async () => {
-            // The API Key is now hardcoded as requested.
-            const apiKey = AIzaSyAJEfrkGEaeYn14Zwil7dHnPQuEZfOqsg4; 
             
+            // Cloud Function Proxy URL for secure API access
+            const apiUrl = 'https://us-central1-gen-lang-client-0380151024.cloudfunctions.net/gemini-visualizer-proxy';
+
             // Updated IDs to match the new hidden inputs
             const kitchenImageInput = document.getElementById('kitchen-image-input');
             const doorStyleInput = document.getElementById('door-style-input');
@@ -1019,16 +1020,7 @@
             generatedKitchenImage.classList.add('hidden');
             generatedKitchenImage.src = ''; // Clear previous image
 
-            // --- 1. API Key Check (Simplified) ---
-            // Key is hardcoded, so we only need to check if it's set in the JS constant
-            if (!apiKey || apiKey.length < 10) {
-                visualizerPlaceholder.textContent = 'CRITICAL ERROR: API Key is not configured correctly in the application code.';
-                generateButton.disabled = false;
-                generateButton.textContent = 'Generate Kitchen Visualization';
-                return;
-            }
-
-            // --- 2. Input Validation ---
+            // --- 1. Input Validation ---
             const kitchenImageFile = kitchenImageInput.files[0];
             const doorStyleFile = doorStyleInput.files[0];
             const colorImageFile = colorImageInput.files[0];
@@ -1040,7 +1032,7 @@
                 return;
             }
 
-            // --- 3. File to Base64 Conversion (Asynchronously) ---
+            // --- 2. File to Base64 Conversion (Asynchronously) ---
             try {
                 visualizerPlaceholder.textContent = 'Uploading and processing images...';
                 
@@ -1053,7 +1045,7 @@
                      throw new Error("Failed to read required image files."); 
                 }
 
-                // --- 4. Construct API Payload ---
+                // --- 3. Construct API Payload ---
                 
                 const userQuery = `Remodel the primary kitchen image by changing the cabinet doors and color. 
                 Use the second image as a style reference for the new cabinet doors (e.g., shaker, raised panel). 
@@ -1093,6 +1085,7 @@
                 // Add the final text prompt
                 contents.push({ text: userQuery });
                 
+                // This payload structure is what the Cloud Function should expect to pass to the Gemini API
                 const payload = {
                     contents: [{ role: "user", parts: contents }],
                     generationConfig: {
@@ -1100,11 +1093,9 @@
                     },
                 };
                 
-                // CRITICAL FIX: Use the actual key constant
-const CLOUD_FUNCTION_URL = "https://us-central1-gen-lang-client-0380151024.cloudfunctions.net/gemini-visualizer-proxy";
-                visualizerPlaceholder.textContent = 'Generating visualization (this may take up to 30 seconds)...';
+                visualizerPlaceholder.textContent = 'Generating visualization via Cloud Proxy (this may take up to 30 seconds)...';
 
-                // --- 5. Call the Gemini API with Retry ---
+                // --- 4. Call the Cloud Proxy with Retry ---
                 const response = await fetchWithRetry(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1116,7 +1107,7 @@ const CLOUD_FUNCTION_URL = "https://us-central1-gen-lang-client-0380151024.cloud
                 const base64Part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
                 const base64Data = base64Part?.inlineData?.data;
 
-                // --- 6. Display Result ---
+                // --- 5. Display Result ---
                 if (base64Data) {
                     const imageUrl = `data:${base64Part.inlineData.mimeType};base64,${base64Data}`;
                     generatedKitchenImage.src = imageUrl;
@@ -1133,7 +1124,7 @@ const CLOUD_FUNCTION_URL = "https://us-central1-gen-lang-client-0380151024.cloud
                 
             } catch (error) {
                 console.error('API or File Reading Error:', error);
-                visualizerPlaceholder.textContent = `CRITICAL ERROR: ${error.message}. Please check your inputs.`;
+                visualizerPlaceholder.textContent = `CRITICAL ERROR: ${error.message}. Please ensure your Cloud Function is running and accessible.`;
                 visualizerPlaceholder.classList.remove('hidden');
                 generatedKitchenImage.classList.add('hidden');
             } finally {
@@ -1161,8 +1152,6 @@ const CLOUD_FUNCTION_URL = "https://us-central1-gen-lang-client-0380151024.cloud
         document.addEventListener('DOMContentLoaded', () => {
             setupMobileMenu(); // Setup the new mobile menu toggle
             
-            // Removed loadApiKey() and saveApiKey listener as the key is hardcoded.
-
             // --- Toggle Listeners ---
             document.getElementById('visualizer-header')?.addEventListener('click', () => {
                 toggleSection('visualizer-header', 'visualizer-content', 'visualizer-icon');
