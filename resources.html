@@ -186,17 +186,17 @@
                                 <p class="text-sm text-gray-500 mt-1" id="kitchen-image-file-name">No file selected.</p>
                             </div>
 
-                            <!-- 2. DOOR STYLE UPLOAD/CAMERA INPUT (UPDATED) -->
+                            <!-- 2. DOOR STYLE UPLOAD/CAMERA INPUT (UPDATED IDs) -->
                             <div class="input-group">
                                 <label class="block text-lg font-medium text-gray-700 mb-2">Cabinet Door Style Reference (Image or Text)</label>
                                 
                                 <div class="flex space-x-3 mb-2">
                                     <!-- Hidden Input -->
-                                    <input type="file" id="door-style-input" accept="image/*" class="hidden" onchange="handleFileChange(this)">
+                                    <input type="file" id="door-style-image-input" accept="image/*" class="hidden" onchange="handleFileChange(this)">
                                     
                                     <!-- Take Photo Button (Camera Symbol) -->
                                     <button type="button" 
-                                            onclick="document.getElementById('door-style-input').setAttribute('capture', 'environment'); document.getElementById('door-style-input').click();" 
+                                            onclick="document.getElementById('door-style-image-input').setAttribute('capture', 'environment'); document.getElementById('door-style-image-input').click();" 
                                             class="p-3 bg-accent hover:bg-green-700 text-white rounded-lg transition duration-150 shadow-md flex-shrink-0 flex items-center justify-center w-1/4" 
                                             title="Take Photo">
                                         <!-- Camera Icon -->
@@ -208,7 +208,7 @@
                                     
                                     <!-- Choose File Button -->
                                     <button type="button" 
-                                            onclick="document.getElementById('door-style-input').removeAttribute('capture'); document.getElementById('door-style-input').click();" 
+                                            onclick="document.getElementById('door-style-image-input').removeAttribute('capture'); document.getElementById('door-style-image-input').click();" 
                                             class="flex-grow bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-150 shadow-sm">
                                         Choose File
                                     </button>
@@ -577,6 +577,32 @@
         // Max file size (5MB) to prevent large payloads from crashing the Cloud Function proxy
         const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; 
 
+        /**
+         * Generic function to toggle the visibility of a content section
+         * and rotate its corresponding SVG icon.
+         */
+        const toggleSection = (headerId, contentId, iconId) => {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+            const header = document.getElementById(headerId);
+
+            if (content && icon && header) {
+                 if (content.classList.contains('hidden')) {
+                    // Open section
+                    content.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                    header.classList.add('rounded-b-none');
+                } else {
+                    // Close section
+                    content.classList.add('hidden');
+                    icon.classList.remove('rotate-180');
+                    header.classList.remove('rounded-b-none');
+                }
+            } else {
+                console.error(`Toggle failed: Missing one or more elements (${headerId}, ${contentId}, ${iconId})`);
+            }
+        };
+
 
         /**
          * Function to display the selected file name for visual confirmation and enforce size limit.
@@ -696,23 +722,6 @@
                         'text-gray-900';
                     el.classList.remove('text-red-500', 'text-accent', 'text-blue-500', 'text-indigo-500');
                     el.classList.add(defaultColorClass);
-                }
-            }
-        };
-
-        // --- Toggle Function for Collapsible Sections ---
-        const toggleSection = (headerId, contentId, iconId) => {
-            const content = document.getElementById(contentId);
-            const icon = document.getElementById(iconId);
-            
-            if (content && icon) {
-                const isHidden = content.classList.toggle('hidden');
-                
-                // Rotate the icon 180 degrees when visible
-                if (isHidden) {
-                    icon.classList.remove('rotate-180');
-                } else {
-                    icon.classList.add('rotate-180');
                 }
             }
         };
@@ -1052,7 +1061,7 @@
 
             // Updated IDs to match the new hidden inputs
             const kitchenImageInput = document.getElementById('kitchen-image-input');
-            const doorStyleInput = document.getElementById('door-style-input');
+            const doorStyleInput = document.getElementById('door-style-image-input'); // FIXED ID
             const doorStyleTextDescription = document.getElementById('door-style-text-description').value.trim(); // NEW
             const colorImageInput = document.getElementById('color-image-input');
             const colorTextDescription = document.getElementById('color-text-description').value.trim();
