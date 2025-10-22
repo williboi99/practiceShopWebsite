@@ -138,7 +138,7 @@
                 
                 
 <div id="visualizer-content" class="hidden p-6">
-                    <p class="text-gray-700 mb-6">Upload your kitchen photo, a reference for the cabinet door style, and your desired color to visualize your new cabinetry!</p>
+                    <p class="text-gray-700 mb-6">Upload your kitchen photo, a reference for the cabinet door style, and your desired color to visualize your new cabinetry! "AIzaSyAJEfrkGEaeYn14Zwil7dHnPQuEZfOqsg4"</p>
                     
                     
                     
@@ -146,6 +146,14 @@
                         
 <div class="space-y-6">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Your References</h2>
+                            
+                            <!-- 0. API KEY INPUT (NEW) -->
+                            <div class="input-group">
+                                <label for="api-key-input" class="block text-lg font-medium text-gray-700 mb-2">Gemini API Key (Required)</label>
+                                <input type="password" id="api-key-input" placeholder="Paste your Gemini API key here (sk-...)"
+                                       class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-lg">
+                                <p class="text-sm text-gray-500 mt-1">This key connects to the visualization model. It is not stored.</p>
+                            </div>
                             
                             <!-- 1. KITCHEN PHOTO UPLOAD/CAMERA INPUT -->
                             <div class="input-group">
@@ -561,53 +569,62 @@
 </div>
     </div>
     <script>
-        // --- Hardcoded API Key for Visualizer ---
-        // REMOVED GEMINI_API_KEY. Using Cloud Function Proxy URL instead for security.
+        // --- CONSTANTS ---
+        // Max file size (5MB) to prevent large payloads from crashing the Cloud Function proxy
+        const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; 
 
 
         /**
-         * Function to display the selected file name for visual confirmation.
-         * Added more robust UI feedback.
+         * Function to display the selected file name for visual confirmation and enforce size limit.
          */
         const handleFileChange = (inputElement) => {
-            // Determine the ID of the corresponding file name display element
-            // This logic uses the input ID (e.g., 'kitchen-image-input') and replaces '-input' with '-file-name'
             const fileNameId = inputElement.id.replace('-input', '-file-name');
             const fileNameElement = document.getElementById(fileNameId);
             
-            // Check if the input element has files and if the display element exists
-            if (fileNameElement) {
-                if (inputElement.files && inputElement.files.length > 0) {
-                    const fileName = inputElement.files[0].name;
-                    
-                    // --- Success State UI Update ---
-                    fileNameElement.textContent = `Selected: ${fileName}`;
-                    // Use specific green color class for strong visual success feedback
-                    fileNameElement.classList.remove('text-gray-500', 'text-red-500', 'text-sm');
-                    fileNameElement.classList.add('text-green-600', 'font-medium', 'text-base'); 
-                    
-                    // Add a brief opacity transition to confirm the change visually
-                    fileNameElement.style.transition = 'opacity 0.2s';
-                    fileNameElement.style.opacity = '0.5';
-                    setTimeout(() => { fileNameElement.style.opacity = '1'; }, 50);
-
-                } else {
-                    // --- Reset State UI Update ---
-                    const isColorInput = inputElement.id.includes('color');
-                    const defaultText = isColorInput 
-                        ? 'No color image selected, use text description below.' 
-                        : 'No file selected.';
-
-                    fileNameElement.textContent = defaultText;
-                    fileNameElement.classList.remove('text-green-600', 'font-medium', 'text-base', 'text-red-500');
-                    fileNameElement.classList.add('text-gray-500', 'text-sm');
-                    
-                    // Ensure transition is removed on reset
-                    fileNameElement.style.transition = 'none';
-                    fileNameElement.style.opacity = '1';
-                }
-            } else {
+            if (!fileNameElement) {
                 console.error(`Missing element for file name display: ${fileNameId}`);
+                return;
+            }
+
+            if (inputElement.files && inputElement.files.length > 0) {
+                const file = inputElement.files[0];
+                const fileName = file.name;
+
+                // --- 1. Size Check ---
+                if (file.size > MAX_FILE_SIZE_BYTES) {
+                    fileNameElement.textContent = `ERROR: File too large. Max size is 5MB.`;
+                    fileNameElement.classList.remove('text-green-600', 'font-medium', 'text-base', 'text-gray-500');
+                    fileNameElement.classList.add('text-red-500', 'font-semibold', 'text-sm');
+                    
+                    // Clear the file input immediately to prevent failed submit
+                    inputElement.value = null; 
+                    return; 
+                }
+
+                // --- 2. Success State UI Update ---
+                fileNameElement.textContent = `Selected: ${fileName}`;
+                fileNameElement.classList.remove('text-gray-500', 'text-red-500', 'font-semibold', 'text-sm');
+                fileNameElement.classList.add('text-green-600', 'font-medium', 'text-base'); 
+                
+                // Visual feedback transition
+                fileNameElement.style.transition = 'opacity 0.2s';
+                fileNameElement.style.opacity = '0.5';
+                setTimeout(() => { fileNameElement.style.opacity = '1'; }, 50);
+
+            } else {
+                // --- Reset State UI Update ---
+                const isColorInput = inputElement.id.includes('color');
+                const defaultText = isColorInput 
+                    ? 'No color image selected, use text description below.' 
+                    : 'No file selected.';
+
+                fileNameElement.textContent = defaultText;
+                fileNameElement.classList.remove('text-green-600', 'font-medium', 'text-base', 'text-red-500', 'font-semibold');
+                fileNameElement.classList.add('text-gray-500', 'text-sm');
+                
+                // Ensure transition is removed on reset
+                fileNameElement.style.transition = 'none';
+                fileNameElement.style.opacity = '1';
             }
         };
 
@@ -937,21 +954,45 @@
 
         // --- New Helper Functions for Image Generation ---
 
-        // Helper to read file to base64
+        /**
+         * Helper to read file to base64, with robust error checking for the resulting Data URL.
+         * @param {File} file 
+         * @returns {Promise<{data: string, mimeType: string}|null>}
+         */
         const fileToBase64 = (file) => new Promise((resolve, reject) => {
             if (!file) {
-                return resolve(null); // Resolve to null if no file is provided
+                return resolve(null); 
             }
             const reader = new FileReader();
+            
             reader.onload = () => {
-                // Resolve only the base64 data part (remove "data:image/png;base64,")
-                const base64String = reader.result.split(',')[1];
+                const dataUrl = reader.result;
+                const parts = dataUrl.split(',');
+                
+                if (parts.length !== 2) {
+                    // If the Data URL doesn't have the expected "data:mime/type;base64,data" format
+                    console.error("FileReader result is not a standard Data URL format. Result:", dataUrl.substring(0, 100) + '...');
+                    return reject(new Error("File reader failed: Invalid Data URL format produced."));
+                }
+                
+                const base64String = parts[1];
+                
+                // Add a check for zero-length base64 string
+                if (!base64String || base64String.length === 0) {
+                     return reject(new Error("File reader failed: Produced an empty Base64 string (check file content)."));
+                }
+
                 resolve({
                     data: base64String,
                     mimeType: file.type
                 });
             };
-            reader.onerror = (error) => reject(error);
+            
+            reader.onerror = (error) => {
+                console.error("FileReader error occurred:", error);
+                reject(new Error(`File read error: ${error.message || 'Unknown error'}`));
+            };
+            
             reader.readAsDataURL(file);
         });
 
@@ -973,6 +1014,8 @@
                     } else {
                         // For other errors (4xx), don't retry, just throw
                         const errorBody = await response.text();
+                        // CRITICAL: Log 4xx error body for debugging the API payload issue
+                        console.error("Non-retriable API Error Body:", errorBody);
                         throw new Error(`API error ${response.status}: ${errorBody}`);
                     }
                 } catch (error) {
@@ -992,8 +1035,10 @@
         // --- Refactored New Cabinetry Visualizer Logic ---
         const handleVisualizeClick = async () => {
             
-            // Cloud Function Proxy URL for secure API access
-            const apiUrl = 'https://us-central1-gen-lang-client-0380151024.cloudfunctions.net/gemini-visualizer-proxy';
+            // --- NEW: Key Retrieval and API URL Construction ---
+            const apiKey = document.getElementById('api-key-input').value.trim();
+            const API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent";
+            const apiUrl = `${API_BASE_URL}?key=${apiKey}`; // Directly use the user-provided key
 
             // Updated IDs to match the new hidden inputs
             const kitchenImageInput = document.getElementById('kitchen-image-input');
@@ -1016,34 +1061,58 @@
             generateButton.disabled = true;
             generateButton.textContent = 'Generating... Please wait.';
             visualizerPlaceholder.classList.remove('hidden');
-            visualizerPlaceholder.textContent = 'Reading files...';
             generatedKitchenImage.classList.add('hidden');
             generatedKitchenImage.src = ''; // Clear previous image
 
-            // --- 1. Input Validation ---
+            // --- 1. Initial Input Validation ---
             const kitchenImageFile = kitchenImageInput.files[0];
             const doorStyleFile = doorStyleInput.files[0];
             const colorImageFile = colorImageInput.files[0];
 
+            // Check if API key is provided
+            if (!apiKey) {
+                visualizerPlaceholder.textContent = 'ERROR: Please provide your Gemini API Key in the field above.';
+                generateButton.disabled = false;
+                generateButton.textContent = 'Generate Kitchen Visualization';
+                return;
+            }
+
             if (!kitchenImageFile || !doorStyleFile || (!colorImageFile && !colorTextDescription)) {
-                visualizerPlaceholder.textContent = 'ERROR: Please provide a Kitchen Photo, a Door Style Reference, AND a Color Reference (image or text description).';
+                visualizerPlaceholder.textContent = 'ERROR: Please provide a Kitchen Photo, a Door Style Reference, AND a Color Reference (image or text description). Ensure files are under 5MB.';
                 generateButton.disabled = false;
                 generateButton.textContent = 'Generate Kitchen Visualization';
                 return;
             }
 
             // --- 2. File to Base64 Conversion (Asynchronously) ---
+            let kitchenBase64, doorStyleBase64, colorBase64 = null;
+
             try {
                 visualizerPlaceholder.textContent = 'Uploading and processing images...';
                 
-                const kitchenBase64 = await fileToBase64(kitchenImageFile);
-                const doorStyleBase64 = await fileToBase64(doorStyleFile);
-                const colorBase64 = await fileToBase64(colorImageFile); // Can be null
-
-                if (!kitchenBase64 || !doorStyleBase64) {
-                     // This should not happen if file validation passed, but good for safety
-                     throw new Error("Failed to read required image files."); 
+                kitchenBase64 = await fileToBase64(kitchenImageFile);
+                doorStyleBase64 = await fileToBase64(doorStyleFile);
+                
+                // Only process color image if a file was selected
+                if (colorImageFile) {
+                    colorBase64 = await fileToBase64(colorImageFile); 
                 }
+
+                // --- CRITICAL HARDENING: Check that required files were converted successfully ---
+                if (!kitchenBase64 || !kitchenBase64.data || kitchenBase64.data.length === 0) {
+                    throw new Error("Failed to process Kitchen Photo. File data is missing or empty.");
+                }
+                if (!doorStyleBase64 || !doorStyleBase64.data || doorStyleBase64.data.length === 0) {
+                    throw new Error("Failed to process Door Style Reference. File data is missing or empty.");
+                }
+                
+                // If an optional color image was selected, but conversion failed, warn and ignore it.
+                if (colorImageFile && (!colorBase64 || !colorBase64.data || colorBase64.data.length === 0)) {
+                     console.warn("Color image selected but failed to convert to Base64 (data was empty). Proceeding with text description only.");
+                     // Set colorBase64 to null to ensure it's not added to parts with no data
+                     colorBase64 = null; 
+                }
+
 
                 // --- 3. Construct API Payload ---
                 
@@ -1053,10 +1122,11 @@
                 Cabinet Color Description: "${colorTextDescription || 'Use the color from the third image.'}".
                 Output a photorealistic visualization of the remodeled kitchen. Only change the cabinets.`;
 
-                const contents = [];
+                // The parts array will hold the images and the final prompt
+                const parts = [];
                 
                 // Add the primary kitchen image (Base Image)
-                contents.push({
+                parts.push({
                     inlineData: {
                         mimeType: kitchenBase64.mimeType,
                         data: kitchenBase64.data
@@ -1064,16 +1134,16 @@
                 });
                 
                 // Add the door style reference image
-                contents.push({
+                parts.push({
                     inlineData: {
                         mimeType: doorStyleBase64.mimeType,
                         data: doorStyleBase64.data
                     }
                 });
                 
-                // Add the optional color reference image
+                // Add the optional color reference image (only if successfully converted)
                 if (colorBase64) {
-                    contents.push({
+                    parts.push({
                         inlineData: {
                             mimeType: colorBase64.mimeType,
                             data: colorBase64.data
@@ -1083,19 +1153,27 @@
                 }
                 
                 // Add the final text prompt
-                contents.push({ text: userQuery });
+                parts.push({ text: userQuery });
+
+                // CRITICAL: Final check before sending - the parts array MUST have at least 3 elements (2 images + 1 text)
+                if (parts.length < 3) {
+                     throw new Error(`Internal Error: Payload assembly failed. Only found ${parts.length} parts.`);
+                }
                 
-                // This payload structure is what the Cloud Function should expect to pass to the Gemini API
+                console.log("Final payload parts count:", parts.length); // Final check log
+                
+                // This payload structure is what the API expects
                 const payload = {
-                    contents: [{ role: "user", parts: contents }],
+                    // Contents is an array containing a single message object (role + parts)
+                    contents: [{ role: "user", parts: parts }], 
                     generationConfig: {
                         responseModalities: ['TEXT', 'IMAGE']
                     },
                 };
                 
-                visualizerPlaceholder.textContent = 'Generating visualization via Cloud Proxy (this may take up to 30 seconds)...';
+                visualizerPlaceholder.textContent = 'Generating visualization via Gemini API (this may take up to 30 seconds)...';
 
-                // --- 4. Call the Cloud Proxy with Retry ---
+                // --- 4. Call the Gemini API with Retry (using the URL constructed with the user's key) ---
                 const response = await fetchWithRetry(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1116,15 +1194,16 @@
                 } else {
                     // Fallback to text part if it exists
                     const textPart = result?.candidates?.[0]?.content?.parts?.find(p => p.text)?.text || 
-                                     'Image generation failed: No image data returned. Check the console for API response details.';
-                    visualizerPlaceholder.textContent = `ERROR: ${textPart}`;
+                                     JSON.stringify(result, null, 2); // Show full response for better debugging
+                    visualizerPlaceholder.textContent = `IMAGE GENERATION FAILED. Response: ${textPart}`;
                     visualizerPlaceholder.classList.remove('hidden');
                     generatedKitchenImage.classList.add('hidden');
                 }
                 
             } catch (error) {
                 console.error('API or File Reading Error:', error);
-                visualizerPlaceholder.textContent = `CRITICAL ERROR: ${error.message}. Please ensure your Cloud Function is running and accessible.`;
+                // Display the specific error message to the user
+                visualizerPlaceholder.textContent = `CRITICAL ERROR: ${error.message}. Please check your API Key, ensure image files are under 5MB, and are valid image formats.`;
                 visualizerPlaceholder.classList.remove('hidden');
                 generatedKitchenImage.classList.add('hidden');
             } finally {
