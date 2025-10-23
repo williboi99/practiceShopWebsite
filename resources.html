@@ -1052,211 +1052,162 @@
 
 
         // --- Refactored New Cabinetry Visualizer Logic ---
-        const handleVisualizeClick = async () => {
-            
-            // --- NEW: Key Retrieval and API URL Construction ---
-            const apiKey = document.getElementById('api-key-input').value.trim();
-            const API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent";
-            const apiUrl = `${API_BASE_URL}?key=${apiKey}`; // Directly use the user-provided key
+        // --- Refactored New Cabinetry Visualizer Logic ---
+const handleVisualizeClick = async () => {
+    const apiKey = document.getElementById('api-key-input').value.trim();
+    const API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent";
+    const apiUrl = `${API_BASE_URL}?key=${apiKey}`;
 
-            // Updated IDs to match the new hidden inputs
-            const kitchenImageInput = document.getElementById('kitchen-image-input');
-            const doorStyleInput = document.getElementById('door-style-image-input'); // FIXED ID
-            const doorStyleTextDescription = document.getElementById('door-style-text-description').value.trim(); // NEW
-            const colorImageInput = document.getElementById('color-image-input');
-            const colorTextDescription = document.getElementById('color-text-description').value.trim();
+    const kitchenImageInput = document.getElementById('kitchen-image-input');
+    const doorStyleInput = document.getElementById('door-style-image-input');
+    const doorStyleTextDescription = document.getElementById('door-style-text-description').value.trim();
+    const colorImageInput = document.getElementById('color-image-input');
+    const colorTextDescription = document.getElementById('color-text-description').value.trim();
 
-            const generatedKitchenImage = document.getElementById('generated-kitchen-image');
-            const visualizerPlaceholder = document.getElementById('visualizer-placeholder');
-            const visualizerOutput = document.getElementById('visualizer-output');
-            const generateButton = document.getElementById('generate-visual-button');
+    const generatedKitchenImage = document.getElementById('generated-kitchen-image');
+    const visualizerPlaceholder = document.getElementById('visualizer-placeholder');
+    const generateButton = document.getElementById('generate-visual-button');
 
-            
-            if (!generatedKitchenImage || !visualizerPlaceholder || !visualizerOutput || !generateButton) {
-                console.error("Critical visualization DOM elements not found.");
-                return;
-            }
-            
-            // UI Feedback: Start Loading
-            generateButton.disabled = true;
-            generateButton.textContent = 'Generating... Please wait.';
+    if (!generatedKitchenImage || !visualizerPlaceholder || !generateButton) {
+        console.error("Critical visualization DOM elements not found.");
+        return;
+    }
+
+    generateButton.disabled = true;
+    generateButton.textContent = 'Generating... Please wait.';
+    visualizerPlaceholder.classList.remove('hidden');
+    generatedKitchenImage.classList.add('hidden');
+    generatedKitchenImage.src = '';
+
+    const kitchenImageFile = kitchenImageInput.files[0];
+    const doorStyleFile = doorStyleInput.files[0];
+    const colorImageFile = colorImageInput.files[0];
+
+    if (!apiKey) {
+        visualizerPlaceholder.textContent = 'ERROR: Please provide your Gemini API Key in the field above.';
+        generateButton.disabled = false;
+        generateButton.textContent = 'Generate Kitchen Visualization';
+        return;
+    }
+
+    if (!kitchenImageFile || (!doorStyleFile && !doorStyleTextDescription) || (!colorImageFile && !colorTextDescription)) {
+        visualizerPlaceholder.textContent = 'ERROR: Please provide a photo, a door style reference (image or text), and a color reference (image or text).';
+        generateButton.disabled = false;
+        generateButton.textContent = 'Generate Kitchen Visualization';
+        return;
+    }
+
+    let kitchenBase64, doorStyleBase64 = null, colorBase64 = null;
+
+    try {
+        visualizerPlaceholder.textContent = 'Uploading and processing images...';
+
+        kitchenBase64 = await fileToBase64(kitchenImageFile);
+        if (doorStyleFile) doorStyleBase64 = await fileToBase64(doorStyleFile);
+        if (colorImageFile) colorBase64 = await fileToBase64(colorImageFile);
+
+        if (!kitchenBase64 || !kitchenBase64.data) throw new Error("Failed to process room photo.");
+
+        const styleInput = doorStyleBase64 ? "the second uploaded image" : `the text description: "${doorStyleTextDescription}"`;
+        const colorImagePosition = doorStyleBase64 ? "third" : "second";
+        const colorInput = colorBase64 ? `the ${colorImagePosition} uploaded image` : `the text description: "${colorTextDescription}"`;
+
+        // 🧠 --- AI Instructions: Deep Cabinetry Recognition + Style + Finish Rules ---
+        const userQuery = `
+You are an expert cabinetry visualization AI. Analyze the first uploaded image for any type of cabinetry — not only kitchens.
+Identify and interpret the following:
+
+**Cabinet Identification**
+- Detect all types of built-in cabinetry, including:
+  - Wall cabinets
+  - Base cabinets
+  - Full-height cabinets
+  - Bathroom vanities
+  - Any other built-in or custom cabinetry
+
+**Door Style Analysis**
+- Identify detailed design traits such as:
+  - Panel types (raised, flat, shaker, beadboard, recessed)
+  - Door shapes (square, arched, cathedral)
+  - Edge profiles (beveled, routed, bullnose, chamfered)
+  - Decorative surface detailing (molding, trim, applied details)
+  - Construction method (frame and panel vs solid slab)
+- Apply the style defined by ${styleInput} and match it precisely in the new design.
+
+**Color and Finish Analysis**
+- Match the color exactly from ${colorInput}.
+- Include tone, hue, and contrast accuracy.
+- Match wood grain pattern and visibility:
+  - Subtle and minimal grain for fine woods (e.g., maple or alder).
+  - Maintain realistic grain direction and scaling.
+- Recognize finish types (matte, satin, semi-gloss, or high-gloss).
+- Respect paint vs. stain differences:
+  - Paint finishes should appear smooth and even.
+  - Stain finishes should preserve visible wood grain.
+- Match grain intensity if the wood type is shown but not explicitly named.
+
+**Transformation Rules**
+- Replace only cabinetry — keep all other scene elements (walls, floors, lighting, decor, appliances) untouched.
+- Ensure photorealism, accurate perspective, realistic shadows, and consistent lighting.
+- Produce a high-quality visualization of the remodeled space with the new cabinetry style and finish applied.
+
+Begin with the first uploaded image as the base photo. 
+`;
+
+        const parts = [
+            { inlineData: { mimeType: kitchenBase64.mimeType, data: kitchenBase64.data } }
+        ];
+
+        if (doorStyleBase64) {
+            parts.push({ inlineData: { mimeType: doorStyleBase64.mimeType, data: doorStyleBase64.data } });
+        }
+        if (colorBase64) {
+            parts.push({ inlineData: { mimeType: colorBase64.mimeType, data: colorBase64.data } });
+        }
+
+        parts.push({ text: userQuery });
+
+        const payload = {
+            contents: [{ role: "user", parts }],
+            generationConfig: { responseModalities: ['TEXT', 'IMAGE'] },
+        };
+
+        visualizerPlaceholder.textContent = 'Generating visualization via Gemini API (please wait up to 30 seconds)...';
+
+        const response = await fetchWithRetry(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        const base64Part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+        const base64Data = base64Part?.inlineData?.data;
+
+        if (base64Data) {
+            const imageUrl = `data:${base64Part.inlineData.mimeType};base64,${base64Data}`;
+            generatedKitchenImage.src = imageUrl;
+            visualizerPlaceholder.classList.add('hidden');
+            generatedKitchenImage.classList.remove('hidden');
+        } else {
+            const textPart = result?.candidates?.[0]?.content?.parts?.find(p => p.text)?.text || JSON.stringify(result, null, 2);
+            visualizerPlaceholder.textContent = `IMAGE GENERATION FAILED. Response: ${textPart}`;
             visualizerPlaceholder.classList.remove('hidden');
             generatedKitchenImage.classList.add('hidden');
-            generatedKitchenImage.src = ''; // Clear previous image
+        }
 
-            // --- 1. Initial Input Validation ---
-            const kitchenImageFile = kitchenImageInput.files[0];
-            const doorStyleFile = doorStyleInput.files[0];
-            const colorImageFile = colorImageInput.files[0];
+    } catch (error) {
+        console.error('Visualizer Error:', error);
+        visualizerPlaceholder.textContent = `CRITICAL ERROR: ${error.message}. Check API key, image validity, or file size limits.`;
+        visualizerPlaceholder.classList.remove('hidden');
+        generatedKitchenImage.classList.add('hidden');
+    } finally {
+        generateButton.disabled = false;
+        generateButton.textContent = 'Generate Kitchen Visualization';
+    }
+};
 
-            // Check if API key is provided
-            if (!apiKey) {
-                visualizerPlaceholder.textContent = 'ERROR: Please provide your Gemini API Key in the field above.';
-                generateButton.disabled = false;
-                generateButton.textContent = 'Generate Kitchen Visualization';
-                return;
-            }
-
-            // UPDATED VALIDATION LOGIC: Check for Kitchen Photo + (Door Style Image OR Text) + (Color Image OR Text)
-            if (!kitchenImageFile || (!doorStyleFile && !doorStyleTextDescription) || (!colorImageFile && !colorTextDescription)) {
-                visualizerPlaceholder.textContent = 'ERROR: Please provide a Kitchen Photo, a Door Style Reference (image or text), AND a Color Reference (image or text). Ensure files are under 5MB.';
-                generateButton.disabled = false;
-                generateButton.textContent = 'Generate Kitchen Visualization';
-                return;
-            }
-
-            // --- 2. File to Base64 Conversion (Asynchronously) ---
-            let kitchenBase64, doorStyleBase64 = null, colorBase64 = null;
-
-            try {
-                visualizerPlaceholder.textContent = 'Uploading and processing images...';
-                
-                kitchenBase64 = await fileToBase64(kitchenImageFile);
-                
-                // Only process door style image if a file was selected
-                if (doorStyleFile) { 
-                    doorStyleBase64 = await fileToBase64(doorStyleFile);
-                }
-                
-                // Only process color image if a file was selected
-                if (colorImageFile) {
-                    colorBase64 = await fileToBase64(colorImageFile); 
-                }
-
-                // --- CRITICAL HARDENING: Check that required files were converted successfully ---
-                if (!kitchenBase64 || !kitchenBase64.data || kitchenBase64.data.length === 0) {
-                    throw new Error("Failed to process Kitchen Photo. File data is missing or empty.");
-                }
-                
-                // If an image was selected but failed to convert, throw error for door style reference (unless text is present)
-                if (doorStyleFile && (!doorStyleBase64 || !doorStyleBase64.data || doorStyleBase64.data.length === 0)) {
-                    if (!doorStyleTextDescription) {
-                        throw new Error("Failed to process Door Style Image, and no text description was provided.");
-                    }
-                    doorStyleBase64 = null; // Clear failed base64 to prevent adding it to parts
-                }
-
-                // If an optional color image was selected, but conversion failed, warn and ignore it.
-                if (colorImageFile && (!colorBase64 || !colorBase64.data || colorBase64.data.length === 0)) {
-                     console.warn("Color image selected but failed to convert to Base64 (data was empty). Proceeding with text description only.");
-                     // Set colorBase64 to null to ensure it's not added to parts with no data
-                     colorBase64 = null; 
-                }
-
-
-                // --- 3. Construct API Payload ---
-                
-                // Determine the prompt components based on provided inputs and the image order in 'parts'
-                const styleInput = doorStyleBase64 
-                    ? "the second uploaded image" 
-                    : `the text description: "${doorStyleTextDescription}"`;
-                    
-                // If doorStyleBase64 is present, color image is the 3rd. If not, color image is the 2nd.
-                const colorImagePosition = doorStyleBase64 ? "third" : "second"; 
-                
-                const colorInput = colorBase64 
-                    ? `the ${colorImagePosition} uploaded image` 
-                    : `the text description: "${colorTextDescription}"`;
-
-                // The text prompt should be last in the parts array.
-                const userQuery = `Remodel the primary kitchen image (first image) by changing the cabinet doors and color. 
-                Use the door style defined by ${styleInput}. 
-                Use the new cabinet color defined by ${colorInput}.
-                Output a photorealistic visualization of the remodeled kitchen. Only change the cabinets.`;
-
-                // The parts array will hold the images and the final prompt
-                const parts = [];
-                
-                // 1. Add the primary kitchen image (Base Image)
-                parts.push({
-                    inlineData: {
-                        mimeType: kitchenBase64.mimeType,
-                        data: kitchenBase64.data
-                    }
-                });
-                
-                // 2. Add the door style reference image (ONLY if successfully converted/provided)
-                if (doorStyleBase64) {
-                    parts.push({
-                        inlineData: {
-                            mimeType: doorStyleBase64.mimeType,
-                            data: doorStyleBase64.data
-                        }
-                    }
-                    );
-                }
-                
-                // 3. Add the optional color reference image (only if successfully converted)
-                if (colorBase64) {
-                    parts.push({
-                        inlineData: {
-                            mimeType: colorBase64.mimeType,
-                            data: colorBase64.data
-                        }
-                    }
-                    );
-                }
-                
-                // 4. Add the final text prompt
-                parts.push({ text: userQuery });
-
-                // CRITICAL: Validation check for minimum parts (1 kitchen image + at least 1 text prompt)
-                if (parts.length < 2) { 
-                     throw new Error(`Internal Error: Payload assembly failed. Found only ${parts.length} parts (must have at least Kitchen Image + Text Prompt).`);
-                }
-                
-                console.log("Final payload parts count:", parts.length);
-                
-                // This payload structure is what the API expects
-                const payload = {
-                    // Contents is an array containing a single message object (role + parts)
-                    contents: [{ role: "user", parts: parts }], 
-                    generationConfig: {
-                        responseModalities: ['TEXT', 'IMAGE']
-                    },
-                };
-                
-                visualizerPlaceholder.textContent = 'Generating visualization via Gemini API (this may take up to 30 seconds)...';
-
-                // --- 4. Call the Gemini API with Retry (using the URL constructed with the user's key) ---
-                const response = await fetchWithRetry(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-
-                const base64Part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-                const base64Data = base64Part?.inlineData?.data;
-
-                // --- 5. Display Result ---
-                if (base64Data) {
-                    const imageUrl = `data:${base64Part.inlineData.mimeType};base64,${base64Data}`;
-                    generatedKitchenImage.src = imageUrl;
-                    visualizerPlaceholder.classList.add('hidden');
-                    generatedKitchenImage.classList.remove('hidden');
-                } else {
-                    // Fallback to text part if it exists
-                    const textPart = result?.candidates?.[0]?.content?.parts?.find(p => p.text)?.text || 
-                                     JSON.stringify(result, null, 2); // Show full response for better debugging
-                    visualizerPlaceholder.textContent = `IMAGE GENERATION FAILED. Response: ${textPart}`;
-                    visualizerPlaceholder.classList.remove('hidden');
-                    generatedKitchenImage.classList.add('hidden');
-                }
-                
-            } catch (error) {
-                console.error('API or File Reading Error:', error);
-                // Display the specific error message to the user
-                visualizerPlaceholder.textContent = `CRITICAL ERROR: ${error.message}. Please check your API Key, ensure image files are under 5MB, and are valid image formats.`;
-                visualizerPlaceholder.classList.remove('hidden');
-                generatedKitchenImage.classList.add('hidden');
-            } finally {
-                // UI Feedback: Stop Loading
-                generateButton.disabled = false;
-                generateButton.textContent = 'Generate Kitchen Visualization';
-            }
-        };
 
 
         // --- Mobile Menu Toggle Logic (UPDATED) ---
