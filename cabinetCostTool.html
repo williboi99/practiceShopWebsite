@@ -326,13 +326,7 @@ Job requires lead time of 6 weeks."
                     </div>
 
                     <div class="input-group">
-                        <div class="flex items-center justify-between mb-1">
-                            <label for="input-full-height-install" class="block text-lg font-medium text-gray-700">Full Height with Installation</label>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="check-full-height-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="updatePricesDisplay()">
-                                <label for="check-full-height-install" class="ml-1 text-sm font-medium text-gray-600 select-none">Under Countertops</label>
-                            </div>
-                        </div>
+                        <label for="input-full-height-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height with Installation</label>
                         <div class="flex items-center">
                             <input type="number" id="input-full-height-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
@@ -340,10 +334,6 @@ Job requires lead time of 6 weeks."
                                 $310 / ft
                             </span>
                         </div>
-                    </div>
-
-                    <div class="pt-4 border-t border-gray-200">
-                        <h3 class="text-xl font-bold text-accent mb-3">European Style (Faceless)</h3>
                     </div>
 
                     <div class="input-group">
@@ -386,13 +376,7 @@ Job requires lead time of 6 weeks."
                     </div>
 
                     <div class="input-group">
-                        <div class="flex items-center justify-between mb-1">
-                            <label for="input-full-height-european-install" class="block text-lg font-medium text-gray-700">Full Height European w/ Install</label>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="check-full-height-european-install" class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent/70" onchange="updatePricesDisplay()">
-                                <label for="check-full-height-european-install" class="ml-1 text-sm font-medium text-gray-600 select-none">Under Countertops</label>
-                            </div>
-                        </div>
+                        <label for="input-full-height-european-install" class="block text-lg font-medium text-gray-700 mb-1">Full Height European w/ Install</label>
                         <div class="flex items-center">
                             <input type="number" id="input-full-height-european-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
@@ -694,6 +678,9 @@ Job requires lead time of 6 weeks."
         const matchFeeStatusEl = document.getElementById('match-fee-status');
         const materialSelect = document.getElementById('material-select');
         const finishedMaterialSelect = document.getElementById('finished-material-select');
+        
+        // Store the original title to reset the tab name after printing
+        const ORIGINAL_TITLE = 'Cabinetry Quote Calculator - Print Ready (Refined, Responsive)';
 
         // --- Price Constants Definitions ---
         const UNDER_COUNTERTOP_ADJUSTMENT = 25; // Constant for the new $25 fee
@@ -723,29 +710,29 @@ Job requires lead time of 6 weeks."
             // Lineal Foot Items (These are the 'Cabinetry & Shelving' items, subject to RUSH fee)
             { id: 'input-base', priceKey: 'base', name: 'Base (Rebuild)', unit: 'ft', isLineal: true, displayId: 'display-base' },
             { id: 'input-half-shelf', priceKey: 'halfShelf', name: 'Half-Depth Shelving', unit: 'ft', isLineal: true, displayId: 'display-half-shelf' },
-            // UPDATED: Added checkboxId for Under Countertops fee
+            // Base items keep the checkbox
             { 
                 id: 'input-base-install', priceKey: 'baseInstall', name: 'Base w/ Installation', unit: 'ft', 
                 isLineal: true, displayId: 'display-base-install', checkboxId: 'check-base-install' 
             },
             { id: 'input-full-height', priceKey: 'fullHeight', name: 'Full Height (Rebuild)', unit: 'ft', isLineal: true, displayId: 'display-full-height' },
             { id: 'input-full-shelf', priceKey: 'fullShelf', name: 'Full-Depth Shelving', unit: 'ft', isLineal: true, displayId: 'display-full-shelf' },
-            // UPDATED: Added checkboxId for Under Countertops fee
+            // MODIFIED: Full Height items removed checkboxId
             { 
                 id: 'input-full-height-install', priceKey: 'fullHeightInstall', name: 'Full Height w/ Installation', unit: 'ft', 
-                isLineal: true, displayId: 'display-full-height-install', checkboxId: 'check-full-height-install' 
+                isLineal: true, displayId: 'display-full-height-install' 
             },
             { id: 'input-base-european', priceKey: 'baseEuropean', name: 'Base European (Faceless)', unit: 'ft', isLineal: true, displayId: 'display-base-european' },
-            // UPDATED: Added checkboxId for Under Countertops fee
+            // Base items keep the checkbox
             { 
                 id: 'input-base-european-install', priceKey: 'baseEuropeanInstall', name: 'Base European w/ Install', unit: 'ft', 
                 isLineal: true, displayId: 'display-base-european-install', checkboxId: 'check-base-european-install' 
             },
             { id: 'input-full-height-european', priceKey: 'fullHeightEuropean', name: 'Full Height European (Faceless)', unit: 'ft', isLineal: true, displayId: 'display-full-height-european' },
-            // UPDATED: Added checkboxId for Under Countertops fee
+            // MODIFIED: Full Height items removed checkboxId
             { 
                 id: 'input-full-height-european-install', priceKey: 'fullHeightEuropeanInstall', name: 'Full Height European w/ Install', unit: 'ft', 
-                isLineal: true, displayId: 'display-full-height-european-install', checkboxId: 'check-full-height-european-install' 
+                isLineal: true, displayId: 'display-full-height-european-install'
             },
             
             // Accessory Items (Not subject to RUSH fee)
@@ -839,6 +826,7 @@ Job requires lead time of 6 weeks."
                     let adjustment = 0;
                     
                     // Logic for Under Countertops Checkbox Adjustment
+                    // This logic only runs if item.checkboxId is defined (i.e., only for Base/Base European installs now)
                     if (item.checkboxId && getValue(item.checkboxId, false)) {
                         adjustment = UNDER_COUNTERTOP_ADJUSTMENT;
                         rate += adjustment; // Add $25 to the rate per unit
@@ -995,6 +983,9 @@ Job requires lead time of 6 weeks."
             
             // Re-render the receipt view content (passing rushableSubtotal)
             renderReceipt(breakdown, subtotal, total, isRushed, rushFee, isCashSelected, cashDiscount, rushableSubtotal);
+            
+            // Reset title to original for the browser tab after calculation
+            document.title = ORIGINAL_TITLE;
         };
         
         // --- Receipt Rendering Function (HEAVILY MODIFIED TO MATCH SCREENSHOT) ---
@@ -1008,6 +999,15 @@ Job requires lead time of 6 weeks."
             const materialUsed = materialSelect.value;
             const finishedMaterial = finishedMaterialSelect.value;
             
+            // ************************************************************
+            // START: DYNAMIC FILENAME LOGIC INJECTED HERE (only to be used by print listener)
+            // The title is set here, but immediately reset in calculateTotal() to keep the tab clean.
+            // NEW FORMAT: "Project Manager" with "Company Name"-"Job Name/Number"
+            const newTitle = `${projectManager || 'N/A'} with ${companyName || 'N/A'}-${jobName || 'Quote'}`;
+            document.title = newTitle; 
+            // END: DYNAMIC FILENAME LOGIC
+            // ************************************************************
+
             // Determine lead time status
             const leadTime = isRushed ? '<span class="text-red-600 font-bold">RUSHED ORDER (4-Day)</span>' : 'Standard Lead Time';
             // Determine finished material display
@@ -1200,9 +1200,26 @@ Job requires lead time of 6 weeks."
                 input.addEventListener(input.type === 'checkbox' || input.type === 'radio' || input.tagName === 'SELECT' ? 'change' : 'input', calculateTotal); 
             });
 
-            // Add button functionality
+            // Add button functionality (MODIFIED FOR DYNAMIC FILENAME)
             printBtn.addEventListener('click', () => {
-                if (!printBtn.disabled) window.print();
+                if (!printBtn.disabled) {
+                    // 1. Ensure the latest quote and title are generated
+                    calculateTotal(); 
+
+                    // 2. Re-set the document title immediately before printing for PDF naming
+                    // NEW FORMAT: "Project Manager" with "Company Name"-"Job Name/Number"
+                    const finalTitle = `${getValue('project-manager', false) || 'N/A'} with ${getValue('company-name', false) || 'N/A'}-${getValue('job-name', false) || 'Quote'}`;
+                    document.title = finalTitle;
+                    
+                    // 3. Print dialog
+                    window.print();
+                    
+                    // 4. Reset title immediately after printing is initiated
+                    setTimeout(() => {
+                        // Restore the original document title
+                        document.title = ORIGINAL_TITLE;
+                    }, 100); 
+                }
             });
 
             // Initial setup: Apply default pricing and perform initial calculation
