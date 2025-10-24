@@ -123,7 +123,7 @@
 
     
 <div class="p-4 flex justify-center items-start pt-16">
-        <div class="w-full max-w-4xl space-y-6">
+        <div class="w-full max-w-7xl space-y-6">
             
             
 <div class="bg-white rounded-xl shadow-xl">
@@ -141,13 +141,11 @@
                     <p class="text-gray-700 mb-6">Upload your kitchen photo, a reference for the cabinet door style, and your desired color to visualize your new cabinetry! "AIzaSyAJEfrkGEaeYn14Zwil7dHnPQuEZfOqsg4"</p>
                     
                     
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         
 <div class="space-y-6">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Your References</h2>
                             
-                            <!-- 0. API KEY INPUT (NEW) -->
                             <div class="input-group">
                                 <label for="api-key-input" class="block text-lg font-medium text-gray-700 mb-2">Gemini API Key (Required)</label>
                                 <input type="password" id="api-key-input" placeholder="Paste your Gemini API key here (sk-...)"
@@ -155,27 +153,22 @@
                                 <p class="text-sm text-gray-500 mt-1">This key connects to the visualization model. It is not stored.</p>
                             </div>
                             
-                            <!-- 1. KITCHEN PHOTO UPLOAD/CAMERA INPUT -->
                             <div class="input-group">
                                 <label class="block text-lg font-medium text-gray-700 mb-2">Upload Kitchen Photo</label>
                                 
                                 <div class="flex space-x-3">
-                                    <!-- Hidden Input -->
                                     <input type="file" id="kitchen-image-input" accept="image/*" class="hidden" onchange="handleFileChange(this)">
                                     
-                                    <!-- Take Photo Button (Camera Symbol) -->
                                     <button type="button" 
                                             onclick="document.getElementById('kitchen-image-input').setAttribute('capture', 'environment'); document.getElementById('kitchen-image-input').click();" 
                                             class="p-3 bg-accent hover:bg-green-700 text-white rounded-lg transition duration-150 shadow-md flex-shrink-0 flex items-center justify-center w-1/4" 
                                             title="Take Photo">
-                                        <!-- Camera Icon -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
                                             <circle cx="12" cy="13" r="3"/>
                                         </svg>
                                     </button>
                                     
-                                    <!-- Choose File Button -->
                                     <button type="button" 
                                             onclick="document.getElementById('kitchen-image-input').removeAttribute('capture'); document.getElementById('kitchen-image-input').click();" 
                                             class="flex-grow bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-150 shadow-sm">
@@ -186,61 +179,28 @@
                                 <p class="text-sm text-gray-500 mt-1" id="kitchen-image-file-name">No file selected.</p>
                             </div>
 
-                            <!-- 2. DOOR STYLE UPLOAD/CAMERA INPUT (UPDATED IDs) -->
                             <div class="input-group">
-                                <label class="block text-lg font-medium text-gray-700 mb-2">Cabinet Door Style Reference (Image or Text)</label>
+                                <label class="block text-lg font-medium text-gray-700 mb-2">Cabinet Door Style</label>
                                 
-                                <div class="flex space-x-3 mb-2">
-                                    <!-- Hidden Input -->
-                                    <input type="file" id="door-style-image-input" accept="image/*" class="hidden" onchange="handleFileChange(this)">
-                                    
-                                    <!-- Take Photo Button (Camera Symbol) -->
-                                    <button type="button" 
-                                            onclick="document.getElementById('door-style-image-input').setAttribute('capture', 'environment'); document.getElementById('door-style-image-input').click();" 
-                                            class="p-3 bg-accent hover:bg-green-700 text-white rounded-lg transition duration-150 shadow-md flex-shrink-0 flex items-center justify-center w-1/4" 
-                                            title="Take Photo">
-                                        <!-- Camera Icon -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
-                                            <circle cx="12" cy="13" r="3"/>
-                                        </svg>
-                                    </button>
-                                    
-                                    <!-- Choose File Button -->
-                                    <button type="button" 
-                                            onclick="document.getElementById('door-style-image-input').removeAttribute('capture'); document.getElementById('door-style-image-input').click();" 
-                                            class="flex-grow bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-150 shadow-sm">
-                                        Choose File
-                                    </button>
-                                </div>
-                                
-                                <p class="text-sm text-gray-500 mt-1 mb-2" id="door-style-image-file-name">No door style image selected, use text description below.</p>
-                                
-                                <!-- NEW TEXT DESCRIPTION FOR DOOR STYLE -->
-                                <textarea id="door-style-text-description" rows="3" placeholder="e.g., 'traditional shaker style', 'modern slab door with integrated handle', 'beadboard cottage style'" class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-lg"></textarea>
+                                <textarea id="door-style-text-description" rows="3" placeholder="Ex: A Raised center panel with arches , Shaker style with a flat center panel , A solid square door" class="block w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent text-lg"></textarea>
                             </div>
 
-                            <!-- 3. COLOR REFERENCE UPLOAD/CAMERA INPUT -->
                             <div class="input-group">
                                 <label class="block text-lg font-medium text-gray-700 mb-2">Color Reference (Image or Text)</label>
                                 
                                 <div class="flex space-x-3 mb-2">
-                                    <!-- Hidden Input -->
                                     <input type="file" id="color-image-input" accept="image/*" class="hidden" onchange="handleFileChange(this)">
                                     
-                                    <!-- Take Photo Button (Camera Symbol) -->
                                     <button type="button" 
                                             onclick="document.getElementById('color-image-input').setAttribute('capture', 'environment'); document.getElementById('color-image-input').click();" 
                                             class="p-3 bg-accent hover:bg-green-700 text-white rounded-lg transition duration-150 shadow-md flex-shrink-0 flex items-center justify-center w-1/4" 
                                             title="Take Photo">
-                                        <!-- Camera Icon -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
                                             <circle cx="12" cy="13" r="3"/>
                                         </svg>
                                     </button>
                                     
-                                    <!-- Choose File Button -->
                                     <button type="button" 
                                             onclick="document.getElementById('color-image-input').removeAttribute('capture'); document.getElementById('color-image-input').click();" 
                                             class="flex-grow bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-150 shadow-sm">
@@ -259,11 +219,23 @@
                         </div>
 
                         
-<div class="space-y-4">
+<div class="space-y-6">
                             <h2 class="text-xl font-semibold text-accent border-b pb-2">Your New Kitchen Preview</h2>
-                            <div id="visualizer-output" class="bg-gray-100 p-4 rounded-lg border border-gray-200 flex justify-center items-center min-h-[300px]">
-                                <p id="visualizer-placeholder" class="text-gray-500 text-center">Upload images and describe your color, then click "Generate" to see your new kitchen!</p>
-                                <img id="generated-kitchen-image" src="" alt="Generated Kitchen Visualization" class="hidden max-w-full h-auto rounded-lg shadow-md">
+                            
+                            <div class="border border-gray-300 rounded-lg overflow-hidden shadow-xl">
+                                <h3 class="text-lg font-semibold bg-gray-100 text-primary-dark p-2 text-center">Your Original Photo</h3>
+                                <div class="bg-gray-200 flex justify-center items-center h-96">
+                                    <p id="original-placeholder" class="text-gray-500 text-center text-base p-4">Your photo will appear here after upload.</p>
+                                    <img id="original-kitchen-image" src="" alt="Original Kitchen Photo" class="hidden w-full h-full object-contain">
+                                </div>
+                            </div>
+                            
+                            <div class="border border-gray-300 rounded-lg overflow-hidden shadow-xl">
+                                <h3 class="text-lg font-semibold bg-gray-100 text-primary-dark p-2 text-center">Generated Visualization</h3>
+                                <div id="visualizer-output" class="bg-gray-200 flex justify-center items-center h-96">
+                                    <p id="visualizer-placeholder" class="text-gray-500 text-center p-4">Click "Generate" to see your new design!</p>
+                                    <img id="generated-kitchen-image" src="" alt="Generated Kitchen Visualization" class="hidden w-full h-full object-contain">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -644,15 +616,12 @@
             } else {
                 // --- Reset State UI Update ---
                 const isColorInput = inputElement.id.includes('color');
-                const isDoorStyleInput = inputElement.id.includes('door-style'); // NEW Check for door style
                 
                 let defaultText = 'No file selected.';
 
                 if (isColorInput) {
                     defaultText = 'No color image selected, use text description below.';
-                } else if (isDoorStyleInput) { 
-                    defaultText = 'No door style image selected, use text description below.';
-                }
+                } 
 
                 fileNameElement.textContent = defaultText;
                 fileNameElement.classList.remove('text-green-600', 'font-medium', 'text-base', 'text-red-500', 'font-semibold');
@@ -1052,68 +1021,92 @@
 
 
         // --- Refactored New Cabinetry Visualizer Logic ---
-        // --- Refactored New Cabinetry Visualizer Logic ---
-const handleVisualizeClick = async () => {
-    const apiKey = document.getElementById('api-key-input').value.trim();
-    const API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent";
-    const apiUrl = `${API_BASE_URL}?key=${apiKey}`;
+        const handleVisualizeClick = async () => {
+            const apiKey = document.getElementById('api-key-input').value.trim();
+            const API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent";
+            const apiUrl = `${API_BASE_URL}?key=${apiKey}`;
 
-    const kitchenImageInput = document.getElementById('kitchen-image-input');
-    const doorStyleInput = document.getElementById('door-style-image-input');
-    const doorStyleTextDescription = document.getElementById('door-style-text-description').value.trim();
-    const colorImageInput = document.getElementById('color-image-input');
-    const colorTextDescription = document.getElementById('color-text-description').value.trim();
+            const kitchenImageInput = document.getElementById('kitchen-image-input');
+            
+            // Door Style is now text-only
+            const doorStyleTextDescription = document.getElementById('door-style-text-description').value.trim();
+            
+            const colorImageInput = document.getElementById('color-image-input');
+            const colorTextDescription = document.getElementById('color-text-description').value.trim();
 
-    const generatedKitchenImage = document.getElementById('generated-kitchen-image');
-    const visualizerPlaceholder = document.getElementById('visualizer-placeholder');
-    const generateButton = document.getElementById('generate-visual-button');
+            const originalKitchenImage = document.getElementById('original-kitchen-image'); // NEW
+            const originalPlaceholder = document.getElementById('original-placeholder');     // NEW
+            const generatedKitchenImage = document.getElementById('generated-kitchen-image');
+            const visualizerPlaceholder = document.getElementById('visualizer-placeholder');
+            const generateButton = document.getElementById('generate-visual-button');
 
-    if (!generatedKitchenImage || !visualizerPlaceholder || !generateButton) {
-        console.error("Critical visualization DOM elements not found.");
-        return;
-    }
+            if (!generatedKitchenImage || !visualizerPlaceholder || !generateButton || !originalKitchenImage || !originalPlaceholder) {
+                console.error("Critical visualization DOM elements not found.");
+                return;
+            }
 
-    generateButton.disabled = true;
-    generateButton.textContent = 'Generating... Please wait.';
-    visualizerPlaceholder.classList.remove('hidden');
-    generatedKitchenImage.classList.add('hidden');
-    generatedKitchenImage.src = '';
+            // --- 1. Initial State / Reset UI ---
+            generateButton.disabled = true;
+            generateButton.textContent = 'Generating... Please wait.';
+            
+            originalPlaceholder.classList.remove('hidden');
+            originalKitchenImage.classList.add('hidden');
+            originalKitchenImage.src = '';
+            
+            visualizerPlaceholder.classList.remove('hidden');
+            generatedKitchenImage.classList.add('hidden');
+            generatedKitchenImage.src = '';
+            visualizerPlaceholder.textContent = 'Preparing for visualization...';
 
-    const kitchenImageFile = kitchenImageInput.files[0];
-    const doorStyleFile = doorStyleInput.files[0];
-    const colorImageFile = colorImageInput.files[0];
+            const kitchenImageFile = kitchenImageInput.files[0];
+            const colorImageFile = colorImageInput.files[0];
 
-    if (!apiKey) {
-        visualizerPlaceholder.textContent = 'ERROR: Please provide your Gemini API Key in the field above.';
-        generateButton.disabled = false;
-        generateButton.textContent = 'Generate Kitchen Visualization';
-        return;
-    }
+            if (!apiKey) {
+                originalPlaceholder.textContent = 'Upload a photo.';
+                visualizerPlaceholder.textContent = 'ERROR: Please provide your Gemini API Key in the field above.';
+                generateButton.disabled = false;
+                generateButton.textContent = 'Generate Kitchen Visualization';
+                return;
+            }
 
-    if (!kitchenImageFile || (!doorStyleFile && !doorStyleTextDescription) || (!colorImageFile && !colorTextDescription)) {
-        visualizerPlaceholder.textContent = 'ERROR: Please provide a photo, a door style reference (image or text), and a color reference (image or text).';
-        generateButton.disabled = false;
-        generateButton.textContent = 'Generate Kitchen Visualization';
-        return;
-    }
+            // --- Updated Validation: Door Style is now required as text ---
+            if (!kitchenImageFile || !doorStyleTextDescription || (!colorImageFile && !colorTextDescription)) {
+                originalPlaceholder.textContent = 'Upload a photo.';
+                visualizerPlaceholder.textContent = 'ERROR: Please provide a room photo, a cabinet door style description, and a color reference (image or text).';
+                generateButton.disabled = false;
+                generateButton.textContent = 'Generate Kitchen Visualization';
+                return;
+            }
 
-    let kitchenBase64, doorStyleBase64 = null, colorBase64 = null;
+            let kitchenBase64, colorBase64 = null;
 
-    try {
-        visualizerPlaceholder.textContent = 'Uploading and processing images...';
+            try {
+                // --- 2. Process Files ---
+                visualizerPlaceholder.textContent = 'Uploading and processing images...';
+                originalPlaceholder.textContent = 'Processing...';
 
-        kitchenBase64 = await fileToBase64(kitchenImageFile);
-        if (doorStyleFile) doorStyleBase64 = await fileToBase64(doorStyleFile);
-        if (colorImageFile) colorBase64 = await fileToBase64(colorImageFile);
+                kitchenBase64 = await fileToBase64(kitchenImageFile);
+                // Door style image is removed.
+                if (colorImageFile) colorBase64 = await fileToBase64(colorImageFile);
 
-        if (!kitchenBase64 || !kitchenBase64.data) throw new Error("Failed to process room photo.");
+                if (!kitchenBase64 || !kitchenBase64.data) throw new Error("Failed to process room photo.");
+                
+                // --- 3. Display Original Image (Top Stack) ---
+                const originalImageUrl = `data:${kitchenBase64.mimeType};base64,${kitchenBase64.data}`;
+                originalKitchenImage.src = originalImageUrl;
+                originalPlaceholder.classList.add('hidden');
+                originalKitchenImage.classList.remove('hidden');
 
-        const styleInput = doorStyleBase64 ? "the second uploaded image" : `the text description: "${doorStyleTextDescription}"`;
-        const colorImagePosition = doorStyleBase64 ? "third" : "second";
-        const colorInput = colorBase64 ? `the ${colorImagePosition} uploaded image` : `the text description: "${colorTextDescription}"`;
 
-        // 🧠 --- AI Instructions: Deep Cabinetry Recognition + Style + Finish Rules ---
-        const userQuery = `
+                // --- 4. Build AI Prompt and Payload ---
+                // Door Style is ALWAYS text now.
+                const styleInput = `the text description: "${doorStyleTextDescription}"`;
+                // Color image will always be the second if present, otherwise no image.
+                const colorImagePosition = "second"; 
+                const colorInput = colorBase64 ? `the ${colorImagePosition} uploaded image` : `the text description: "${colorTextDescription}"`;
+
+                // 🧠 --- AI Instructions: Deep Cabinetry Recognition + Style + Finish Rules ---
+                const userQuery = `
 You are an expert cabinetry visualization AI. Analyze the first uploaded image for any type of cabinetry — not only kitchens.
 Identify and interpret the following:
 
@@ -1154,60 +1147,66 @@ Identify and interpret the following:
 Begin with the first uploaded image as the base photo. 
 `;
 
-        const parts = [
-            { inlineData: { mimeType: kitchenBase64.mimeType, data: kitchenBase64.data } }
-        ];
+                const parts = [
+                    { inlineData: { mimeType: kitchenBase64.mimeType, data: kitchenBase64.data } }
+                ];
 
-        if (doorStyleBase64) {
-            parts.push({ inlineData: { mimeType: doorStyleBase64.mimeType, data: doorStyleBase64.data } });
-        }
-        if (colorBase64) {
-            parts.push({ inlineData: { mimeType: colorBase64.mimeType, data: colorBase64.data } });
-        }
+                // Only push the color image if it exists, it will be the second (index 1) part
+                if (colorBase64) {
+                    parts.push({ inlineData: { mimeType: colorBase64.mimeType, data: colorBase64.data } });
+                }
 
-        parts.push({ text: userQuery });
+                parts.push({ text: userQuery });
 
-        const payload = {
-            contents: [{ role: "user", parts }],
-            generationConfig: { responseModalities: ['TEXT', 'IMAGE'] },
+                const payload = {
+                    contents: [{ role: "user", parts }],
+                    generationConfig: { responseModalities: ['TEXT', 'IMAGE'] },
+                };
+
+                visualizerPlaceholder.textContent = 'Generating visualization via Gemini API (please wait up to 30 seconds)...';
+
+                // --- 5. Call API ---
+                const response = await fetchWithRetry(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                // --- 6. Process API Result ---
+                const base64Part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+                const base64Data = base64Part?.inlineData?.data;
+
+                if (base64Data) {
+                    const imageUrl = `data:${base64Part.inlineData.mimeType};base64,${base64Data}`;
+                    generatedKitchenImage.src = imageUrl;
+                    visualizerPlaceholder.classList.add('hidden');
+                    generatedKitchenImage.classList.remove('hidden');
+                } else {
+                    const textPart = result?.candidates?.[0]?.content?.parts?.find(p => p.text)?.text || JSON.stringify(result, null, 2);
+                    visualizerPlaceholder.textContent = `IMAGE GENERATION FAILED. Response: ${textPart}`;
+                    visualizerPlaceholder.classList.remove('hidden');
+                    generatedKitchenImage.classList.add('hidden');
+                }
+
+            } catch (error) {
+                console.error('Visualizer Error:', error);
+                
+                // --- 7. Error Reset UI ---
+                visualizerPlaceholder.textContent = `CRITICAL ERROR: ${error.message}. Check API key, image validity, or file size limits.`;
+                visualizerPlaceholder.classList.remove('hidden');
+                generatedKitchenImage.classList.add('hidden');
+                
+                originalPlaceholder.textContent = 'Error: Reload page and try again.';
+                originalPlaceholder.classList.remove('hidden');
+                originalKitchenImage.classList.add('hidden');
+
+            } finally {
+                generateButton.disabled = false;
+                generateButton.textContent = 'Generate Kitchen Visualization';
+            }
         };
-
-        visualizerPlaceholder.textContent = 'Generating visualization via Gemini API (please wait up to 30 seconds)...';
-
-        const response = await fetchWithRetry(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-
-        const result = await response.json();
-
-        const base64Part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-        const base64Data = base64Part?.inlineData?.data;
-
-        if (base64Data) {
-            const imageUrl = `data:${base64Part.inlineData.mimeType};base64,${base64Data}`;
-            generatedKitchenImage.src = imageUrl;
-            visualizerPlaceholder.classList.add('hidden');
-            generatedKitchenImage.classList.remove('hidden');
-        } else {
-            const textPart = result?.candidates?.[0]?.content?.parts?.find(p => p.text)?.text || JSON.stringify(result, null, 2);
-            visualizerPlaceholder.textContent = `IMAGE GENERATION FAILED. Response: ${textPart}`;
-            visualizerPlaceholder.classList.remove('hidden');
-            generatedKitchenImage.classList.add('hidden');
-        }
-
-    } catch (error) {
-        console.error('Visualizer Error:', error);
-        visualizerPlaceholder.textContent = `CRITICAL ERROR: ${error.message}. Check API key, image validity, or file size limits.`;
-        visualizerPlaceholder.classList.remove('hidden');
-        generatedKitchenImage.classList.add('hidden');
-    } finally {
-        generateButton.disabled = false;
-        generateButton.textContent = 'Generate Kitchen Visualization';
-    }
-};
-
 
 
         // --- Mobile Menu Toggle Logic (UPDATED) ---
