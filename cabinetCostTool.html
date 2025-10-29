@@ -254,7 +254,7 @@ Job requires lead time of 6 weeks."
                             <label for="material-select" class="block text-sm font-medium text-gray-700 font-bold">Cabinet Box Material</label>
                             <select id="material-select" onchange="applyMaterialPricing()"
                                     class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm">
-                                <option value="Hardrock Maple">Hardrock Maple</option>
+                                <option value="" disabled selected>--- Select Box Material ---</option> <option value="Hardrock Maple">Hardrock Maple</option>
                                 <option value="White">White</option>
                                 <option value="Almond">Almond</option>
                                 <option value="Particle Board">Particle Board</option>
@@ -414,7 +414,7 @@ Job requires lead time of 6 weeks."
                         <label for="finished-material-select" class="block text-sm font-medium text-gray-700 font-bold">Finished Material</label>
                         <select id="finished-material-select"
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm" onchange="calculateTotal()">
-                            <option value="Maple">Maple</option>
+                            <option value="" disabled selected>--- Select Finished Material ---</option> <option value="Maple">Maple</option>
                             <option value="Oak">Oak</option>
                             <option value="Cherry">Cherry</option>
                             <option value="Alder (clear)">Alder (clear)</option>
@@ -799,11 +799,13 @@ Job requires lead time of 6 weeks."
 
         const applyMaterialPricing = () => {
             const selectedMaterial = materialSelect.value;
+            // Only apply special pricing if a valid option (not the empty "") is selected.
             if (selectedMaterial === 'Plywood') {
                 CURRENT_PRICES = {...DEFAULT_PRICES, ...PLYWOOD_OVERRIDE_PRICES};
             } else if (selectedMaterial === 'Plywood (Stained Interior)') {
                 CURRENT_PRICES = {...DEFAULT_PRICES, ...PLYWOOD_STAINED_PRICES};
             } else {
+                // If the selected value is 'Hardrock Maple', 'White', 'Almond', 'Particle Board', or "" (empty/unselected)
                 CURRENT_PRICES = {...DEFAULT_PRICES};
             }
             updatePricesDisplay();
@@ -1010,10 +1012,11 @@ Job requires lead time of 6 weeks."
 
             // Determine lead time status
             const leadTime = isRushed ? '<span class="text-red-600 font-bold">RUSHED ORDER (4-Day)</span>' : 'Standard Lead Time';
-            // Determine finished material display
-            const finishedMaterialDisplay = (finishedMaterial && finishedMaterial.toLowerCase() !== 'almond' && finishedMaterial.toLowerCase() !== 'hardrock') 
-                                            ? finishedMaterial : 'MDF';
             
+            // Determine material display for receipt - check for the empty string value
+            const materialDisplay = materialUsed || 'N/A - Please Select';
+            const finishedMaterialDisplay = finishedMaterial || 'N/A - Please Select';
+
             // Helper function to render a breakdown section
             const renderSectionItems = (items) => {
                 let html = '';
@@ -1107,8 +1110,8 @@ Job requires lead time of 6 weeks."
                         <div>
                             <p><span class="font-bold">Project Mgr Phone:</span> ${clientPhone || 'TBD'}</p>
                             <p><span class="font-bold">Quote Date:</span> ${quoteDate || 'TBD'}</p>
-                            <p><span class="font-bold">Box Material:</span> ${materialUsed || 'Hardrock Maple'}</p>
-                            <p><span class="font-bold">Finished Material:</span> ${finishedMaterialDisplay || 'MDF'}</p>
+                            <p><span class="font-bold">Box Material:</span> ${materialDisplay}</p>
+                            <p><span class="font-bold">Finished Material:</span> ${finishedMaterialDisplay}</p>
                             <p><span class="font-bold">Lead Time:</span> ${leadTime}</p>
                         </div>
                     </div>
