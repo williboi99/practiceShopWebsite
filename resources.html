@@ -1115,7 +1115,7 @@
         const handleVisualizeClick = async () => {
             // Read the hardcoded value directly from the input's value attribute
             const apiKey = document.getElementById('api-key-input').value.trim(); 
-            const API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+            const API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent";
             const apiUrl = `${API_BASE_URL}?key=${apiKey}`;
 
             const kitchenImageInput = document.getElementById('kitchen-image-input');
@@ -1523,6 +1523,7 @@ Begin with the first uploaded image as the base photo.
     </script>
 </body>
 </html>
+
 
 
 
