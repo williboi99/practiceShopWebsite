@@ -317,10 +317,10 @@ Job requires lead time of 6 weeks."
                     <h2 class="text-xl font-bold text-accent pt-4 border-t border-gray-200">Cabinetry & Shelving</h2>
 
                     <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div>
-                            <label for="material-select" class="block text-sm font-medium text-gray-700 font-bold">Cabinet Box Material</label>
+                        <label for="material-select" class="block text-sm font-medium text-gray-700 font-bold mb-1">Cabinet Box Material</label>
+                        <div class="flex items-center gap-4">
                             <select id="material-select" onchange="applyMaterialPricing()"
-                                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm">
+                                    class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm h-12">
                                 <option value="" disabled selected>--- Select Box Material ---</option> 
                                 <option value="Hardrock Maple">Hardrock Maple</option>
                                 <option value="White">White</option>
@@ -329,6 +329,10 @@ Job requires lead time of 6 weeks."
                                 <option value="Plywood">Plywood</option>
                                 <option value="Plywood (Stained Interior)">Plywood (Stained Interior)</option>
                             </select>
+                            <div class="w-12 h-12 rounded border border-gray-300 bg-gray-200 overflow-hidden flex-shrink-0 flex items-center justify-center text-[10px] text-gray-500 text-center leading-tight">
+                                <img id="material-preview" src="" alt="" class="w-full h-full object-cover hidden" onerror="this.classList.add('hidden'); document.getElementById('material-preview-placeholder').classList.remove('hidden');">
+                                <span id="material-preview-placeholder" class="select-none p-1">No Image</span>
+                            </div>
                         </div>
                     </div>
                     
@@ -509,21 +513,27 @@ Job requires lead time of 6 weeks."
                     </div>
                     
                     <div class="input-group p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <label for="finished-material-select" class="block text-sm font-medium text-gray-700 font-bold">Finished Material</label>
-                        <select id="finished-material-select"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm" onchange="calculateTotal()">
-                            <option value="" disabled selected>--- Select Finished Material ---</option> 
-                            <option value="Maple">Maple</option>
-                            <option value="Oak">Oak</option>
-                            <option value="Cherry">Cherry</option>
-                            <option value="Alder (clear)">Alder (clear)</option>
-                            <option value="Alder (knotty)">Alder (knotty)</option>
-                            <option value="Hickory">Hickory</option>
-                            <option value="White">White</option>
-                            <option value="MDF">MDF</option>
-                            <option value="Almond">Almond</option>
-                            <option value="Hardrock">Hardrock</option>
-                        </select>
+                        <label for="finished-material-select" class="block text-sm font-medium text-gray-700 font-bold mb-1">Finished Material</label>
+                        <div class="flex items-center gap-4">
+                            <select id="finished-material-select"
+                                    class="flex-1 p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm h-12" onchange="updateFinishedMaterialPreview(); calculateTotal();">
+                                <option value="" disabled selected>--- Select Finished Material ---</option> 
+                                <option value="Maple">Maple</option>
+                                <option value="Oak">Oak</option>
+                                <option value="Cherry">Cherry</option>
+                                <option value="Alder (clear)">Alder (clear)</option>
+                                <option value="Alder (knotty)">Alder (knotty)</option>
+                                <option value="Hickory">Hickory</option>
+                                <option value="White">White</option>
+                                <option value="MDF">MDF</option>
+                                <option value="Almond">Almond</option>
+                                <option value="Hardrock">Hardrock</option>
+                            </select>
+                            <div class="w-12 h-12 rounded border border-gray-300 bg-gray-200 overflow-hidden flex-shrink-0 flex items-center justify-center text-[10px] text-gray-500 text-center leading-tight">
+                                <img id="finished-material-preview" src="" alt="" class="w-full h-full object-cover hidden" onerror="this.classList.add('hidden'); document.getElementById('finished-material-preview-placeholder').classList.remove('hidden');">
+                                <span id="finished-material-preview-placeholder" class="select-none p-1">No Image</span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="input-group">
@@ -531,9 +541,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-base-skins" data-unit="PC" placeholder="0" min="0" step="1"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-base-skins" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $85 / PC
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-base-skins" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('baseSkins', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ PC</span>
+                                <button id="reset-baseSkins" type="button" onclick="resetCustomPrice('baseSkins')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -542,9 +555,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-full-skins" data-unit="PC" placeholder="0" min="0" step="1"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-full-skins" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $170 / PC
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-full-skins" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('fullSkins', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ PC</span>
+                                <button id="reset-fullSkins" type="button" onclick="resetCustomPrice('fullSkins')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -553,9 +569,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-toekick" data-unit="PC" placeholder="0" min="0" step="1"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-toekick" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $30 / PC
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-toekick" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('toekick', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ PC</span>
+                                <button id="reset-toekick" type="button" onclick="resetCustomPrice('toekick')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -564,9 +583,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-fillers" data-unit="PC" placeholder="0" min="0" step="1"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-fillers" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $50 / PC
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-fillers" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('fillers', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ PC</span>
+                                <button id="reset-fillers" type="button" onclick="resetCustomPrice('fillers')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
                     
@@ -575,9 +597,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-scribe" data-unit="PC" placeholder="0" min="0" step="1"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-scribe" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $35 / PC
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-scribe" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('scribe', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ PC</span>
+                                <button id="reset-scribe" type="button" onclick="resetCustomPrice('scribe')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
                     
@@ -586,9 +611,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-batten" data-unit="PC" placeholder="0" min="0" step="1"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-batten" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $20 / PC
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-batten" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('batten', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ PC</span>
+                                <button id="reset-batten" type="button" onclick="resetCustomPrice('batten')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -597,9 +625,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-mid-scribe" data-unit="PC" placeholder="0" min="0" step="1"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-mid-scribe" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $50 / PC
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-mid-scribe" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('midScribe', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ PC</span>
+                                <button id="reset-midScribe" type="button" onclick="resetCustomPrice('midScribe')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -608,9 +639,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-outside-scribe" data-unit="PC" placeholder="0" min="0" step="1"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-outside-scribe" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $55 / PC
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-outside-scribe" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('outsideCornerScribe', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ PC</span>
+                                <button id="reset-outsideCornerScribe" type="button" onclick="resetCustomPrice('outsideCornerScribe')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -619,9 +653,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-quarter-scribe" data-unit="PC" placeholder="0" min="0" step="1"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-quarter-scribe" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $55 / PC
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-quarter-scribe" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('quarterRoundScribe', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ PC</span>
+                                <button id="reset-quarterRoundScribe" type="button" onclick="resetCustomPrice('quarterRoundScribe')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
                     
@@ -630,9 +667,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-glides-set" data-unit="SET" placeholder="0" min="0" step="1"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-glides-set" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $25 / SET
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-glides-set" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('glidesSet', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ SET</span>
+                                <button id="reset-glidesSet" type="button" onclick="resetCustomPrice('glidesSet')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
                     
@@ -836,7 +876,7 @@ Job requires lead time of 6 weeks."
         };
 
         let CURRENT_PRICES = {...DEFAULT_PRICES}; 
-        let CUSTOM_PRICES = {}; // NEW: Stores user price overrides
+        let CUSTOM_PRICES = {}; // Stores user price overrides
 
         // Map linking input IDs to price keys and display IDs
         const ITEM_MAP = [
@@ -1012,8 +1052,30 @@ Job requires lead time of 6 weeks."
             calculateTotal(); 
         };
 
+        // --- Material Dropdown Preview Image Logic ---
+        const updatePreviewImage = (selectEl, imgId, placeholderId) => {
+            const val = selectEl.value;
+            const imgEl = document.getElementById(imgId);
+            const placeholderEl = document.getElementById(placeholderId);
+            
+            if (val) {
+                // Adjust extension here if you decide to use .png instead of .jpg
+                imgEl.src = `Images/rebuildPreviews/${val}.jpg`; 
+                
+                imgEl.classList.remove('hidden');
+                if(placeholderEl) placeholderEl.classList.add('hidden');
+            } else {
+                imgEl.classList.add('hidden');
+                if(placeholderEl) placeholderEl.classList.remove('hidden');
+            }
+        };
+
         const applyMaterialPricing = () => {
             const selectedMaterial = materialSelect.value;
+            
+            // Update preview image
+            updatePreviewImage(materialSelect, 'material-preview', 'material-preview-placeholder');
+
             // Only apply special pricing if a valid option (not the empty "") is selected.
             if (selectedMaterial === 'Plywood') {
                 CURRENT_PRICES = {...DEFAULT_PRICES, ...PLYWOOD_OVERRIDE_PRICES};
@@ -1024,6 +1086,10 @@ Job requires lead time of 6 weeks."
                 CURRENT_PRICES = {...DEFAULT_PRICES};
             }
             updatePricesDisplay();
+        };
+
+        const updateFinishedMaterialPreview = () => {
+            updatePreviewImage(finishedMaterialSelect, 'finished-material-preview', 'finished-material-preview-placeholder');
         };
 
         // --- Calculation & Receipt Generation Logic ---
@@ -1466,6 +1532,7 @@ Job requires lead time of 6 weeks."
 
             // Initial setup: Apply default pricing and perform initial calculation
             applyMaterialPricing();
+            updateFinishedMaterialPreview();
         });
     </script>
 </body>
