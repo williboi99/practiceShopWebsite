@@ -57,11 +57,12 @@
             margin-top: 12px;
         }
         
-        /* UPDATED: Thumbnail styling to hide the broken image icon/text */
+        /* UPDATED: Thumbnail styling to keep natural aspect ratio */
         .thumbnail {
-            width: 80px;
             height: 80px;
-            object-fit: cover;
+            width: auto;
+            max-width: 150px;
+            object-fit: contain;
             border-radius: 6px;
             border: 1px solid #d1d5db;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -93,7 +94,7 @@
             overflow: visible;
         }
         
-        /* NEW: Receipt Photo Styling (Display Area) */
+        /* NEW: Receipt Photo Styling (Display Area) - UPDATED aspect ratio */
         .receipt-photo-container {
             display: flex;
             flex-wrap: wrap;
@@ -101,9 +102,10 @@
             justify-content: center; /* Center photos on the receipt */
         }
         .receipt-photo {
-            width: 150px; /* Increased size for receipt visibility */
-            height: 150px;
-            object-fit: cover;
+            height: 200px;
+            width: auto;
+            max-width: 100%;
+            object-fit: contain;
             border-radius: 4px;
             border: 1px solid #d1d5db;
         }
@@ -195,8 +197,9 @@
             }
             /* NEW: Photo Thumbnail styling for printing */
             .receipt-photo {
-                width: 150px !important;
-                height: 150px !important;
+                height: 200px !important;
+                width: auto !important;
+                max-width: 100% !important;
                 break-inside: avoid; /* Prevent images from being cut across pages */
                 page-break-inside: avoid;
             }
@@ -318,7 +321,8 @@ Job requires lead time of 6 weeks."
                             <label for="material-select" class="block text-sm font-medium text-gray-700 font-bold">Cabinet Box Material</label>
                             <select id="material-select" onchange="applyMaterialPricing()"
                                     class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm">
-                                <option value="" disabled selected>--- Select Box Material ---</option> <option value="Hardrock Maple">Hardrock Maple</option>
+                                <option value="" disabled selected>--- Select Box Material ---</option> 
+                                <option value="Hardrock Maple">Hardrock Maple</option>
                                 <option value="White">White</option>
                                 <option value="Almond">Almond</option>
                                 <option value="Particle Board">Particle Board</option>
@@ -333,9 +337,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-base" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-base" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $90 / ft
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-base" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('base', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ ft</span>
+                                <button id="reset-base" type="button" onclick="resetCustomPrice('base')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -344,9 +351,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-half-shelf" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-half-shelf" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $18 / ft
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-half-shelf" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('halfShelf', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ ft</span>
+                                <button id="reset-halfShelf" type="button" onclick="resetCustomPrice('halfShelf')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -361,9 +371,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-base-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-base-install" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $155 / ft
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-base-install" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('baseInstall', this.value, 'check-base-install')">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ ft</span>
+                                <button id="reset-baseInstall" type="button" onclick="resetCustomPrice('baseInstall')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -372,9 +385,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-full-height" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-full-height" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $180 / ft
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-full-height" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('fullHeight', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ ft</span>
+                                <button id="reset-fullHeight" type="button" onclick="resetCustomPrice('fullHeight')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -383,9 +399,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-full-shelf" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-full-shelf" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $36 / ft
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-full-shelf" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('fullShelf', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ ft</span>
+                                <button id="reset-fullShelf" type="button" onclick="resetCustomPrice('fullShelf')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -394,9 +413,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-full-height-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-full-height-install" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $310 / ft
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-full-height-install" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('fullHeightInstall', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ ft</span>
+                                <button id="reset-fullHeightInstall" type="button" onclick="resetCustomPrice('fullHeightInstall')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -405,9 +427,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-base-european" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-base-european" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $195 / ft
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-base-european" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('baseEuropean', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ ft</span>
+                                <button id="reset-baseEuropean" type="button" onclick="resetCustomPrice('baseEuropean')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -422,9 +447,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-base-european-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-base-european-install" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $280 / ft
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-base-european-install" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('baseEuropeanInstall', this.value, 'check-base-european-install')">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ ft</span>
+                                <button id="reset-baseEuropeanInstall" type="button" onclick="resetCustomPrice('baseEuropeanInstall')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -433,9 +461,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-full-height-european" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-full-height-european" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $285 / ft
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-full-height-european" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('fullHeightEuropean', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ ft</span>
+                                <button id="reset-fullHeightEuropean" type="button" onclick="resetCustomPrice('fullHeightEuropean')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
 
@@ -444,9 +475,12 @@ Job requires lead time of 6 weeks."
                         <div class="flex items-center">
                             <input type="number" id="input-full-height-european-install" data-unit="ft" placeholder="0.0" min="0" step="0.5"
                                    class="flex-1 p-3 border border-gray-300 rounded-l-lg focus:ring-accent focus:border-accent text-xl transition duration-150">
-                            <span id="display-full-height-european-install" class="price-display p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-l-0 rounded-r-lg">
-                                $435 / ft
-                            </span>
+                            <div class="relative flex items-center bg-gray-100 border border-gray-300 border-l-0 rounded-r-lg">
+                                <span class="pl-3 py-3 text-gray-600 text-base font-semibold select-none">$</span>
+                                <input type="number" id="display-full-height-european-install" step="0.01" class="w-12 sm:w-16 p-0 py-3 bg-transparent text-gray-700 text-base font-semibold border-none focus:ring-0 text-center m-0" onchange="setCustomPrice('fullHeightEuropeanInstall', this.value)">
+                                <span class="pr-3 py-3 text-gray-600 text-base font-semibold select-none">/ ft</span>
+                                <button id="reset-fullHeightEuropeanInstall" type="button" onclick="resetCustomPrice('fullHeightEuropeanInstall')" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs items-center justify-center hidden hover:bg-red-600 shadow-md transition-colors z-10" title="Reset Price">↺</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -478,7 +512,8 @@ Job requires lead time of 6 weeks."
                         <label for="finished-material-select" class="block text-sm font-medium text-gray-700 font-bold">Finished Material</label>
                         <select id="finished-material-select"
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent text-base font-semibold bg-white shadow-sm" onchange="calculateTotal()">
-                            <option value="" disabled selected>--- Select Finished Material ---</option> <option value="Maple">Maple</option>
+                            <option value="" disabled selected>--- Select Finished Material ---</option> 
+                            <option value="Maple">Maple</option>
                             <option value="Oak">Oak</option>
                             <option value="Cherry">Cherry</option>
                             <option value="Alder (clear)">Alder (clear)</option>
@@ -710,7 +745,7 @@ Job requires lead time of 6 weeks."
                     </div>
             </div>
             <div class="mt-8 pt-6 border-t border-gray-200 p-4 bg-indigo-50 rounded-xl">
-                <h2 class="text-xl font-bold text-indigo-700 mb-4">Payment Method </h2>
+                <h2 class="text-xl font-bold text-indigo-700 mb-4">Payment Method </h2>
                 <div class="flex flex-col sm:flex-row gap-4">
                     <label for="payment-invoice" class="flex items-center flex-1 p-3 bg-white border border-indigo-300 rounded-lg cursor-pointer transition hover:bg-indigo-100/50 select-none">
                         <input type="radio" id="payment-invoice" name="payment-method" value="Invoice" checked
@@ -801,6 +836,7 @@ Job requires lead time of 6 weeks."
         };
 
         let CURRENT_PRICES = {...DEFAULT_PRICES}; 
+        let CUSTOM_PRICES = {}; // NEW: Stores user price overrides
 
         // Map linking input IDs to price keys and display IDs
         const ITEM_MAP = [
@@ -907,19 +943,61 @@ Job requires lead time of 6 weeks."
             calculateTotal(); // Recalculate to update receipt content
         };
 
+        // --- Price Override Handling ---
+        window.setCustomPrice = (key, value, checkboxId) => {
+            let val = parseFloat(value);
+            if (!isNaN(val)) {
+                // If checking out a field with a checkbox, deduct adjustment to store base price
+                if (checkboxId && getValue(checkboxId, false)) {
+                    val -= UNDER_COUNTERTOP_ADJUSTMENT;
+                }
+                CUSTOM_PRICES[key] = val;
+                updatePricesDisplay();
+            }
+        };
+
+        window.resetCustomPrice = (key) => {
+            delete CUSTOM_PRICES[key];
+            updatePricesDisplay();
+        };
+
         // --- Dynamic Pricing and Display Updates ---
         const updatePricesDisplay = () => {
             ITEM_MAP.forEach(item => {
-                const spanEl = document.getElementById(item.displayId);
-                if (spanEl && item.unit) {
-                    // Check if a fixed price exists in CURRENT_PRICES (unadjusted base rate)
-                    let price = CURRENT_PRICES[item.priceKey];
+                const displayEl = document.getElementById(item.displayId);
+                if (displayEl && item.unit) {
+                    // Start with the base price derived from current material selection
+                    let baseRate = CURRENT_PRICES[item.priceKey];
+                    // Check if user has applied a custom override price
+                    let price = CUSTOM_PRICES[item.priceKey] !== undefined ? CUSTOM_PRICES[item.priceKey] : baseRate;
+                    
                     if (typeof price === 'number') {
-                        // If this item has an "Under Countertops" checkbox, check if it's selected
+                        // Apply active checkbox adjustments on top
                         if (item.checkboxId && getValue(item.checkboxId, false)) {
                             price += UNDER_COUNTERTOP_ADJUSTMENT;
                         }
-                        spanEl.textContent = `$${price.toFixed(0)} / ${item.unit}`;
+                        
+                        if (displayEl.tagName === 'INPUT') {
+                            displayEl.value = price.toFixed(0);
+                            
+                            // Manage reset button visibility and styling if custom price is set
+                            const resetBtn = document.getElementById('reset-' + item.priceKey);
+                            if (resetBtn) {
+                                if (CUSTOM_PRICES[item.priceKey] !== undefined) {
+                                    resetBtn.classList.remove('hidden');
+                                    resetBtn.classList.add('flex');
+                                    displayEl.classList.add('text-blue-600', 'font-bold');
+                                    displayEl.classList.remove('text-gray-700');
+                                } else {
+                                    resetBtn.classList.add('hidden');
+                                    resetBtn.classList.remove('flex');
+                                    displayEl.classList.remove('text-blue-600', 'font-bold');
+                                    displayEl.classList.add('text-gray-700');
+                                }
+                            }
+                        } else {
+                            displayEl.textContent = `$${price.toFixed(0)} / ${item.unit}`;
+                        }
                     }
                 }
             });
@@ -958,8 +1036,8 @@ Job requires lead time of 6 weeks."
             // Helper function for adding itemized costs
             const addItem = (item) => {
                 const qty = getValue(item.id);
-                // Start with the base rate from CURRENT_PRICES
-                let rate = CURRENT_PRICES[item.priceKey]; 
+                // Start with the base rate from CUSTOM_PRICES if defined, else CURRENT_PRICES
+                let rate = CUSTOM_PRICES[item.priceKey] !== undefined ? CUSTOM_PRICES[item.priceKey] : CURRENT_PRICES[item.priceKey]; 
                 
                 if (qty > 0 && typeof rate === 'number') {
                     let adjustment = 0;
