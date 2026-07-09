@@ -737,22 +737,26 @@ Job requires lead time of 6 weeks."
                     </div>
                 </div>
                 
-                <div class="input-group mt-6">
-                    <label for="input-misc-custom" class="block text-lg font-semibold text-red-600 mb-1">Miscellaneous / Customization (Custom Price)</label>
-                    <div class="flex items-center">
-                        <span class="p-3 bg-gray-100 text-gray-600 text-base font-semibold border border-gray-300 border-r-0 rounded-l-lg">$</span>
-                        <input type="number" id="input-misc-custom" placeholder="0.00" min="0" step="10"
-                               class="flex-1 p-3 border border-red-300 focus:ring-red-400 focus:border-red-400 text-xl transition duration-150 font-bold">
-                        <span class="p-3 bg-red-600 text-white text-base font-semibold border border-red-600 border-l-0 rounded-r-lg">
-                            FLAT
-                        </span>
+                <div class="input-group mt-6 p-4 bg-gray-50 border border-gray-200 rounded-xl">
+                    <label class="block text-lg font-semibold text-red-600 mb-3">Custom Pricing</label>
+                    
+                    <div id="custom-pricing-list" class="space-y-2 mb-4 empty:hidden"></div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-3 items-start">
+                        <div class="flex-1 w-full">
+                            <input type="text" id="input-custom-desc" placeholder="E.g., Install client-supplied hardware" 
+                                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent">
+                        </div>
+                        <div class="flex items-center w-full sm:w-48">
+                            <span class="p-3 bg-gray-100 text-gray-600 font-semibold border border-gray-300 border-r-0 rounded-l-lg">$</span>
+                            <input type="number" id="input-custom-price" placeholder="0.00" min="0" step="10"
+                                   class="flex-1 p-3 border border-gray-300 focus:ring-accent focus:border-accent transition duration-150 font-bold border-l-0 rounded-r-lg">
+                        </div>
+                        <button type="button" onclick="addCustomPriceItem()" 
+                                class="w-full sm:w-auto p-3 font-bold text-white bg-accent rounded-lg hover:bg-emerald-700 transition duration-150 shadow-md">
+                            Add
+                        </button>
                     </div>
-                </div>
-
-                <div class="input-group mt-2 p-3 border border-gray-300 rounded-lg">
-                    <label for="input-misc-description" class="block text-sm font-medium text-gray-700 mb-1">Description for Custom Price</label>
-                    <textarea id="input-misc-description" rows="2" placeholder="E.g., Install client-supplied hardware, custom floating shelf labor, special lighting."
-                              class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"></textarea>
                 </div>
             </div>
 
@@ -854,6 +858,9 @@ Job requires lead time of 6 weeks."
         // Store the original title to reset the tab name after printing
         const ORIGINAL_TITLE = 'Cabinetry Quote Calculator - Print Ready (Refined, Responsive)';
 
+        // Array to hold dynamic custom pricing items
+        let customPricingItems = [];
+
         // --- Price Constants Definitions ---
         const UNDER_COUNTERTOP_ADJUSTMENT = 25; // Constant for the new $25 fee
         
@@ -939,6 +946,47 @@ Job requires lead time of 6 weeks."
         };
 
         const formatCurrency = (amount) => `${(amount || 0).toFixed(2)}`;
+
+        // --- Custom Pricing Functions ---
+        window.addCustomPriceItem = () => {
+            const descEl = document.getElementById('input-custom-desc');
+            const priceEl = document.getElementById('input-custom-price');
+            const desc = descEl.value.trim() || 'Custom Item';
+            const price = parseFloat(priceEl.value);
+
+            if (!isNaN(price) && price > 0) {
+                customPricingItems.push({ description: desc, cost: price });
+                descEl.value = '';
+                priceEl.value = '';
+                renderCustomPricingList();
+                calculateTotal();
+            } else {
+                alert("Please enter a valid price greater than 0.");
+            }
+        };
+
+        window.removeCustomPriceItem = (index) => {
+            customPricingItems.splice(index, 1);
+            renderCustomPricingList();
+            calculateTotal();
+        };
+
+        window.renderCustomPricingList = () => {
+            const listEl = document.getElementById('custom-pricing-list');
+            listEl.innerHTML = '';
+            customPricingItems.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'flex justify-between items-center p-2 bg-white border border-gray-200 rounded-md shadow-sm';
+                itemDiv.innerHTML = `
+                    <span class="text-sm font-medium text-gray-700 break-words flex-1 pr-2">${item.description}</span>
+                    <div class="flex items-center gap-3">
+                        <span class="font-bold text-gray-900">$${item.cost.toFixed(2)}</span>
+                        <button type="button" onclick="removeCustomPriceItem(${index})" class="text-red-500 hover:text-red-700 font-bold px-2 py-1 bg-red-50 rounded text-sm transition">X</button>
+                    </div>
+                `;
+                listEl.appendChild(itemDiv);
+            });
+        };
         
         // --- Photo Handling Logic (UPDATED FOR NEW BUTTONS) ---
 
@@ -1202,19 +1250,18 @@ Job requires lead time of 6 weeks."
                 });
             }
 
-            const miscCustom = getValue('input-misc-custom');
-            if (miscCustom > 0) {
-                const miscDescription = getValue('input-misc-description', false) || 'Miscellaneous Custom Work';
-                subtotal += miscCustom;
+            // Add dynamic custom pricing items to the breakdown and total
+            customPricingItems.forEach(item => {
+                subtotal += item.cost;
                 breakdown.push({
-                    name: miscDescription,
-                    cost: miscCustom,
+                    name: item.description,
+                    cost: item.cost,
                     qty: 1,
                     unit: 'FLAT',
-                    rate: miscCustom,
+                    rate: item.cost,
                     isLineal: false
                 });
-            }
+            });
 
             // Rush Fee Logic (UPDATED to use rushableSubtotal)
             const isRushed = getValue('checkbox-rushed', false);
@@ -1501,7 +1548,16 @@ Job requires lead time of 6 weeks."
                 input.addEventListener(input.type === 'checkbox' || input.type === 'radio' || input.tagName === 'SELECT' ? 'change' : 'input', calculateTotal); 
             });
             
-            // No need to attach listener to the old photo input, as the new hidden inputs have inline onchange handlers (handleNewPhoto)
+            // Optional trigger when pressing enter on the custom price input
+            const customPriceInput = document.getElementById('input-custom-price');
+            if (customPriceInput) {
+                customPriceInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addCustomPriceItem();
+                    }
+                });
+            }
 
             // Add button functionality (MODIFIED FOR DYNAMIC FILENAME)
             printBtn.addEventListener('click', () => {
