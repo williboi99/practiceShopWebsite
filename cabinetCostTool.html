@@ -1374,8 +1374,8 @@ Job requires lead time of 6 weeks."
                         // Example: 3 SERVICE @ $150.00 / SERVICE (for matching fee)
                         qtyDisplay = `${item.qty} SERVICE @ $${formatCurrency(item.rate)} / SERVICE`;
                     } else if (item.unit === 'FLAT') {
-                        // Example: Custom Flat Rate Description
-                        qtyDisplay = item.rate === item.cost ? 'Custom Flat Rate' : `$${formatCurrency(item.rate)}`;
+                        // Changed: Removes 'Custom Flat Rate' text from custom items
+                        qtyDisplay = item.rate === item.cost ? '' : `$${formatCurrency(item.rate)}`;
                     } else {
                         qtyDisplay = item.qty;
                     }
