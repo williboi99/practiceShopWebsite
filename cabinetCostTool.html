@@ -1246,7 +1246,8 @@ Installed glides, but don't have drawers to test."
                     qty: 1,
                     unit: 'FLAT',
                     rate: faceframeRepair,
-                    isLineal: false
+                    isLineal: false,
+                    isCustomLineItem: true
                 });
             }
 
@@ -1259,7 +1260,8 @@ Installed glides, but don't have drawers to test."
                     qty: 1,
                     unit: 'FLAT',
                     rate: item.cost,
-                    isLineal: false
+                    isLineal: false,
+                    isCustomLineItem: true
                 });
             });
 
@@ -1417,7 +1419,10 @@ Installed glides, but don't have drawers to test."
             const linealItems = breakdown.filter(item => item.isLineal && item.cost > 0);
             
             // Accessories, including lazy susans, fees, and flat custom work.
-            const accessoryItems = breakdown.filter(item => !item.isLineal && item.cost > 0 && !item.isRushFee && !item.isDiscount);
+            const accessoryItems = breakdown.filter(item => !item.isLineal && item.cost > 0 && !item.isRushFee && !item.isDiscount && !item.isCustomLineItem);
+            
+            // Custom Line Items
+            const customLineItems = breakdown.filter(item => item.isCustomLineItem && item.cost > 0);
 
             // 2. Find Fees
             const rushFeeItem = breakdown.find(item => item.isRushFee);
@@ -1474,6 +1479,15 @@ Installed glides, but don't have drawers to test."
                             <h3 class="receipt-section-header">Hardware & Accessory Pieces</h3>
                             <div class="space-y-1">
                                 ${renderSectionItems(accessoryItems)}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${customLineItems.length > 0 ? `
+                        <div class="mb-6">
+                            <h3 class="receipt-section-header">Line Items</h3>
+                            <div class="space-y-1">
+                                ${renderSectionItems(customLineItems)}
                             </div>
                         </div>
                     ` : ''}
